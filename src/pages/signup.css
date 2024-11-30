@@ -1,0 +1,107 @@
+.signup-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('C:\Users\LENONO\OneDrive\Documents\GitHub\waset-cairo\src\assets\1.jpg') no-repeat center center fixed; /* Background image */
+    background-size: cover;
+}
+
+.signup-form {
+    background: rgba(255, 255, 255, 0.8); 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+.signup-title {
+    color: #4a2fc8; 
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.signup-title::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: #4a2fc8; 
+    margin: 10px auto 0;
+}
+
+.signup-input-group {
+    margin-bottom: 20px;
+}
+
+.signup-input {
+    display: block;
+    width: calc(100% - 24px); 
+    margin: 10px auto; 
+    padding: 12px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    background: #f9f9f9;
+    transition: 0.3s ease-in-out;
+}
+
+.signup-input:focus {
+    border-color: #4a2fc8;
+    background: #ffffff;
+}
+
+.signup-label {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    margin: 10px 0 5px;
+    color: #555;
+}
+
+.signup-birth-date span {
+    font-weight: bold;
+    color: #4a2fc8;
+}
+
+.signup-radio-group {
+    text-align: left;
+    margin-top: 15px;
+    color: #555;
+}
+
+.signup-radio-group span {
+    font-weight: bold;
+    color: #4a2fc8;
+}
+
+.signup-radio-group label {
+    margin-bottom: 10px;
+    display: block;
+    font-size: 14px;
+}
+
+.signup-radio-group input {
+    margin-right: 10px; 
+}
+
+.signup-button {
+    padding: 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    background-color: #4a2fc8;
+    color: white;
+    margin-top: 20px;
+}
+
+.signup-button:hover {
+    background-color: #3b24a1;
+}
