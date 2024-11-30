@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('C:\Users\LENONO\OneDrive\Documents\GitHub\waset-cairo\src\assets\1.jpg') no-repeat center center fixed; /* Background image */
+    background: url('..\assets\1.jpg') no-repeat center center fixed; /* Background image */
     background-size: cover;
 }
 

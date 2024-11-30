@@ -12,14 +12,14 @@ function Login() {
     if (!username || !password) {
       alert('Please fill in both username and password');
     } else {
-      navigate('/begin');
+      navigate('/home');
     }
   };
 
 
 function signup(){
     console.log("done");
-    navigate('/up');
+    navigate('/sign-up');
 }
 
 

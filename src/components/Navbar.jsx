@@ -16,23 +16,23 @@ const Navbar = () => {
       {/* Centered Tabs */}
       <ul className="flex justify-center space-x-6 w-full text-2xl">
         <li className="text-gray-700 hover:text-blue-500 cursor-pointer">
-          <Link to="/begin">Home</Link>
+          <Link to="/home">Home</Link>
         </li>
         <li className="text-gray-700 hover:text-blue-500 cursor-pointer">
-          <Link to="/begin/tour-packs">Tour Packages</Link>
+          <Link to="/home/tour-packs">Tour Packages</Link>
         </li>
         <li className="text-gray-700 hover:text-blue-500 cursor-pointer">
-          <Link to="/begin/events">Events</Link>
+          <Link to="/home/events">Events</Link>
         </li>
         <li className="text-gray-700 hover:text-blue-500 cursor-pointer">
-          <Link to="/begin/monuments">Monuments</Link>
+          <Link to="/home/monuments">Monuments</Link>
         </li>
       </ul>
 
       {/* Right Section with Profile Link */}
-      <a href="/profile" className="text-gray-700 hover:text-blue-500">
-        My Profile
-      </a>
+      <div className="w-20 text-gray-700 hover:text-blue-500">
+        <Link to="/profile">My profile</Link>
+      </div>
     </nav>
   );
 };
