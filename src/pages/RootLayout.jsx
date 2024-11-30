@@ -3,11 +3,11 @@ import Navbar from "../components/Navbar";
 
 const RootLayout = () => {
   return (
-		<>
+		<div>
 			<Navbar />
-      <Outlet />
-      {/* footer */}
-		</>
+			<Outlet />
+			{/* footer */}
+		</div>
 	);
 }
 
