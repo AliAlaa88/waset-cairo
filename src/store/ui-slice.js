@@ -102,7 +102,7 @@ const packs = [
 			"Take a romantic getaway to a destination that sparks love and relaxation.",
 	},
 ];
-const egyptianTemplates = [
+const monuments = [
 	{
 		id: 1,
 		title: "Pyramids of Giza Tour",
@@ -142,7 +142,7 @@ const egyptianTemplates = [
 
 const uiSlice = createSlice({
 	name: "ui",
-	initialState: { events, packs, egyptianTemplates },
+	initialState: { events, packs, monuments },
 });
 
 export const uiActions = uiSlice.actions;

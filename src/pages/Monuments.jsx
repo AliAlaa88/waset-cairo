@@ -2,15 +2,15 @@ import { useSelector } from "react-redux";
 import SliderSection from "../components/SliderSection";
 
 const Monuments = () => {
-	const egyptianTemplates = useSelector((state) => state.ui.egyptianTemplates);
+	const monuments = useSelector((state) => state.ui.monuments);
 
 	return (
 		<div className="py-10 bg-gray-200 h-[650px]">
 			<SliderSection
 				title={"Monuments"}
 				description={"Explore the Pharonic Monuments and visit it"}
-				cards={egyptianTemplates}
-				route={"monuments"}
+				cards={monuments}
+				route={"begin/monuments"}
 			/>
 		</div>
 	);

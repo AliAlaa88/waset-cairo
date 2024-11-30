@@ -6,7 +6,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 
 import { EffectCoverflow, Pagination, Navigation } from "swiper/modules";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 function SliderSection({ title, description, cards, route }) {
 	return (
@@ -42,7 +42,7 @@ function SliderSection({ title, description, cards, route }) {
 						className="slide flex items-center justify-center h-[350px]"
 					>
 						<div className="card min-w-[350px] max-w-[350px] h-[350px] bg-white shadow-lg overflow-hidden transform transition-transform hover:scale-105 rounded-3xl relative my-2.5 mx-auto">
-							<Link to={`/${route}/${card.id}`}>
+							<NavLink to={`/${route}/${card.id}`}>
 								<img
 									src={card.image}
 									alt={card.title}
@@ -56,7 +56,7 @@ function SliderSection({ title, description, cards, route }) {
 										{card.description}
 									</p>
 								</div>
-							</Link>
+							</NavLink>
 						</div>
 					</SwiperSlide>
 				))}

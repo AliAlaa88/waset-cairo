@@ -10,7 +10,7 @@ const TourPacks = () => {
 				title={"Tour Packs"}
 				description={"Select the Tour-Pack you like and enjoy your tour"}
 				cards={packs}
-				route={"tour-packs"}
+				route={"begin/tour-packs"}
 			/>
 		</div>
 	);
