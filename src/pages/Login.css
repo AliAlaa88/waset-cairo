@@ -1,0 +1,103 @@
+
+.login-container{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background : url('C:\Users\LENONO\OneDrive\Documents\GitHub\waset-cairo\src\assets\1.jpg') no-repeat center center fixed; /* Background image */
+    background-size: cover; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+
+.login-box {
+    background: rgba(255, 255, 255, 0.8); 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 40px 30px;
+    max-width: 400px;
+    max-height: fit-content;
+    width: 100%;
+    text-align: center;
+}
+
+.login-title {
+    color: #4a2fc8; 
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.login-title::after {
+    content: "";
+    display: block;
+    width: 60px;
+    height: 2px;
+    background: #4a2fc8; 
+    margin: 10px auto 0;
+}
+
+.inputs {
+    margin-bottom: 20px;
+}
+
+.input {
+    margin-bottom: 15px;
+}
+
+.input input {
+    width: 100%;
+    padding: 12px 15px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    outline: none;
+    background: #f9f9f9;
+    transition: 0.3s ease-in-out;
+}
+
+.input input:focus {
+    border-color: #4a2fc8;
+    background: #ffffff;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn {
+    flex: 1;
+    padding: 12px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn:not(:last-child) {
+    margin-right: 10px;
+}
+
+.btn-primary {
+    background-color: #4a2fc8;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #3b24a1;
+}
+
+.btn-secondary {
+    background-color: #f3f3f3;
+    color: #555;
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+}
