@@ -1,9 +1,13 @@
 import Router from "./Routes";
+import { Provider } from "react-redux";
+
+import store from "./store/store";
+
 function App() {
   return (
-		<div className="bg-gray-100 min-h-screen">
+		<Provider store={store}>
 			<Router />
-		</div>
+		</Provider>
 	);
 }
 

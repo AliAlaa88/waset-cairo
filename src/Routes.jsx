@@ -26,12 +26,12 @@ function Router() {
 
             <Route path="events">
                 <Route index element={<Events />} />
-                <Route path=":id" element={<TourPackDetails />} />
+                <Route path=":id" element={<EventDetails />} />
             </Route>
 
             <Route path="tour-packs">
                 <Route index element={<TourPacks />} />
-                <Route path=":id" element={<EventDetails />} />
+                <Route path=":id" element={<TourPackDetails />} />
             </Route>
 
             <Route path="monuments">
@@ -43,10 +43,11 @@ function Router() {
         
         <Route path="profile" element={<Profile/>} />
 
-        <Route path="*" element={<ErrorPage />} />
-      </Routes>
-    </BrowserRouter>
-  );
+
+				<Route path="*" element={<ErrorPage />} />
+			</Routes>
+		</BrowserRouter>
+	);
 }
 
 export default Router;
