@@ -6,7 +6,7 @@ const MonumentDetails = () => {
 	const monuments = useSelector((state) => state.ui.monuments);
 	const monument = monuments.find((mo) => mo.id === parseInt(id));
 	return (
-		<div className="py-10 bg-gray-200 h-[650px]">
+		<div className="">
 			<h2 className="text-3xl font-bold text-center">{monument.title}</h2>
 			<div
 				style={{

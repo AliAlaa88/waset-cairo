@@ -5,12 +5,12 @@ const Monuments = () => {
 	const monuments = useSelector((state) => state.ui.monuments);
 
 	return (
-		<div className="py-10 bg-gray-200 h-[650px]">
+		<div className="">
 			<SliderSection
 				title={"Monuments"}
 				description={"Explore the Pharonic Monuments and visit it"}
 				cards={monuments}
-				route={"begin/monuments"}
+				route={"home/monuments"}
 			/>
 		</div>
 	);

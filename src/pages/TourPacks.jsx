@@ -5,12 +5,12 @@ const TourPacks = () => {
 	const packs = useSelector((state) => state.ui.packs);
 
 	return (
-		<div className="py-10 bg-gray-200 h-[650px]">
+		<div className="">
 			<SliderSection
 				title={"Tour Packs"}
 				description={"Select the Tour-Pack you like and enjoy your tour"}
 				cards={packs}
-				route={"begin/tour-packs"}
+				route={"home/tour-packs"}
 			/>
 		</div>
 	);

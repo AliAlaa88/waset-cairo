@@ -3,15 +3,13 @@
 @tailwind utilities;
 
 body {
-  overflow: hidden;
 }
 
 .swiper-slide-shadow-left,
 .swiper-slide-shadow-right {
-  display: none;
+	display: none;
 }
 
 .active {
-  background-color: #f5f5f5;
-  
+	background-color: #f5f5f5;
 }

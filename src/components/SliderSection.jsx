@@ -34,7 +34,7 @@ function SliderSection({ title, description, cards, route }) {
 					clickable: true,
 				}}
 				modules={[EffectCoverflow, Pagination, Navigation]}
-				className="swiper-container h-[550px] relative flex items-center justify-center"
+				className="swiper-container relative flex items-center justify-center"
 			>
 				{cards.map((card) => (
 					<SwiperSlide
@@ -48,7 +48,7 @@ function SliderSection({ title, description, cards, route }) {
 									alt={card.title}
 									className="w-full h-[250px] object-cover"
 								/>
-								<div className="p-4 h-[100px]">
+								<div className="bg-gradient-to-r from-sky-100 to-sky-500 text-white p-4 h-[100px]">
 									<h3 className="text-lg font-semibold text-gray-800">
 										{card.title}
 									</h3>
@@ -63,14 +63,13 @@ function SliderSection({ title, description, cards, route }) {
 			</Swiper>
 
 			{/* Navigation Buttons */}
-			<div className="slider-controler">
-				<div className="swiper-button-prev slider-arrow">
-					<ion-icon name="arrow-back-outline"></ion-icon>
-				</div>
-				<div className="swiper-button-next slider-arrow">
-					<ion-icon name="arrow-forward-outline"></ion-icon>
-				</div>
-				<div className="absolute bottom-40 left-0 w-full">
+			<div className="slider-controler relative">
+				{/* Navigation Arrows */}
+				<div className="swiper-button-prev slider-arrow absolute top-1/2 left-[-20px] transform -translate-y-1/2 z-10"></div>
+				<div className="swiper-button-next slider-arrow absolute top-1/2 right-[-20px] transform -translate-y-1/2 z-10"></div>
+
+				{/* Pagination Indicators */}
+				<div className="absolute bottom-[-50px] left-0 w-full">
 					<div className="swiper-pagination"></div>
 				</div>
 			</div>

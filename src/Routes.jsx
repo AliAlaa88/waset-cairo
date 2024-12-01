@@ -12,37 +12,41 @@ import ErrorPage from "./pages/Error";
 import Login from "./pages/Login";
 import Signup from "./pages/signup";
 import Profile from "./pages/Profile";
+import TouristGroup from "./pages/TouristGroup";
 
 function Router() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
+	return (
+		<BrowserRouter>
+			<Routes>
+				<Route path="/" element={<Login />} />
 
-		    <Route path="/sign-up" element={<Signup />} />
+				<Route path="/sign-up" element={<Signup />} />
 
-        <Route path="/home" element={<RootLayout />}>
-            <Route index element={<Home />} />
+				<Route path="/home" element={<RootLayout />}>
+					<Route index element={<Home />} />
 
-            <Route path="events">
-                <Route index element={<Events />} />
-                <Route path=":id" element={<EventDetails />} />
-            </Route>
+					<Route path="groups">
+						<Route index element={<TouristGroup />} />
+						<Route path=":id" element={<EventDetails />} />
+					</Route>
 
-            <Route path="tour-packs">
-                <Route index element={<TourPacks />} />
-                <Route path=":id" element={<TourPackDetails />} />
-            </Route>
+					<Route path="events">
+						<Route index element={<Events />} />
+						<Route path=":id" element={<EventDetails />} />
+					</Route>
 
-            <Route path="monuments">
-                <Route index element={<Monuments />} />
-                <Route path=":id" element={<MonumentDetails />} />
-            </Route>
+					<Route path="tour-packs">
+						<Route index element={<TourPacks />} />
+						<Route path=":id" element={<TourPackDetails />} />
+					</Route>
 
-        </Route>
-        
-        <Route path="profile" element={<Profile/>} />
+					<Route path="monuments">
+						<Route index element={<Monuments />} />
+						<Route path=":id" element={<MonumentDetails />} />
+					</Route>
+				</Route>
 
+				<Route path="profile" element={<Profile />} />
 
 				<Route path="*" element={<ErrorPage />} />
 			</Routes>

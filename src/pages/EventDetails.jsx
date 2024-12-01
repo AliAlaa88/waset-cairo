@@ -7,7 +7,7 @@ const EventDetails = () => {
 	const event = events.find((ev) => ev.id === parseInt(id));
 
 	return (
-		<div className="py-10 bg-gray-200 h-[650px]">
+		<div className="">
 			<h2 className="text-3xl font-bold text-center">{event.title}</h2>
 			<div
 				style={{

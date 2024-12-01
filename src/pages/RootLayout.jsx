@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 
 const RootLayout = () => {
   return (
-		<div>
+		<div className="min-h-screen bg-yellow-50">
 			<Navbar />
 			<Outlet />
 			{/* footer */}
