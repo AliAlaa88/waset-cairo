@@ -1,0 +1,60 @@
+.OGroup {
+    font-family: Arial, sans-serif;
+    margin: 10px;;
+    color:black;
+    text-align: center;
+    display: block;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px rgba(230, 224, 224, 0.922);
+    background-color: azure;
+}
+.group-item {
+    display: flex;           
+    justify-content: space-between;  
+    padding: 5px;
+    align-items: center;     
+    background-color: rgb(167, 168, 185);
+    border-radius: 10px;
+}
+
+.joinButton {
+    margin-left: auto;
+    color:rgb(227, 227, 238);      
+    border-radius: 4px;  
+    background-color: rgb(59, 59, 118);
+}
+.joinButton:hover{
+    background-color: rgb(123, 123, 160);
+}
+
+.group-profile {
+    border: 1px solid cornsilk;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.064);
+    padding: 20px;
+    margin: 0px;
+    text-align: center;
+    max-width: auto;
+    display: flex;               
+    flex-direction: column;      
+}
+.group-image{
+    margin-bottom: 10px;
+    align-items: center;
+    height: auto;
+    max-width: 100%;
+}
+.group-name{
+    font-family: arial, sans-serif;
+    margin: 0;
+    color: black;
+}
+.dis-section {
+    align-self: flex-start;      
+    margin-top: 10px;            
+}
+.dis-pragraph{
+    align-self: flex-start;
+    margin-top: 5px;
+    margin-bottom: 30px;
+}
