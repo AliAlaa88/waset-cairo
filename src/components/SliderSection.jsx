@@ -11,10 +11,10 @@ import { NavLink } from "react-router-dom";
 function SliderSection({ title, description, cards, route }) {
 	return (
 		<div>
-			<h2 className="text-center text-3xl font-bold mb-8 text-gray-800">
+			<h2 className="text-center text-3xl font-bold mb-4 text-gray-100">
 				{title}
 			</h2>
-			<h4 className="text-center text-xl mb-8 text-gray-600">{description}</h4>
+			<h4 className="text-center text-xl mb-4 text-gray-200">{description}</h4>
 			<Swiper
 				effect={"coverflow"}
 				grabCursor={true}
@@ -41,19 +41,19 @@ function SliderSection({ title, description, cards, route }) {
 						key={card.id}
 						className="slide flex items-center justify-center h-[350px]"
 					>
-						<div className="card min-w-[350px] max-w-[350px] h-[350px] bg-white shadow-lg overflow-hidden transform transition-transform hover:scale-105 rounded-3xl relative my-2.5 mx-auto">
+						<div className="card group min-w-[350px] max-w-[350px] h-[350px] bg-white shadow-lg overflow-hidden transform transition-transform hover:scale-105 rounded-3xl relative my-2.5 mx-auto">
 							<NavLink to={`/${route}/${card.id}`}>
 								<img
 									src={card.image}
 									alt={card.title}
 									className="w-full h-[250px] object-cover"
 								/>
-								<div className="bg-gradient-to-r from-sky-100 to-sky-500 text-white p-4 h-[100px]">
-									<h3 className="text-lg font-semibold text-gray-800">
+								<div className="bg-gradient-to-r from-yellow-300 to-orange-400 text-white p-4 h-[100px]">
+									<h2 className="text-xl font-semibold text-sky-500 group-hover:drop-shadow-[0_1px_1px_rgba(255,255,255,1)]">
 										{card.title}
-									</h3>
-									<p className="text-sm text-gray-600 mt-1 line-clamp-2">
-										{card.description}
+									</h2>
+									<p className="text-m text-sky-500 mt-1 line-clamp-2 group-hover:drop-shadow-[0_1px_1px_rgba(255,255,255,1)]">
+										{card.shortDescription}
 									</p>
 								</div>
 							</NavLink>

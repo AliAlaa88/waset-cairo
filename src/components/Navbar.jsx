@@ -21,7 +21,7 @@ const Navbar = () => {
 
 				{/* Centered Tabs */}
 				<div>
-					<ul className="flex items-center w-full text-2xl">
+					<ul className="flex items-center w-full text-xl">
 						<li className="text-gray-700 hover:text-white">
 							<Link to="/home">
 								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">
@@ -55,7 +55,7 @@ const Navbar = () => {
 				</div>
 
 				{/* Right Section with Profile Link */}
-				<div className="flex items-end">
+				<div className="flex items-end text-xl">
 					<Link to="/profile">
 						<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">
 							<CircleUserRound className="mr-2" size={20} /> Profile

@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar";
 
 const RootLayout = () => {
   return (
-		<div className="min-h-screen bg-yellow-50">
+		<div className="min-h-screen bg-gradient-to-r text-white from-sky-500 to-blue-600">
 			<Navbar />
 			<Outlet />
 			{/* footer */}
