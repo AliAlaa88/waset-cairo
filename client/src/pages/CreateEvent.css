@@ -1,0 +1,117 @@
+/* CreatePack.css */
+
+.Ev-body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom right, #67C9E6, #6AAACB);
+    color: #fff;
+    background-image: url("client\src\assets\package img.jpg");
+}
+
+.Ev-contaner {
+    background-color: #ffffff;
+    color: #333;
+    padding: 20px;
+    width: 100%;
+    height: 100vh;
+    box-sizing: border-box;
+    overflow-y: auto;
+    background: transparent;
+    backdrop-filter: blur(2px);
+}
+
+.Ev-titel {
+    position:fixed;
+    font-size: 24px;
+    color: #67C9E6;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.Ev-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.Ev-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background: #f9f9f9;
+}
+
+.Ev-input:focus {
+    outline: none;
+    border-color: #67C9E6;
+    box-shadow: 0 0 5px rgba(103, 201, 230, 0.5);
+}
+
+textarea.Ev-input {
+    resize: none;
+}
+
+.Ev-radio-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.Ev-rateLable {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.Ev-input select {
+    cursor: pointer;
+}
+
+.Ev-submitBtn {
+    background: #67C9E6;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.Ev-submitBtn:hover {
+    background: #55B1CE;
+}
+
+
+
+
+.Ev-submitBtn {
+    background-color: #d4a373;
+    color: #fff;
+}
+ 
+.Ev-buttons button:hover {
+    opacity: 0.8;
+}
+label{
+    font-weight: bold;
+    color: #55B1CE;
+}
+
+span{
+    font-weight: bold;
+    color: #55B1CE;
+}
+.Ev-duration label{
+    font-weight: bold;
+    color: #55B1CE;
+}
+.Ev-rateLable{
+    font-weight: bold;
+    color: #55B1CE;
+    font-size: large;
+}

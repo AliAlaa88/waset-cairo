@@ -1,0 +1,85 @@
+.feedback-contaner {
+    background-image: url('client\src\assets\p6.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: Arial, sans-serif;
+  }
+  
+  .fdForm {
+    background-color: rgba(255, 255, 255, 0.9);
+    background: transparent;
+    border: 2px solid rgb(182, 110, 10);
+    backdrop-filter: blur(2px);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    
+  }
+  
+  .feedback-tital {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    color: wheat;
+  }
+  
+  .fd-input {
+    width: 95%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  textarea.fd-input {
+    resize: none;
+  }
+  
+  .fd-radio-group {
+    margin: 10px 0;
+  }
+  
+  .fd-radio-group span {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .fd-radio-group label {
+    display: block;
+    margin: 5px 0;
+    font-size: 14px;
+  }
+  
+  .fd-buttons button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .fd-cancleBtn {
+    background-color: #ccc;
+    color: #000;
+  }
+  
+  .fd-submitBtn {
+    background-color: #d4a373;
+    color: #fff;
+  }
+  
+  .fd-buttons button:hover {
+    opacity: 0.8;
+  }

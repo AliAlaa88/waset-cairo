@@ -3,7 +3,7 @@
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background : url('C:\Users\LENONO\OneDrive\Documents\GitHub\waset-cairo\client\src\assets\p6.jpg') no-repeat center center fixed; 
+    background : url('client\src\assets\p6.jpg') no-repeat center center fixed; 
     background-size: cover; 
     display: flex;
     justify-content: center;

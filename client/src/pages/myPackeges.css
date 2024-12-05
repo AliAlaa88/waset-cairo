@@ -1,0 +1,29 @@
+.my-Packes {
+    font-family: Arial, sans-serif;
+    margin: 10px;;
+    color:black;
+    text-align: center;
+    display: block;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px rgba(230, 224, 224, 0.922);
+    background-color: azure;
+
+}
+  .tour-item {
+    display: flex;           
+    justify-content: space-between;  
+    padding: 5px;
+    align-items: center;     
+    background-color: rgb(167, 168, 185);
+    border-radius: 10px;
+  }
+  
+  .LanchButton {
+    margin-left: auto;
+    color:rgb(227, 227, 238);      
+    border-radius: 4px;  
+    background-color: rgb(59, 59, 118);
+  }
+  .LanchButton:hover{
+    background-color: rgb(123, 123, 160);
+  }
