@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('..\assets\1.jpg') no-repeat center center fixed; /* Background image */
+    background: url('C:\Users\LENONO\OneDrive\Documents\GitHub\waset-cairo\client\src\assets\p6.jpg') no-repeat center center fixed; /* Background image */
     background-size: cover;
 }
 
@@ -15,10 +15,13 @@
     max-width: 400px;
     width: 100%;
     text-align: center;
+    background: transparent;
+    backdrop-filter: blur(2px);
+    border:2px solid #d79210;
 }
 
 .signup-title {
-    color: #4a2fc8; 
+    color: wheat;; 
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 20px;
@@ -30,7 +33,7 @@
     display: block;
     width: 60px;
     height: 2px;
-    background: #4a2fc8; 
+    background:#d79210; 
     margin: 10px auto 0;
 }
 
@@ -66,18 +69,18 @@
 
 .signup-birth-date span {
     font-weight: bold;
-    color: #4a2fc8;
+    color: wheat;
 }
 
 .signup-radio-group {
     text-align: left;
     margin-top: 15px;
-    color: #555;
+    color:wheat;
 }
 
 .signup-radio-group span {
     font-weight: bold;
-    color: #4a2fc8;
+    color:wheat;
 }
 
 .signup-radio-group label {
@@ -97,11 +100,11 @@
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
-    background-color: #4a2fc8;
+    background-color: #d79210;
     color: white;
     margin-top: 20px;
 }
 
 .signup-button:hover {
-    background-color: #3b24a1;
+    background-color: #bb7f11;
 }
