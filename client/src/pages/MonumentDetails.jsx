@@ -31,14 +31,9 @@ const MonumentDetails = () => {
 					/>
 				</div>
 
-				<div className="p-6">
+				<div className="p-6 text-black">
 					{/* Short description */}
 					<p className="text-lg font-semibold text-center mb-4">
-						{monument.shortDescription}
-					</p>
-
-					{/* Long description */}
-					<p className="text-gray-700 text-justify mb-4">
 						{monument.longDescription}
 					</p>
 

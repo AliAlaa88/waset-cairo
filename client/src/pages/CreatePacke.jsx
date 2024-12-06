@@ -26,6 +26,7 @@ function CreatePack(){
         "Option 4",
         "Option 5",
     ];
+    
     function submit(){
         console.log("done");
         navigate('profile');

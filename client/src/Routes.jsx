@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import RootLayout from "./pages/RootLayout";
-import Home from "./pages/Home";
 import TourPacks from "./pages/TourPacks";
 import TourPackDetails from "./pages/TourPackDetails";
 import Events from "./pages/Events";
@@ -12,9 +11,14 @@ import ErrorPage from "./pages/Error";
 import Login from "./pages/Login";
 import Signup from "./pages/signup";
 import Profile from "./pages/Profile";
+import EditProfile from "./pages/EditProfile";
 import TouristGroup from "./pages/TouristGroup";
 import TourGuideHomePage from "./pages/TourGuideHome";
 import TourOperatorHomePage from "./pages/TourOperatorHome";
+import MyPackes from "./pages/TourOperatorHome";
+import TouristGroupDetails from "./pages/TouristGroupDetails";
+import CreateGroup from "./pages/CreateGroup";
+import Tours from "./components/Tours";
 
 function Router() {
 	return (
@@ -25,11 +29,12 @@ function Router() {
 				<Route path="/sign-up" element={<Signup />} />
 
 				<Route path="/home" element={<RootLayout />}>
-					<Route index element={<Home />} />
+					<Route index element={<Tours />} />
 
 					<Route path="groups">
 						<Route index element={<TouristGroup />} />
-						<Route path=":id" element={<EventDetails />} />
+						<Route path=":id" element={<TouristGroupDetails />} />
+						<Route path="create" element={<CreateGroup />} />
 					</Route>
 
 					<Route path="events">
@@ -48,9 +53,13 @@ function Router() {
 					</Route>
 				</Route>
 
-				<Route path="profile" element={<Profile />} />
-				<Route path="guide-home" element={<TourGuideHomePage/>}/>
-				<Route path="operator-home" element={<TourOperatorHomePage/>}/>
+				<Route path="profile">
+					<Route index element={<Profile />} />
+					<Route path="edit" element={<EditProfile />} />
+				</Route>
+				<Route path="guide-home" element={<TourGuideHomePage />} />
+				<Route path="operator-home" element={<TourOperatorHomePage />} />
+				<Route path="mypacks" element={<MyPackes />} />
 
 				<Route path="*" element={<ErrorPage />} />
 			</Routes>

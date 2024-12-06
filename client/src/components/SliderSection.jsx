@@ -11,10 +11,10 @@ import { NavLink } from "react-router-dom";
 function SliderSection({ title, description, cards, route }) {
 	return (
 		<div>
-			<h2 className="text-center text-3xl font-bold mb-4 text-gray-100">
+			<h2 className="text-center text-3xl font-bold mb-4 text-white">
 				{title}
 			</h2>
-			<h4 className="text-center text-xl mb-4 text-gray-200">{description}</h4>
+			<h4 className="text-center text-xl mb-4 text-white">{description}</h4>
 			<Swiper
 				effect={"coverflow"}
 				grabCursor={true}

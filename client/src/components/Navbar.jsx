@@ -2,11 +2,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import profileAvatar from "../assets/Nile with pyramids   with some Egyptian hieroglyphs and boat in the Nile.jpg";
 import {
-	Home,
+	TicketsPlane,
 	CalendarDays,
 	Pyramid,
 	CircleUserRound,
 	Package,
+	Users
 } from "lucide-react";
 const Navbar = () => {
 	return (
@@ -25,13 +26,12 @@ const Navbar = () => {
 						<li className="text-gray-700 hover:text-white">
 							<Link to="/home">
 								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">
-									<Home className="mr-2" size={20} /> Home
+									<TicketsPlane className="mr-2" size={20} /> Tours
 								</button>
 							</Link>
 						</li>
 						<li className="text-gray-700 hover:text-white">
 							<Link to="/home/tour-packs">
-								{" "}
 								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center hover:bg-yellow-400">
 									<Package className="mr-2" size={20} /> Tour Packs
 								</button>
@@ -48,6 +48,13 @@ const Navbar = () => {
 							<Link to="/home/monuments">
 								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center hover:bg-yellow-400">
 									<Pyramid className="mr-2" size={20} /> Monuments
+								</button>
+							</Link>
+						</li>
+						<li className="text-gray-700 hover:text-white">
+							<Link to="/home/groups">
+								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center hover:bg-yellow-400">
+									<Users className="mr-2" size={20} /> Groups
 								</button>
 							</Link>
 						</li>

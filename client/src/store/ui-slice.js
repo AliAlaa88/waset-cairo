@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import logo from "../assets/Nile with pyramids   with some Egyptian hieroglyphs and boat in the Nile.jpg";
+import profileAvatar from "../assets/Nile with pyramids   with some Egyptian hieroglyphs and boat in the Nile.jpg";
 
 const events = [
 	{
@@ -233,9 +234,100 @@ const tours = [
 	},
 ];
 
+const groups = [
+	{
+		id: 1,
+		preferredMonumentIds: [1, 2],
+		name: "The Explorers",
+		commonLanguage: "English",
+		participantCount: 20,
+	},
+	{
+		id: 2,
+		preferredMonumentIds: [3, 4],
+		name: "Art Enthusiasts",
+		commonLanguage: "French",
+		participantCount: 15,
+	},
+	{
+		id: 3,
+		preferredMonumentIds: [5],
+		name: "History Buffs",
+		commonLanguage: "Spanish",
+		participantCount: 25,
+	},
+	{
+		id: 4,
+		preferredMonumentIds: [1, 3],
+		name: "Adventure Seekers",
+		commonLanguage: "German",
+		participantCount: 18,
+	},
+	{
+		id: 5,
+		preferredMonumentIds: [2, 5],
+		name: "Cultural Connoisseurs",
+		commonLanguage: "Italian",
+		participantCount: 22,
+	},
+];
+
+
+	const profileData = {
+		name: "Tourist Name",
+		firstName: "Tourist",
+		lastName: "Name",
+		email: "tourist@test.com",
+		username: "tourist",
+		password: "password",
+		birthdate: "1990-01-01",
+		gender: "male",
+
+		avatar: profileAvatar,
+		nationality: "Egypt",
+		languages: ["English", "Arabic"],
+		bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed et ultricies elit, quis tincidunt dui. Sed sagittis ex turpis, a tempor magna hendrerit non. Interdum et malesuada fames ac ante ipsum primis in faucibus.",
+		accountInsights: {
+			totalTrips: 3,
+			totalSpent: "2,345 LE",
+			memberSince: "March 2024",
+		},
+		favoriteExperience: {
+			name: "Exploring the Pyramids of Giza",
+			date: "October 2024",
+			rating: 5,
+		},
+		tickets: [
+			{
+				id: "1",
+				destination: "Luxor Temple",
+				date: "October 15, 2024",
+				status: "Completed",
+			},
+			{
+				id: "2",
+				destination: "Cairo Museum Tour",
+				date: "October 18, 2024",
+				status: "Upcoming",
+			},
+			{
+				id: "3",
+				destination: "Nile River Cruise",
+				date: "October 22, 2024",
+				status: "Booked",
+			},
+		],
+		ratings: {
+			overall: 4.8,
+			tourGuides: 4.9,
+			experiences: 4.7,
+		},
+		groupIDs: [1, 2],
+};
+	
 const uiSlice = createSlice({
 	name: "ui",
-	initialState: { events, packs, monuments, tours },
+	initialState: { events, packs, monuments, tours, groups, profileData },
 });
 
 export const uiActions = uiSlice.actions;

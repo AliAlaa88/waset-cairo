@@ -3,7 +3,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('..\assets\p6.jpg') no-repeat center center fixed; /* Background image */
+    background: url('..\..\assets\p6.jpg') no-repeat center center fixed; /* Background image */
     background-size: cover;
 }
 

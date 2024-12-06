@@ -14,7 +14,7 @@ const EventDetails = () => {
 	return (
 		<div className="p-6">
 			<h2 className="text-3xl font-bold text-center mb-4">{event.title}</h2>
-			<div className="mx-auto w-full max-w-xl bg-white rounded-lg shadow-md overflow-hidden">
+			<div className="mx-auto w-full max-w-xl bg-white text-black rounded-lg shadow-md overflow-hidden">
 				{/* Event image */}
 				<div className="mb-4">
 					<img
@@ -24,14 +24,9 @@ const EventDetails = () => {
 					/>
 				</div>
 
-				<div className="p-6">
+				<div className="p-6 text-black">
 					{/* Short description */}
 					<p className="text-lg font-semibold text-center mb-4">
-						{event.shortDescription}
-					</p>
-
-					{/* Long description */}
-					<p className="text-gray-700 text-justify mb-4">
 						{event.longDescription}
 					</p>
 
