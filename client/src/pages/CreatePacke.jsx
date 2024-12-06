@@ -9,7 +9,6 @@ function CreatePack(){
     const [price, setprice] = useState('');
     const [mettingLoc, setmettingLoc] = useState('');
     const [selectedType, setselectedType] = useState("");
-    const navigate = useNavigate();
     const [selectedMonument, setselectedMonument] = useState([]);
     const typeOpthions = [
         "Option 1",
@@ -28,7 +27,7 @@ function CreatePack(){
     ];
     function submit(){
         console.log("done");
-        navigate('profile');
+       //navigate('/sign-up');
     }
 
 
@@ -95,7 +94,7 @@ function CreatePack(){
 
                     <div className="creP-duration">
                         <br />
-                    <label>Number of day/hour</label>
+                    <label className= "numday">Number of day/hour</label>
                     <input className = "creP-input" type= "number"
                     min= "0" max= "10" 
                     placeholder="enter duration of packege"
@@ -105,9 +104,9 @@ function CreatePack(){
                     />
 
                         <div className="creP-radio-group">
-                        <span>day/hour</span>
+                        <span className = "pdayhour">day/hour</span>
                         <br />
-                        <label>
+                        <label className= "radioday">
                             <input
                                 type="radio"
                                 name="type"
@@ -118,7 +117,7 @@ function CreatePack(){
                             />
                             day
                         </label>
-                        <label>
+                        <label className= "radiohour">
                             <input
                                 type="radio"
                                 name="type"
@@ -132,7 +131,7 @@ function CreatePack(){
                     </div>
                     <br />
 
-                    <label >Package Type</label>
+                    <label className="ppacktype">Package Type</label>
                     <select className="creP-input" 
                 
                     value={selectedType}

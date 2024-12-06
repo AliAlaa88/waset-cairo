@@ -1,4 +1,4 @@
-.my-Packes {
+.my-Events {
     font-family: Arial, sans-serif;
     margin: 10px;;
     color:black;
@@ -9,7 +9,7 @@
     background-color: azure;
 
 }
-  .tour-item {
+  .event-item {
     display: flex;           
     justify-content: space-between;  
     padding: 5px;
@@ -18,20 +18,20 @@
     border-radius: 10px;
   }
   
-  .LanchButton {
+  .eLanchButton {
     margin-left: auto;
     color:rgb(227, 227, 238);      
     border-radius: 4px;  
     background-color: rgb(67, 176, 21);
   }
-  .LanchButton:hover{
+  .eLanchButton:hover{
     background-color: rgb(90, 235, 97);
   }
-  .tdeleteButton {
+  .edeleteButton {
     color:rgb(227, 227, 238);      
     border-radius: 4px;  
     background-color: rgb(237, 9, 9);
   }
-  .tdeleteButton:hover{
+  .edeleteButton:hover{
     background-color: rgb(129, 6, 6);
   }

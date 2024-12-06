@@ -5,7 +5,7 @@
     font-family: 'Arial', sans-serif;
     background: linear-gradient(to bottom right, #67C9E6, #6AAACB);
     color: #fff;
-    background-image: url("client\src\assets\package img.jpg");
+    background-image: url("C:\Users\pc\Documents\GitHub\testpage\my-react-app\src\assets\package img.jpg");
 }
 
 .Ev-contaner {
@@ -97,12 +97,16 @@ textarea.Ev-input {
 .Ev-buttons button:hover {
     opacity: 0.8;
 }
-label{
+.packtype{
+    font-weight: bold;
+    color: #55B1CE;
+}
+.eventtype{
     font-weight: bold;
     color: #55B1CE;
 }
 
-span{
+.pdayhour{
     font-weight: bold;
     color: #55B1CE;
 }

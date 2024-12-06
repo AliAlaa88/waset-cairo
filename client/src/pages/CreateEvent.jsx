@@ -9,7 +9,6 @@ function CreateEvent(){
     const [price, setprice] = useState('');
     const [mettingLoc, setmettingLoc] = useState('');
     const [selectedType, setselectedType] = useState("");
-    const navigate = useNavigate();
     const [selectedEvent, setselectedEvent] = useState([]);
     const typeOpthions = [
         "Option 1",
@@ -28,7 +27,7 @@ function CreateEvent(){
     ];
     function submit(){
         console.log("done");
-       navigate('profile');
+       //navigate('/sign-up');
     }
 
 
@@ -100,7 +99,7 @@ function CreateEvent(){
                     />
 
                         <div className="Ev-radio-group">
-                        <span>day/hour</span>
+                        <span className= "pdayhour">day/hour</span>
                         <br />
                         <label>
                             <input
@@ -127,7 +126,7 @@ function CreateEvent(){
                     </div>
                     <br />
 
-                    <label >Package Type</label>
+                    <label className= "packtype">Package Type</label>
                     <select className="Ev-input" 
                 
                     value={selectedType}
@@ -145,7 +144,7 @@ function CreateEvent(){
                     <br/>
                     
                     <div className= "Ev-input">
-                    <label >Event Type</label>
+                    <label className= "eventtype">Event Type</label>
                     <select className="Ev-input" 
                 
                     value={selectedEvent}
