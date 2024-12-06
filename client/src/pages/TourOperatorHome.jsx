@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { 
   Users, 
-  Pyramid, 
-  CreditCard, 
+  Pyramid,
   Settings, 
-  BarChart
+  BarChart,
+  Wand,
+  Package,
+  CalendarDays
 } from 'lucide-react';
 import logo from '../assets/8d01c511-6aae-4f11-9dfb-b4f3b8cd822a.webp'
+import MyPackes from './myPackeges';
+import MyEvents from './myEvents';
 
 //test data
 const mockUsers = [
@@ -33,6 +37,21 @@ const mockTours = [
 
 const TourOperatorHome = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
+  const [activeModal, setActiveModal] = useState("");
+
+  const tourModalInfo = {
+    title: "What’s Next for This Tour?",
+    text: "Keep the tour fresh by updating its details, or remove it completely if it's no longer needed. The choice is yours!",
+    button1: "Delete Tour",
+    button2: "Edit Tour"
+  }
+
+  const userModalInfo = {
+    title: "Manage User Permissions",
+    text: "What would you like to do with this user?",
+    button1: "Ban User",
+    button2: "Promote"
+  }
 
   const sections = [
     { 
@@ -51,9 +70,14 @@ const TourOperatorHome = () => {
       icon: <Pyramid className="h-5 w-5" />
     },
     { 
-      id: 'financials', 
-      name: 'Financials', 
-      icon: <CreditCard className="h-5 w-5" />
+      id: 'packages', 
+      name: 'My Tour Packages', 
+      icon: <Package className="h-5 w-5" />
+    },
+    {
+      id: 'events',
+      name: 'My Events',
+      icon: <CalendarDays className='h-5 w-5'/>
     },
     { 
       id: 'settings', 
@@ -61,6 +85,50 @@ const TourOperatorHome = () => {
       icon: <Settings className="h-5 w-5" />
     }
   ];
+
+
+  const showModal = (modalInfo) => {
+    return(
+      <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+        {/*makes the background gray to give the modal effect*/}
+        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+
+        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+      
+            <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                  <div class="mx-auto flex size-12 shrink-0 items-center justify-center bg-amber-100 rounded-full sm:mx-0 sm:size-10">
+                    <Wand size={26} color='#B8860B'/>
+                  </div>
+                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <h3 class="text-base font-semibold text-gray-900" id="modal-title">{modalInfo.title}</h3>
+                    <div class="mt-2">
+                      <p class="text-sm text-gray-500">
+                        {modalInfo.text}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button onClick={() => {setActiveModal("")}} type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 sm:ml-3 sm:w-auto">
+                  {modalInfo.button1}
+                </button>
+                <button onClick={() => {setActiveModal("")}} type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-200 sm:mt-0 sm:w-auto">
+                  {modalInfo.button2}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
 
   const renderSection = () => {
     switch(activeSection) {
@@ -107,12 +175,13 @@ const TourOperatorHome = () => {
                       <td className="p-4">{user.role}</td>
                       <td className="p-4">{user.email}</td>
                       <td className="p-4">
-                        <button className="bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-700">
+                        <button onClick={() => {setActiveModal("user")}} className="bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-700">
                           Manage
                         </button>
                       </td>
                     </tr>
                   ))}
+                  {activeModal === "user"? showModal(userModalInfo) : ""}
                 </tbody>
               </table>
             </div>
@@ -124,9 +193,6 @@ const TourOperatorHome = () => {
           <div className="bg-gradient-to-br from-amber-100 to-amber-200 p-8 rounded-xl shadow-lg">
             <div className="flex items-center justify-between">
               <h2 className="text-3xl font-bold text-amber-900">Tour Management</h2>
-              <button className="w-48 bg-amber-600 text-white py-2 rounded-md hover:bg-amber-700">
-                Create a Tour Package
-              </button>
             </div>
             <br/>
             <div className="grid md:grid-cols-2 gap-6">
@@ -140,17 +206,27 @@ const TourOperatorHome = () => {
                     <p>Price: {tour.price} LE</p>
                     <p>Capacity: {tour.capacity}</p>
                     <p>Booked: {tour.currentBookings}</p>
-                    <button className="w-full bg-amber-600 text-white py-2 rounded-md mt-4 hover:bg-amber-700">
+                    <button onClick={() => {setActiveModal("tour")}} className="w-full bg-amber-600 text-white py-2 rounded-md mt-4 hover:bg-amber-700">
                       Manage Tour
                     </button>
                   </div>
                 </div>
               ))}
+              {activeModal === "tour"? showModal(tourModalInfo) : ""}
             </div>
           </div>
         );
 
+      case 'packages':
+        return(
+          <MyPackes/>
+        );
 
+      case 'events':
+        return(
+          <MyEvents/>
+        );
+      
       case 'settings':
         return (
           <div className="bg-white p-6 rounded-xl shadow-md">

@@ -12,6 +12,13 @@ function MyPackes() {
         <>
             <h2 className="my-Packes">My Packages</h2>
             <div className="tourToLanch">
+
+                <div className="m-4 flex justify-end">
+                    <button className="w-48 bg-amber-600 text-white py-2 rounded-md hover:bg-amber-700">
+                        Create a Tour Package
+                    </button>
+                </div>
+                
                 <div className="LGroup">
                     {/* Tour Package 1 */}
                     <div className="tour-item">
@@ -27,7 +34,7 @@ function MyPackes() {
                             closeModal={closeModal}
                         />
                     </div>
-
+                    <br/>
                     {/* Tour Package 2 */}
                     <div className="tour-item">
                         TourPack2

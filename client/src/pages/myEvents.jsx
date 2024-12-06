@@ -13,6 +13,13 @@ function MyEvents() {
         <>
             <h2 className="my-Events">My Events</h2>
             <div className="eventToLanch">
+
+                <div className="m-4 flex justify-end">
+                    <button className="w-40 bg-amber-600 text-white py-2 rounded-md hover:bg-amber-700">
+                        Create an Event
+                    </button>
+                </div>
+
                 <div className="ELGroup">
                     {/* Event Package 1 */}
                     <div className="event-item">
@@ -28,7 +35,7 @@ function MyEvents() {
                             closeModal={closeModal}
                         />
                     </div>
-
+                    <br/>
                     {/* Event Package 2 */}
                     <div className="event-item">
                         EventPack2

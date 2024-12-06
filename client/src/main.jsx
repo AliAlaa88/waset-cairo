@@ -4,6 +4,10 @@ import "./output.css";
 import "./pages/styles/Login.css";
 import "./pages/styles/signup.css";
 import "./pages/styles/tourstGroup.css";
+import "./pages/styles/myPackeges.css"
+import "./pages/styles/myEvents.css"
+import "./pages/styles/Lanch.css"
+import "./pages/styles/Report.css"
 
 import App from './App.jsx'
 

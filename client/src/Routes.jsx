@@ -15,10 +15,11 @@ import EditProfile from "./pages/EditProfile";
 import TouristGroup from "./pages/TouristGroup";
 import TourGuideHomePage from "./pages/TourGuideHome";
 import TourOperatorHomePage from "./pages/TourOperatorHome";
-import MyPackes from "./pages/TourOperatorHome";
+import MyPackes from "./pages/myPackeges";
 import TouristGroupDetails from "./pages/TouristGroupDetails";
 import CreateGroup from "./pages/CreateGroup";
 import Tours from "./components/Tours";
+import Report from "./pages/Report";
 
 function Router() {
 	return (
@@ -60,6 +61,7 @@ function Router() {
 				<Route path="guide-home" element={<TourGuideHomePage />} />
 				<Route path="operator-home" element={<TourOperatorHomePage />} />
 				<Route path="mypacks" element={<MyPackes />} />
+				<Route path="report" element={<Report/>}/>
 
 				<Route path="*" element={<ErrorPage />} />
 			</Routes>
