@@ -6,6 +6,7 @@ function MyPackes() {
 
     const openModal = (packageId) => setActiveModal(packageId);
     const closeModal = () => setActiveModal(null);
+    const handelDelete = {};
 
     return (
         <>
@@ -18,6 +19,9 @@ function MyPackes() {
                         <button className="LanchButton" onClick={() => openModal("TourPack1")}>
                             Launch
                         </button>
+                        <button className="tdeleteButton" onClick={() => handelDelete()}>
+                            Delete
+                        </button>
                         <Lanch
                             visible={activeModal === "TourPack1"}
                             closeModal={closeModal}
@@ -29,6 +33,9 @@ function MyPackes() {
                         TourPack2
                         <button className="LanchButton" onClick={() => openModal("TourPack2")}>
                             Launch
+                        </button>
+                        <button className="tdeleteButton" onClick={() => handelDelete()}>
+                            Delete
                         </button>
                         <Lanch
                             visible={activeModal === "TourPack2"}

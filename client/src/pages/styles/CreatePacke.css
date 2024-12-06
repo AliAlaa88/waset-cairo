@@ -5,7 +5,7 @@
     font-family: 'Arial', sans-serif;
     background: linear-gradient(to bottom right, #67C9E6, #6AAACB);
     color: #fff;
-    background-image: url("client\src\assets\package img.jpg");
+    background-image: url("C:\Users\pc\Documents\GitHub\testpage\my-react-app\src\assets\package img.jpg");
 }
 
 .creP-contaner {
@@ -116,12 +116,20 @@ ul li {
 .creP-buttons button:hover {
     opacity: 0.8;
 }
-label{
+/* label{
+    font-weight: bold;
+    color: #55B1CE;
+} */
+.ppacktype{
     font-weight: bold;
     color: #55B1CE;
 }
 
-span{
+/* span{
+    font-weight: bold;
+    color: #55B1CE;
+} */
+.pdayhour{
     font-weight: bold;
     color: #55B1CE;
 }
