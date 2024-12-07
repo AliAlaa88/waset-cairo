@@ -2,9 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background: url('..\..\assets\p6.jpg') no-repeat center center fixed; /* Background image */
+    min-height: 100vh; 
+    background: url('..\..\assets\p6.jpg') no-repeat center center fixed; 
     background-size: cover;
+    padding: 20px; 
+    box-sizing: border-box;
 }
 
 .signup-form {
@@ -16,15 +18,18 @@
     width: 100%;
     text-align: center;
     background: transparent;
-    backdrop-filter: blur(2px);
-    border:2px solid #d79210;
+    backdrop-filter: blur(5px);
+    border: 2px solid #d79210;
+    position: relative;
+    box-sizing: border-box; 
 }
 
 .signup-title {
-    color: wheat;; 
+    color: wheat; 
     font-size: 28px;
     font-weight: bold;
     margin-bottom: 20px;
+    margin-top: 0; 
     position: relative;
 }
 
@@ -33,7 +38,7 @@
     display: block;
     width: 60px;
     height: 2px;
-    background:#d79210; 
+    background: #d79210; 
     margin: 10px auto 0;
 }
 
@@ -64,7 +69,15 @@
     text-align: left;
     font-size: 14px;
     margin: 10px 0 5px;
-    color: #555;
+    color: rgb(34, 33, 33); 
+}
+
+.signups-label {
+    display: block;
+    text-align: left;
+    font-size: 14px;
+    margin: 10px 0 5px;
+    color: wheat; 
 }
 
 .signup-birth-date span {
@@ -75,12 +88,12 @@
 .signup-radio-group {
     text-align: left;
     margin-top: 15px;
-    color:wheat;
+    color: wheat;
 }
 
 .signup-radio-group span {
     font-weight: bold;
-    color:wheat;
+    color: wheat;
 }
 
 .signup-radio-group label {
@@ -107,4 +120,35 @@
 
 .signup-button:hover {
     background-color: #bb7f11;
+}
+
+
+.signup-input-group select {
+    font-size: 14px;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    transition: 0.3s ease-in-out;
+    margin: 10px auto; 
+}
+
+.signup-input-group select:focus {
+    border-color: #4a2fc8;
+    background: #ffffff;
+}
+
+
+.signup-form {
+    overflow: hidden; 
+}
+
+.selc-count{
+    font-weight: bold;
+    color: wheat;
+}
+.selc-lang{
+    font-weight: bold;
+    color: wheat;
 }

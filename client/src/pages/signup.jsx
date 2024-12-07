@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Signup() {
     const navigate = useNavigate();
@@ -11,6 +11,37 @@ function Signup() {
     const [password, setPassword] = useState('');
     const [birthdate, setBirthdate] = useState('');
     const [gender, setGender] = useState('');
+    const [countries, setCountries] = useState([]); 
+    const [languages, setLanguages] = useState([]); 
+    const [selectedCountry, setSelectedCountry] = useState(''); 
+    const [selectedLanguage, setSelectedLanguage] = useState(''); 
+
+    
+    useEffect(() => {
+        fetch("https://restcountries.com/v3.1/all")
+            .then((response) => response.json())
+            .then((data) => {
+                const formattedCountries = data
+                    .map((country) => ({
+                        name: country.name.common,
+                        code: country.cca2,
+                    }))
+                    .sort((a, b) => a.name.localeCompare(b.name)); 
+                setCountries(formattedCountries);
+
+
+                const uniqueLanguages = new Set();
+                data.forEach((country) => {
+                    if (country.languages) {
+                        Object.values(country.languages).forEach((lang) =>
+                            uniqueLanguages.add(lang)
+                        );
+                    }
+                });
+                setLanguages([...uniqueLanguages].sort((a, b) => a.localeCompare(b))); 
+            })
+            .catch((error) => console.error("Error fetching countries:", error));
+    }, []);
 
     function signin(event) {
         event.preventDefault();
@@ -62,18 +93,64 @@ function Signup() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />
-                    <label className="signup-label signup-birth-date">
-                        <span>Birth Date:</span>
-                        <input
-                            className="signup-input"
-                            type="date"
-                            name="birthdate"
-                            required
-                            value={birthdate}
-                            onChange={(e) => setBirthdate(e.target.value)}
-                        />
-                    </label>
                 </div>
+
+                {/* Country Dropdown */}
+                <div className="signup-input-group">
+                    <label className="signups-label">
+                        <span className="selc-count">Select Country:</span>
+                    </label>
+                    <select
+                        className="signup-input"
+                        value={selectedCountry}
+                        onChange={(e) => setSelectedCountry(e.target.value)}
+                        required
+                        
+                    >
+                        <option value="" disabled className="selc-count">
+                            Select a country
+                        </option>
+                        {countries.map((country) => (
+                            <option key={country.code} value={country.name}>
+                                {country.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+
+                <div className="signup-input-group">
+                    <label className="signups-label">
+                        <span className="selc-lang">Select Language:</span>
+                    </label>
+                    <select
+                        className="signup-input"
+                        value={selectedLanguage}
+                        onChange={(e) => setSelectedLanguage(e.target.value)}
+                        required
+                    >
+                        <option value="" disabled className="slc-lang">
+                            Select a language
+                        </option>
+                        {languages.map((language, index) => (
+                            <option key={index} value={language}>
+                                {language}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <label className="signup-label signup-birth-date">
+                    <span>Birth Date:</span>
+                    <input
+                        className="signup-input"
+                        type="date"
+                        name="birthdate"
+                        required
+                        value={birthdate}
+                        onChange={(e) => setBirthdate(e.target.value)}
+                    />
+                </label>
 
                 <div className="signup-radio-group">
                     <span>Gender</span>
@@ -103,6 +180,8 @@ function Signup() {
 
                 <button type="submit" className="signup-button">Sign Up</button>
             </form>
+
+          
         </div>
     );
 }
