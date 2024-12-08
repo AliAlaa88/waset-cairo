@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState} from "react";
+import { useState,useEffect} from "react";
 
 function Signup() {
     const navigate = useNavigate();
@@ -13,7 +13,30 @@ function Signup() {
     const [phonenumber, setphonenumber] = useState('');
     const [birthdate, setBirthdate] = useState('');
     const [gender, setGender] = useState('');
+    const [languages, setLanguages] = useState([]); 
+    const [selectedLanguage, setSelectedLanguage] = useState(''); 
     
+
+
+
+
+    useEffect(() => {
+        fetch("https://restcountries.com/v3.1/all")
+            .then((response) => response.json())
+            .then((data) => {
+                
+                const uniqueLanguages = new Set();
+                data.forEach((country) => {
+                    if (country.languages) {
+                        Object.values(country.languages).forEach((lang) =>
+                            uniqueLanguages.add(lang)
+                        );
+                    }
+                });
+                setLanguages([...uniqueLanguages].sort((a, b) => a.localeCompare(b))); 
+            })
+            .catch((error) => console.error("Error fetching countries:", error));
+    }, []);
 
     function signin(event) {
         event.preventDefault();
@@ -89,6 +112,30 @@ function Signup() {
                         value={phonenumber}
                         onChange={(e) => setphonenumber(e.target.value)}
                     />
+
+                    <div className="signup-input-group">
+                    <label className="signups-label">
+                        <span className="selc-lang">Select Language:</span>
+                    </label>
+                    <select
+                        className="signup-input"
+                        value={selectedLanguage}
+                        onChange={(e) => setSelectedLanguage(e.target.value)}
+                        required
+                    >
+                        <option value="" disabled className="slc-lang">
+                            Select a language
+                        </option>
+                        {languages.map((language, index) => (
+                            <option key={index} value={language}>
+                                {language}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+
+
                 </div>
 
 
