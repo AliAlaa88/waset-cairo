@@ -27,7 +27,7 @@ client.neonConfig.webSocketConstructor = ws;
 
 app.get('/api/users', async (req, res) => {
     try {
-        const result = await client.query('SELECT * FROM users');
+        const result = await client.query();
         res.json(result.rows);
     } catch (err) {
         console.error('Error fetching data:', err);

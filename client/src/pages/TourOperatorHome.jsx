@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { 
   Users, 
   Pyramid,
@@ -6,7 +7,8 @@ import {
   BarChart,
   Wand,
   Package,
-  CalendarDays
+  CalendarDays,
+  Edit
 } from 'lucide-react';
 import logo from '../assets/8d01c511-6aae-4f11-9dfb-b4f3b8cd822a.webp'
 import MyPackes from './myPackeges';
@@ -235,11 +237,13 @@ const TourOperatorHome = () => {
               <div className="border-b pb-4">
                 <h3 className="font-semibold text-amber-800 mb-2">Profile Information</h3>
                 <p className="text-sm text-gray-600">Name: {mockUsers[0].name}</p>
-                <p className="text-sm text-gray-600">Email: michael@email.com</p>
+                <p className="text-sm text-gray-600">Email: {mockUsers[0].email}</p>
                 <br/>
-                <button className="bg-amber-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-800 transition">
-                  Edit Profile
-                </button>
+                <Link>
+								  <button className="bg-amber-700 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-amber-800">
+								  <Edit className="mr-2" size={20} /> Edit Profile
+								</button>
+							</Link>
               </div>
               <div>
                 <h3 className="font-semibold text-amber-800 mb-2">Account</h3>

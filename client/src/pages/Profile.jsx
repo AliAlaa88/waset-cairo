@@ -10,6 +10,7 @@ import {
 	Archive,
 	Medal,
 	Home,
+	Settings
 } from "lucide-react";
 
 
@@ -70,7 +71,7 @@ const Profile = () => {
 							{profileData.accountInsights.memberSince}
 						</span>
 					</div>
-					<button className="bg-yellow-500 px-4 py-2 mx-auto rounded-full flex items-center text-white hover:bg-yellow-400">
+					<button className="bg-yellow-600 px-4 py-2 mx-auto rounded-full flex items-center text-white hover:bg-yellow-400">
 						Show All Trips
 					</button>
 				</div>
@@ -191,6 +192,43 @@ const Profile = () => {
 		</div>
 	);
 
+
+	const renderSettings = () => {
+		return(
+		<div className="bg-yellow-50 p-6 rounded-xl shadow-md">
+            <h3 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
+				<Settings className="mr-2 text-yellow-600" />
+				Settings
+			</h3>
+            <div className="space-y-4">
+            	<div className="border-b pb-4">
+                	<h3 className="font-semibold text-amber-800 mb-2">Profile Information</h3>
+                	<p className="text-sm text-gray-600">Name: saif </p>
+                	<p className="text-sm text-gray-600">Email: saif@email.com</p>
+                	<br/>
+                	<Link to="edit">
+						<button className="bg-yellow-600 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">
+							<Edit className="mr-2" size={20} /> Edit Profile
+						</button>
+					</Link>
+            	</div>
+            	<div>
+                	<h3 className="font-semibold text-amber-800 mb-2">Account</h3>
+                	<button className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition">
+            			Change Password
+                	</button>
+            	</div>
+            	<div>
+            		<hr/><br/>
+            		<button className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition">
+            			Logout 
+                	</button>
+            	</div>
+            </div>
+        </div>	
+		);
+	};
+
 	return (
 		<div className="min-h-screen bg-yellow-50">
 			{/* Header */}
@@ -206,13 +244,6 @@ const Profile = () => {
 					{/* Name and Actions */}
 					<div className="flex-grow">
 						<h1 className="text-3xl font-bold">{profileData.name}</h1>
-						<div className="mt-2">
-							<Link to="edit">
-								<button className="bg-white text-yellow-800 px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-100">
-									<Edit className="mr-2" size={20} /> Edit Profile
-								</button>
-							</Link>
-						</div>
 					</div>
 
 					<div className="flex items-end">
@@ -228,7 +259,7 @@ const Profile = () => {
 			{/* Navigation Tabs */}
 			<div className="container mx-auto mt-6">
 				<div className="flex space-x-4 mb-6">
-					{["overview", "tickets", "ratings"].map((tab) => (
+					{["overview", "tickets", "ratings", "settings"].map((tab) => (
 						<button
 							key={tab}
 							className={`px-4 py-2 rounded-full capitalize flex items-center ${
@@ -247,6 +278,7 @@ const Profile = () => {
 					{activeTab === "overview" && renderOverview()}
 					{activeTab === "tickets" && renderTickets()}
 					{activeTab === "ratings" && renderRatings()}
+					{activeTab === "settings" && renderSettings()}
 				</div>
 			</div>
 		</div>

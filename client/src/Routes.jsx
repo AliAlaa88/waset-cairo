@@ -62,7 +62,6 @@ function Router() {
 				<Route path="operator-home" element={<TourOperatorHomePage />} />
 				<Route path="mypacks" element={<MyPackes />} />
 				<Route path="report" element={<Report/>}/>
-
 				<Route path="*" element={<ErrorPage />} />
 			</Routes>
 		</BrowserRouter>
