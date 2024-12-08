@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Login() {
@@ -21,6 +21,17 @@ function signup(){
     console.log("done");
     navigate('/sign-up');
 }
+
+function guides(){
+  console.log("done");
+  navigate('/guide-sign');
+}
+
+function operators(){
+  console.log("done");
+  navigate('/operator-sign');
+}
+
 
 
   return (
@@ -49,7 +60,9 @@ function signup(){
             </div>
           </div>
           <div className="buttons">
-            <button className="btn btn-secondary" type="button" onClick={() => signup()}>Sign Up</button>
+            <button className="btn btn-secondary" type="button" onClick={() => signup()}>Sign Up tourist</button>
+            <button className="btn btn-secondary" type="button"  onClick={() => operators()}  >Sign Up operator</button>
+            <button className="btn btn-secondary" type="button"  onClick={() => guides()}   >Sign Up guide</button>
             <button className="btn btn-primary" type="submit">Login</button>
           </div>
         </form>

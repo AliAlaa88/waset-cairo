@@ -20,6 +20,8 @@ import TouristGroupDetails from "./pages/TouristGroupDetails";
 import CreateGroup from "./pages/CreateGroup";
 import Tours from "./components/Tours";
 import Report from "./pages/Report";
+import TourGuideSign from "./pages/TourGuideSign";
+import TourOperatorSign from "./pages/TourOperatorsign";
 
 function Router() {
 	return (
@@ -28,6 +30,8 @@ function Router() {
 				<Route path="/" element={<Login />} />
 
 				<Route path="/sign-up" element={<Signup />} />
+				<Route path="/guide-sign" element={<TourGuideSign/>} />
+				<Route path="/operator-sign" element={<TourOperatorSign/>} />
 
 				<Route path="/home" element={<RootLayout />}>
 					<Route index element={<Tours />} />
