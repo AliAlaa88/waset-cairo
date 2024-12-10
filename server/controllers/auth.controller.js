@@ -1,4 +1,5 @@
-import catchAsync from "../utils/catchAsync";
+import catchAsync from "../utils/catchAsync.js";
+import client from '../dbConfig.js'
 
 const authController = {
 	// generate a token during signup???

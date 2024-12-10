@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import catchAsync from '../utils/catchAsync';
+import catchAsync from '../utils/catchAsync.js';
 
 const authMiddleware = catchAsync(async (req, res, next) => {
   const token = req.cookie.token;

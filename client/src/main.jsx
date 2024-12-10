@@ -9,6 +9,8 @@ import "./pages/styles/myEvents.css"
 import "./pages/styles/Lanch.css"
 import "./pages/styles/Report.css"
 import "./pages/styles/CreateGroup.css"
+import "./pages/styles/TourGuideSign.css"
+import "./pages/styles/TourOperatorSign.css"
 
 import App from './App.jsx'
 
