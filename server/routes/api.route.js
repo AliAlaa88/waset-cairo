@@ -2,6 +2,7 @@ import { Router } from 'express'
 
 import authRouter from './auth.route.js'
 import tourRouter from './tour.route.js';
+import ticketRouter from './ticket.route.js';
 import packRouter from './pack.route.js';
 import eventRouter from './event.route.js';
 import monumentRouter from './monument.route.js';
@@ -21,5 +22,6 @@ apiRouter.use('/groups', groupRouter);
 apiRouter.use('/feedback', feedbackRouter);
 apiRouter.use('/report', reportRouter);
 apiRouter.use('/user', userRouter);
+apiRouter.use('/ticket', ticketRouter);
 
 export default apiRouter

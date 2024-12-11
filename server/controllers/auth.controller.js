@@ -1,9 +1,11 @@
 import catchAsync from "../utils/catchAsync.js";
 import client from '../dbConfig.js'
+import bcrypt from 'bcryptjs';
+
 
 const authController = {
 	touristSignup: catchAsync(async (req, res, next) => {
-		const { FName, LName, UserName, Email, Password } = req.body;
+		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Nationality, Language } = req.body;
 		const user = await client.query(
 			"SELECT * FROM Tourist WHERE UserName = $1 OR Email = $2",
 			[UserName, Email]
@@ -12,14 +14,14 @@ const authController = {
 			return res.status(400).json({ message: "User already exists" });
 		const hashedPassword = await bcrypt.hash(Password, 12);
 		const newUser = await client.query(
-			"INSERT INTO Tourist (FName, LName, UserName, Email, Password) VALUES ($1, $2, $3, $4, $5)",
-			[FName, LName, UserName, Email, hashedPassword]
+			"INSERT INTO Tourist (FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Nationality, Language) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate, Nationality, Language]
 		);
 		res.status(201).json({ message: "User created" });
 	}),
 
 	guideSignup: catchAsync(async (req, res, next) => {
-		const { FName, LName, UserName, Email, Password } = req.body;
+		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Language, Specialization } = req.body;
 		const user = await client.query(
 			"SELECT * FROM Tour guide WHERE UserName = $1 OR Email = $2",
 			[UserName, Email]
@@ -28,14 +30,14 @@ const authController = {
 			return res.status(400).json({ message: "User already exists" });
 		const hashedPassword = await bcrypt.hash(Password, 12);
 		const newUser = await client.query(
-			"INSERT INTO Tour guide (FName, LName, UserName, Email, Password) VALUES ($1, $2, $3, $4, $5)",
-			[FName, LName, UserName, Email, hashedPassword]
+			"INSERT INTO Tour guide (FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Language, Specialization, Rating) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
+			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate, Language, Specialization, 0]
 		);
 		res.status(201).json({ message: "User created" });
 	}),
 
 	operatorSignup: catchAsync(async (req, res, next) => {
-		const { FName, LName, UserName, Email, Password } = req.body;
+		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate } = req.body;
 		const user = await client.query(
 			"SELECT * FROM Tour Operator WHERE UserName = $1 OR Email = $2",
 			[UserName, Email]
@@ -44,8 +46,8 @@ const authController = {
 			return res.status(400).json({ message: "User already exists" });
 		const hashedPassword = await bcrypt.hash(Password, 12);
 		const newUser = await client.query(
-			"INSERT INTO Operator (FName, LName, UserName, Email, Password) VALUES ($1, $2, $3, $4, $5)",
-			[FName, LName, UserName, Email, hashedPassword]
+			"INSERT INTO Operator (FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate]
 		);
 		res.status(201).json({ message: "User created" });
 	}),
