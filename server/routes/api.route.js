@@ -8,7 +8,7 @@ import monumentRouter from './monument.route.js';
 import groupRouter from './group.route.js';
 import feedbackRouter from './feedback.route.js';
 import reportRouter from './report.route.js';
-
+import userRouter from './user.route.js';
 
 const apiRouter = Router()
 
@@ -18,7 +18,8 @@ apiRouter.use('/packs', packRouter);
 apiRouter.use('/events', eventRouter);
 apiRouter.use('/monuments', monumentRouter);
 apiRouter.use('/groups', groupRouter);
-apiRouter.use('/feedback', feedbackRouter)
-apiRouter.use('/report', reportRouter)
+apiRouter.use('/feedback', feedbackRouter);
+apiRouter.use('/report', reportRouter);
+apiRouter.use('/user', userRouter);
 
 export default apiRouter

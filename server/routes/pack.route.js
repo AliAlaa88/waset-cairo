@@ -4,8 +4,8 @@ import packController from "../controllers/pack.controller.js";
 
 const packRouter = Router();
 
-packRouter.get('/getAll', packController.getAllPacks);
-packRouter.get('/getPack/:id', packController.getPack);
+packRouter.get('/', packController.getAllPacks);
+packRouter.get('/:id', packController.getPack);
 
 packRouter.post('/create', packController.createPack);
 packRouter.delete('/delete/:id', packController.deletePack);

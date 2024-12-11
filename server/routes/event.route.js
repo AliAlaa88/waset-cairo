@@ -4,8 +4,8 @@ import eventController from "../controllers/event.controller.js";
 
 const eventRouter = Router();
 
-eventRouter.get('/getAll', eventController.getAllEvents);
-eventRouter.get('/getEvent/:id', eventController.getEvent);
+eventRouter.get('/', eventController.getAllEvents);
+eventRouter.get('/:id', eventController.getEvent);
 
 eventRouter.post('/create', eventController.createEvent);
 eventRouter.delete('/delete/:id', eventController.deleteEvent);

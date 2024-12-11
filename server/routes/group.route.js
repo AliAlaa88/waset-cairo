@@ -4,8 +4,8 @@ import groupController from "../controllers/group.controller.js";
 
 const groupRouter = Router();
 
-groupRouter.get('/getAll', groupController.getAllGroups);
-groupRouter.get('/getGroup/:id', groupController.getGroup);
+groupRouter.get('/', groupController.getAllGroups);
+groupRouter.get('/:id', groupController.getGroup);
 
 groupRouter.post('/create', groupController.createGroup);
 groupRouter.delete('/delete/:id', groupController.deleteGroup);

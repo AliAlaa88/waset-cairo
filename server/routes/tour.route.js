@@ -4,8 +4,8 @@ import authMiddleware from "../middlewares/auth.middleware.js";
 
 const tourRouter = Router();
 
-tourRouter.get("/getAll", tourController.getAllTours);
-tourRouter.get("/getTour/:id", tourController.getTour);
+tourRouter.get("/", tourController.getAllTours);
+tourRouter.get("/:id", tourController.getTour);
 
 tourRouter.post("/create", authMiddleware, tourController.createTour);
 tourRouter.delete("/delete/:id", authMiddleware, tourController.deleteTour);

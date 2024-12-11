@@ -1,4 +1,5 @@
-import catchAsync from "../utils/catchAsync";
+import catchAsync from "../utils/catchAsync.js";
+import client from "../dbConfig.js";
 
 const reportController = {
   getAllReports: catchAsync(async (req, res) => {

@@ -5,7 +5,7 @@ import apiRouter from './routes/api.route.js';
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 const PORT = 3000;
 
 app.use('/api', apiRouter);

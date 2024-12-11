@@ -4,7 +4,7 @@ import monumentController from "../controllers/monument.controller.js";
 
 const monumentRouter = Router();
 
-monumentRouter.get("/getAll", monumentController.getAllMonuments);
-monumentRouter.get("/getMonument/:id", monumentController.getMonument);
+monumentRouter.get("/", monumentController.getAllMonuments);
+monumentRouter.get("/:id", monumentController.getMonument);
 
 export default monumentRouter;

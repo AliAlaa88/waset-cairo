@@ -1,4 +1,5 @@
-import catchAsync from "../utils/catchAsync";
+import catchAsync from "../utils/catchAsync.js";
+import client from "../dbConfig.js";
 
 const userController = {
   getAllTourists: catchAsync(async (req, res) => {
@@ -7,7 +8,7 @@ const userController = {
   }),
 
   getAllGuides: catchAsync(async (req, res) => {
-    const guides = await client.query("SELECT * FROM Tour guide");
+    const guides = await client.query("SELECT * FROM Tour_Guide");
     res.status(200).json({ guides: guides.rows });
   }),
 };
