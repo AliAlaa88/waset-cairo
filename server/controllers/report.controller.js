@@ -19,17 +19,16 @@ const reportController = {
   }),
 
   insertReport: catchAsync(async (req, res) => {
-    const { reportID, description } = req.body;
-    const dateCreated = new Date();
+    const { description } = req.body;
     const newReport = await client.query(
-      "INSERT INTO Report (ID, Description, DateCreated) VALUES ($1, $2, $3)",
-      [reportID, description, dateCreated]
+      "INSERT INTO Report (Description) VALUES ($1) RETURNING *",
+      [description]
     );
 
     const { guideID, tourID } = req.body;
     await client.query(
-      "INSERT INTO Guide Report (GuideID, TourID, FeedbackID) VALUES ($1, $2, $3)",
-      [guideID, tourID, reportID]
+      "INSERT INTO Guide_Report (GuideID, TourID, FeedbackID) VALUES ($1, $2, $3)",
+      [guideID, tourID, newReport.rows[0].ID]
     )
 
     res.status(201).json({ message: "Report created", report: newReport.rows[0] });

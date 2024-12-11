@@ -14,9 +14,9 @@ const authMiddleware = catchAsync(async (req, res, next) => {
     if(role === "tourist")
       user = await client.query('SELECT * FROM Tourist WHERE ID = $1', [id]);
     else if(role === "guide")
-      user = await client.query('SELECT * FROM Tour guide WHERE ID = $1', [id]);
+      user = await client.query('SELECT * FROM Tour_Guide WHERE ID = $1', [id]);
     else if(role === "operator")
-      user = await client.query('SELECT * FROM Tour Operator WHERE ID = $1', [id]);
+      user = await client.query('SELECT * FROM Tour_Operator WHERE ID = $1', [id]);
     if (!user.rows.length)
       return res.status(401).json({ message: 'Unauthorized' });
     req.user = user.rows[0];

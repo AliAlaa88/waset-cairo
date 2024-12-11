@@ -19,17 +19,16 @@ const feedbackController = {
   }),
 
   insertFeedback: catchAsync(async (req, res) => {
-    const { feedbackID, description, rating, type } = req.body;
-    const dateCreated = new Date();
+    const { description, rating, type } = req.body;
     const newFeedback = await client.query(
-      "INSERT INTO Feedback (ID, Description, DateCreated, Type, Rating) VALUES ($1, $2, $3, $4, $5)",
-      [feedbackID, description, dateCreated, rating, type]
+      "INSERT INTO Feedback (Description, Type, Rating) VALUES ($1, $2, $3) RETURNING *",
+      [description, rating, type]
     );
 
     const { touristID, tourID } = req.body;
     await client.query(
-      "INSERT INTO Tourist Feedback (TouristID, TourID, FeedbackID) VALUES ($1, $2, $3)",
-      [touristID, tourID, feedbackID]
+      "INSERT INTO Tourist_Feedback (TouristID, TourID, FeedbackID) VALUES ($1, $2, $3)",
+      [touristID, tourID, newFeedback.rows[0].ID]
     )
 
     res.status(201).json({ message: "Feedback created", feedback: newFeedback.rows[0] });
