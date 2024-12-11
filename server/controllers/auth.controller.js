@@ -1,21 +1,22 @@
 import catchAsync from "../utils/catchAsync.js";
 import client from '../dbConfig.js'
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
+import jwt  from "jsonwebtoken";
 
 
 const authController = {
 	touristSignup: catchAsync(async (req, res, next) => {
 		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Nationality, Language } = req.body;
 		const user = await client.query(
-			"SELECT * FROM Tourist WHERE UserName = $1 OR Email = $2",
+			"SELECT * FROM Tourist WHERE UserName = $1 OR Email = $2", 
 			[UserName, Email]
 		);
 		if (user.rows.length)
 			return res.status(400).json({ message: "User already exists" });
 		const hashedPassword = await bcrypt.hash(Password, 12);
 		const newUser = await client.query(
-			"INSERT INTO Tourist (FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Nationality, Language) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
-			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate, Nationality, Language]
+			"INSERT INTO Tourist (FName, LName, UserName, Password, Email, Gender, PhoneNumber, BirthDate, Nationality, Language) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+			[FName, LName, UserName, hashedPassword, Email, Gender, PhoneNum, BirthDate, Nationality, Language]
 		);
 		res.status(201).json({ message: "User created" });
 	}),
@@ -54,6 +55,7 @@ const authController = {
 
 	touristLogin: catchAsync(async (req, res, next) => {
 		const { UserName, Password } = req.body;
+		const role = req.body.role;
 		const user = await client.query(
 			"SELECT * FROM Tourist WHERE UserName = $1",
 			[UserName]
@@ -64,7 +66,7 @@ const authController = {
 		if (!isMatch)
 			return res.status(400).json({ message: "Invalid credentials" });
 		generateToken(res, user.rows[0].id, role); // this adds token to cookie
-		res.status(201).json({ message: "Logged In", data: user });
+		res.status(201).json({ message: "Logged In", data: user.rows });
 	}),
 
 	guideLogin: catchAsync(async (req, res, next) => {

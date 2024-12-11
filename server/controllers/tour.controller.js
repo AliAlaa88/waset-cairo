@@ -42,7 +42,6 @@ const tourController = {
         );
         
         res.status(201).json({msg: "Created tour successfully!", data: create.rows});
-        next();
     }),
     deleteTour: catchAsync(async (req, res, next) => {
         const tourID = req.params.id;
