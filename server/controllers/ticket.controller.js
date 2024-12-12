@@ -12,13 +12,20 @@ const ticketController = {
   }),
 
   insertTicket: catchAsync(async (req, res, next) => {
-    const { touristId, tourID, price } = req.body;
+    const { price } = req.body;
+    const touristID = req.user.id;
+    const tourID = req.params.id;
+
+    if(req.role != "tourist") return res.status(400).json({error: "You are not allowed to do this action!"});
+
     const ticket = await client.query(
       "INSERT INTO Ticket(TouristID, TourID, Price) VALUES ($1, $2, $3)",
-      [touristId, tourID, price]
+      [touristID, tourID, price]
     );
+
     if (!ticket)
       return res.status(400).json({ message: "Ticket not created" });
+    
     res.status(201).json({ message: "Ticket created" });
   }),
 };

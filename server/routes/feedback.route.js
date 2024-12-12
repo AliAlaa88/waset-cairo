@@ -5,6 +5,6 @@ const feedbackRouter = Router()
 
 feedbackRouter.get('/', authMiddleware, feedbackController.getAllFeedbacks)
 feedbackRouter.get('/:feedbackID', authMiddleware, feedbackController.getFeedback)
-feedbackRouter.post('/', authMiddleware, feedbackController.insertFeedback)
+feedbackRouter.post('/:id', authMiddleware, feedbackController.insertFeedback)
 
 export default feedbackRouter

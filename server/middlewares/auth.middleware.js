@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken'
 import catchAsync from '../utils/catchAsync.js';
+import client from '../dbConfig.js';
 
 const authMiddleware = catchAsync(async (req, res, next) => {
-    const token = req.cookie.token;
+    const token = req.cookies?.token;
     if (!token) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
@@ -20,7 +21,7 @@ const authMiddleware = catchAsync(async (req, res, next) => {
     if (!user.rows.length)
       return res.status(401).json({ message: 'Unauthorized' });
     req.user = user.rows[0];
-    req.role = role; // req.role ??
+    req.role = role; 
     next();
 });
 

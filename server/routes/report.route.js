@@ -5,6 +5,6 @@ const reportRouter = Router()
 
 reportRouter.get('/', authMiddleware, reportController.getAllReports)
 reportRouter.get('/:reportID', authMiddleware, reportController.getReport)
-reportRouter.post('/', authMiddleware, reportController.insertReport)
+reportRouter.post('/:id', authMiddleware, reportController.insertReport)
 
 export default reportRouter

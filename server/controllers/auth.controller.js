@@ -24,14 +24,14 @@ const authController = {
 	guideSignup: catchAsync(async (req, res, next) => {
 		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Language, Specialization } = req.body;
 		const user = await client.query(
-			"SELECT * FROM Tour guide WHERE UserName = $1 OR Email = $2",
+			"SELECT * FROM Tour_Guide WHERE UserName = $1 OR Email = $2",
 			[UserName, Email]
 		);
 		if (user.rows.length)
 			return res.status(400).json({ message: "User already exists" });
 		const hashedPassword = await bcrypt.hash(Password, 12);
 		const newUser = await client.query(
-			"INSERT INTO Tour guide (FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Language, Specialization, Rating) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
+			"INSERT INTO Tour_Guide (FName, LName, UserName, Email, Password, Gender, PhoneNumber, BirthDate, Language, Specialization, Rating) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
 			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate, Language, Specialization, 0]
 		);
 		res.status(201).json({ message: "User created" });
@@ -40,14 +40,14 @@ const authController = {
 	operatorSignup: catchAsync(async (req, res, next) => {
 		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate } = req.body;
 		const user = await client.query(
-			"SELECT * FROM Tour Operator WHERE UserName = $1 OR Email = $2",
+			"SELECT * FROM Tour_Operator WHERE UserName = $1 OR Email = $2",
 			[UserName, Email]
 		);
 		if (user.rows.length)
 			return res.status(400).json({ message: "User already exists" });
 		const hashedPassword = await bcrypt.hash(Password, 12);
 		const newUser = await client.query(
-			"INSERT INTO Operator (FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+			"INSERT INTO Tour_Operator(FName, LName, UserName, Email, Password, Gender, PhoneNumber, BirthDate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
 			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate]
 		);
 		res.status(201).json({ message: "User created" });
@@ -55,7 +55,7 @@ const authController = {
 
 	touristLogin: catchAsync(async (req, res, next) => {
 		const { UserName, Password } = req.body;
-		const role = req.body.role;
+		const role = "tourist";
 		const user = await client.query(
 			"SELECT * FROM Tourist WHERE UserName = $1",
 			[UserName]
@@ -71,8 +71,9 @@ const authController = {
 
 	guideLogin: catchAsync(async (req, res, next) => {
 		const { UserName, Password } = req.body;
+		const role = "guide";
 		const user = await client.query(
-			"SELECT * FROM Tour guide WHERE UserName = $1",
+			"SELECT * FROM Tour_Guide WHERE UserName = $1",
 			[UserName]
 		);
 		if (!user.rows.length)
@@ -86,8 +87,9 @@ const authController = {
 
 	operatorLogin: catchAsync(async (req, res, next) => {
 		const { UserName, Password } = req.body;
+		const role = "operator";
 		const user = await client.query(
-			"SELECT * FROM Tour Operator WHERE UserName = $1",
+			"SELECT * FROM Tour_Operator WHERE UserName = $1",
 			[UserName]
 		);
 		if (!user.rows.length)

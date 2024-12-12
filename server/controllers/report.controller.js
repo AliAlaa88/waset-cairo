@@ -20,16 +20,20 @@ const reportController = {
 
   insertReport: catchAsync(async (req, res) => {
     const { description } = req.body;
+    const guideID = req.user.id;
+    const tourID = req.params.id;
+
+    if(req.role != "guide") return res.status(400).json({error: "You are not allowed to do this action!"});
+
     const newReport = await client.query(
       "INSERT INTO Report (Description) VALUES ($1) RETURNING *",
       [description]
     );
 
-    const { guideID, tourID } = req.body;
-    await client.query(
-      "INSERT INTO Guide_Report (GuideID, TourID, FeedbackID) VALUES ($1, $2, $3)",
-      [guideID, tourID, newReport.rows[0].ID]
-    )
+    const insert = await client.query(
+      "INSERT INTO Guide_Report (GuideID, TourID, ReportID) VALUES ($1, $2, $3)",
+      [guideID, tourID, newReport.rows[0].id]
+    );
 
     res.status(201).json({ message: "Report created", report: newReport.rows[0] });
   }),

@@ -24,13 +24,11 @@ const tourController = {
         return res.status(404).json({error: "No data found!"});
     }),
     createTour: catchAsync(async (req, res, next) => {
-        const {startDate, endDate, ticketCap, opID, eventID, tourpackageID} = req.body;
+        const {startDate, endDate, ticketCap, eventID, tourpackageID} = req.body;
+        const opID = req.user.id;
 
-        //commented this out for now. it will authenticate that the current user is an operator.
-        // const role = req.body.role;
-        // const opID = req.user.id;
+        if(req.role != "operator") return res.status(400).json({error: "You are not allowed to do this action!"});
 
-        // if(role != "operator") return res.status(401).json({msg: "Unauthorized Access"});
         if (!startDate || !endDate || !ticketCap || !opID || (!eventID && !tourpackageID)) {
             return res.status(404).json({ error: "Missing required fields!" });
         }
@@ -45,11 +43,17 @@ const tourController = {
     }),
     deleteTour: catchAsync(async (req, res, next) => {
         const tourID = req.params.id;
-        // const opID = req.user.id; //will authenticate that the current user is the operator that created this tour
+        const opID = req.user.id;
+
+        if(req.role != "operator") return res.status(400).json({error: "You are not allowed to do this action!"});
+        
         const del = await client.query(
-            "DELETE FROM TOUR WHERE ID = $1;",
-            [tourID]
+            "DELETE FROM TOUR WHERE ID = $1 AND OPERATORID = $2;",
+            [tourID, opID]
         );
+
+        if(!del.rowCount) return res.status(400).json({error: "You are not allowed to do this action!"});
+
         res.status(200).json({msg: "Deleted Tour Successfully!"});
     })
 };

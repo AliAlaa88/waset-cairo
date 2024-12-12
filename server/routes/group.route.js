@@ -7,10 +7,10 @@ const groupRouter = Router();
 groupRouter.get('/', groupController.getAllGroups);
 groupRouter.get('/:id', groupController.getGroup);
 
-groupRouter.post('/create', groupController.createGroup);
-groupRouter.delete('/delete/:id', groupController.deleteGroup);
+groupRouter.post('/create', authMiddleware, groupController.createGroup);
+groupRouter.delete('/delete/:id', authMiddleware, groupController.deleteGroup);
 
-groupRouter.post('/join/:id', groupController.joinGroup);
-groupRouter.delete('/leave/:id', groupController.leaveGroup);
+groupRouter.post('/join/:id', authMiddleware, groupController.joinGroup);
+groupRouter.delete('/leave/:id', authMiddleware, groupController.leaveGroup);
 
 export default groupRouter;

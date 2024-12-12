@@ -23,7 +23,10 @@ const packController = {
         return res.status(404).json({error: "No data found!"});
     }),
     createPack: catchAsync(async (req, res, next) => {
-        const {name, description, meetingLocation, type, duration, rating, price, opID} = req.body; //opID should be the current logged in operator
+        const {name, description, meetingLocation, type, duration, rating, price} = req.body;
+        const opID = req.user.id;
+
+        if(req.role != "operator") return res.status(400).json({error: "You are not allowed to do this action!"});
 
         if(!name || !description || !meetingLocation || !type || !duration || !rating || !price || !opID){
             return res.status(404).json({ error: "Missing required fields!" });
@@ -39,13 +42,19 @@ const packController = {
     }),
     deletePack: catchAsync(async (req, res, next) => {
         const packID = req.params.id;
+        const opID = req.user.id;
 
-         //will authenticate that the current logged in operator is the one deleting this pack
-
+        //make sure an operator is requesting this
+        if(req.role != "operator") return res.status(400).json({error: "You are not allowed to do this action!"});
+        
+        //check if the current logged in operator is the one that owns this package to allow deletion
         const del = await client.query(
-            "DELETE FROM TOUR_PACKAGE WHERE ID = $1;",
-            [packID]
+            "DELETE FROM TOUR_PACKAGE WHERE ID = $1 AND OPERATORID = $2;",
+            [packID, opID]
         );
+
+        //found none
+        if(!del.rowCount) return res.status(400).json({error: "You are not allowed to do this!"});
 
         return res.status(200).json({msg: "Deleted Tour Package Successfully!"});
     })

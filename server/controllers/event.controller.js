@@ -23,8 +23,10 @@ const eventController = {
         return res.status(404).json({error: "No data found!"});
     }),
     createEvent: catchAsync(async (req, res, next) => {
-        //exactly the same as packages
-        const {name, description, meetingLocation, type, duration, rating, price, opID} = req.body;
+        const {name, description, meetingLocation, type, duration, rating, price} = req.body;
+        const opID = req.user.id;
+
+        if(req.role != "operator") return res.status(400).json({error: "You are not allowed to do this action!"});
 
         if(!name || !description || !meetingLocation || !type || !duration || !rating || !price || !opID){
             return res.status(404).json({ error: "Missing required fields!" });
@@ -41,10 +43,16 @@ const eventController = {
     }),
     deleteEvent: catchAsync(async (req, res, next) => {
         const eventID = req.params.id;
+        const opID = req.user.id;
+
+        if(req.role != "operator") return res.status(400).json({error: "You are not allowed to do this action!"});
+
         const del = client.query(
-            "DELETE FROM EVENT WHERE ID = $1;",
-            [eventID]
+            "DELETE FROM EVENT WHERE ID = $1 AND OPERATORID = $2;",
+            [eventID, opID]
         );
+
+        if(!del.rowCount) return res.status(400).json({error: "You are not allowed to do this action!"});
 
         return res.status(200).json({msg: "Deleted Event Successfully!"});
     })
