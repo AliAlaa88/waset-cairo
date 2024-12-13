@@ -27,10 +27,10 @@ const tourController = {
         const {startDate, endDate, ticketCap, eventID, tourpackageID} = req.body;
         const opID = req.user.id;
 
-        if(req.role != "operator") return res.status(400).json({error: "You are not allowed to do this action!"});
-
-        if (!startDate || !endDate || !ticketCap || !opID || (!eventID && !tourpackageID)) {
-            return res.status(404).json({ error: "Missing required fields!" });
+        if(req.role != "operator"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
         }
 
         const create = await client.query(
@@ -45,7 +45,11 @@ const tourController = {
         const tourID = req.params.id;
         const opID = req.user.id;
 
-        if(req.role != "operator") return res.status(400).json({error: "You are not allowed to do this action!"});
+        if(req.role != "operator"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
         
         const del = await client.query(
             "DELETE FROM TOUR WHERE ID = $1 AND OPERATORID = $2;",

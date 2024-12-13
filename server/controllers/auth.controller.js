@@ -7,49 +7,37 @@ import jwt  from "jsonwebtoken";
 const authController = {
 	touristSignup: catchAsync(async (req, res, next) => {
 		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Nationality, Language } = req.body;
-		const user = await client.query(
-			"SELECT * FROM Tourist WHERE UserName = $1 OR Email = $2", 
-			[UserName, Email]
-		);
-		if (user.rows.length)
-			return res.status(400).json({ message: "User already exists" });
+		
 		const hashedPassword = await bcrypt.hash(Password, 12);
 		const newUser = await client.query(
 			"INSERT INTO Tourist (FName, LName, UserName, Password, Email, Gender, PhoneNumber, BirthDate, Nationality, Language) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
 			[FName, LName, UserName, hashedPassword, Email, Gender, PhoneNum, BirthDate, Nationality, Language]
 		);
+
 		res.status(201).json({ message: "User created" });
 	}),
 
 	guideSignup: catchAsync(async (req, res, next) => {
 		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Language, Specialization } = req.body;
-		const user = await client.query(
-			"SELECT * FROM Tour_Guide WHERE UserName = $1 OR Email = $2",
-			[UserName, Email]
-		);
-		if (user.rows.length)
-			return res.status(400).json({ message: "User already exists" });
+		
 		const hashedPassword = await bcrypt.hash(Password, 12);
 		const newUser = await client.query(
-			"INSERT INTO Tour_Guide (FName, LName, UserName, Email, Password, Gender, PhoneNumber, BirthDate, Language, Specialization, Rating) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)",
-			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate, Language, Specialization, 0]
+			"INSERT INTO Tour_Guide (FName, LName, UserName, Email, Password, Gender, PhoneNumber, BirthDate, Language, Specialization) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
+			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate, Language, Specialization]
 		);
+
 		res.status(201).json({ message: "User created" });
 	}),
 
 	operatorSignup: catchAsync(async (req, res, next) => {
 		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate } = req.body;
-		const user = await client.query(
-			"SELECT * FROM Tour_Operator WHERE UserName = $1 OR Email = $2",
-			[UserName, Email]
-		);
-		if (user.rows.length)
-			return res.status(400).json({ message: "User already exists" });
+
 		const hashedPassword = await bcrypt.hash(Password, 12);
 		const newUser = await client.query(
 			"INSERT INTO Tour_Operator(FName, LName, UserName, Email, Password, Gender, PhoneNumber, BirthDate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
 			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate]
 		);
+
 		res.status(201).json({ message: "User created" });
 	}),
 
@@ -60,11 +48,20 @@ const authController = {
 			"SELECT * FROM Tourist WHERE UserName = $1",
 			[UserName]
 		);
-		if (!user.rows.length)
-			return res.status(400).json({ message: "Invalid credentials" });
+
+		if (!user.rowCount){
+			const err = new Error("Invalid credentials!");
+			err.statusCode = 400;
+			return next(err);
+		}
+
 		const isMatch = await bcrypt.compare(Password, user.rows[0].password);
-		if (!isMatch)
-			return res.status(400).json({ message: "Invalid credentials" });
+		if (!isMatch){
+			const err = new Error("Invalid Credentials!");
+			err.statusCode = 400;
+			return next(err);
+		}
+
 		generateToken(res, user.rows[0].id, role); // this adds token to cookie
 		res.status(201).json({ message: "Logged In", data: user.rows });
 	}),
@@ -76,11 +73,20 @@ const authController = {
 			"SELECT * FROM Tour_Guide WHERE UserName = $1",
 			[UserName]
 		);
-		if (!user.rows.length)
-			return res.status(400).json({ message: "Invalid credentials" });
+
+		if (!user.rowCount){
+			const err = new Error("Invalid credentials!");
+			err.statusCode = 400;
+			return next(err);
+		}
+
 		const isMatch = await bcrypt.compare(Password, user.rows[0].password);
-		if (!isMatch)
-			return res.status(400).json({ message: "Invalid credentials" });
+		if (!isMatch){
+			const err = new Error("Invalid Credentials!");
+			err.statusCode = 400;
+			return next(err);
+		}
+
 		generateToken(res, user.rows[0].id, role); // this adds token to cookie
 		res.status(201).json({ message: "Logged In", data: user });
 	}),
@@ -92,16 +98,46 @@ const authController = {
 			"SELECT * FROM Tour_Operator WHERE UserName = $1",
 			[UserName]
 		);
-		if (!user.rows.length)
-			return res.status(400).json({ message: "Invalid credentials" });
+		if (!user.rowCount){
+			const err = new Error("Invalid credentials!");
+			err.statusCode = 400;
+			return next(err);
+		}
+		
 		const isMatch = await bcrypt.compare(Password, user.rows[0].password);
-		if (!isMatch)
-			return res.status(400).json({ message: "Invalid credentials" });
+		if (!isMatch){
+			const err = new Error("Invalid Credentials!");
+			err.statusCode = 400;
+			return next(err);
+		}
+
 		generateToken(res, user.rows[0].id, role); // this adds token to cookie
 		res.status(201).json({ message: "Logged In", data: user });
 	}),
 
-	updatePassword: catchAsync(async (req, res, next) => {}),
+	updatePassword: catchAsync(async (req, res, next) => {
+		const {currPassword, newPassword} = req.body;
+		const user_role = req.role === "operator"? "Tour_Operator" : req.role === "guide"? "Tour_Guide" : "Tourist";
+
+		const currUserPass = await client.query(
+			`SELECT PASSWORD FROM ${user_role} WHERE ID = $1;`,
+			[req.user.id]
+		);
+
+		const isMatch = await bcrypt.compare(currPassword, currUserPass.rows[0].password);
+		if (!isMatch){
+			const err = new Error("Invalid Credentials!");
+			err.statusCode = 400;
+			return next(err);
+		}
+		
+		const hashedPassword = await bcrypt.hash(newPassword, 12);
+		const update = await client.query(
+			`UPDATE ${user_role} SET PASSWORD = $1;`,
+			[hashedPassword]
+		);
+		res.status(201).json({ msg: "Updated Password Successfully!" });
+	}),
 
 	logout: catchAsync(async (req, res, next) => {
 		res.clearCookie("token");

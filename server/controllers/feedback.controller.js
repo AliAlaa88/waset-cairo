@@ -13,8 +13,12 @@ const feedbackController = {
       "SELECT * FROM Feedback WHERE ID = $1",
       [feedbackID]
     );
-    if (!feedback.rows.length)
-      return res.status(404).json({ message: "Feedback not found" });
+    if (!feedback.rowCount){
+      const err = new Error("Feedback not found!");
+      err.statusCode = 404;
+      return next(err);
+    }
+
     res.status(200).json({ feedback: feedback.rows[0] });
   }),
 
@@ -23,7 +27,11 @@ const feedbackController = {
     const touristID = req.user.id;
     const tourID = req.params.id;
 
-    if(req.role != "tourist") return res.status(400).json({error: "You are not allowed to do this action!"});
+    if(req.role != "tourist"){
+      const err = new Error("You are not allowed to do this action!");
+      err.statusCode = 400;
+      return next(err);
+    }
 
     const newFeedback = await client.query(
       "INSERT INTO Feedback (Description, Type, Rating) VALUES ($1, $2, $3) RETURNING *",

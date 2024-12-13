@@ -4,6 +4,13 @@ import client from "../dbConfig.js";
 const reportController = {
   getAllReports: catchAsync(async (req, res) => {
     const reports = await client.query("SELECT * FROM Report");
+
+    if(!reports.rowCount){
+      const err = new Error("No data found!");
+      err.statusCode = 404;
+      return next(err);
+    }
+
     res.status(200).json({ reports: reports.rows });
   }),
 
@@ -13,8 +20,13 @@ const reportController = {
       "SELECT * FROM Report WHERE ID = $1",
       [reportID]
     );
-    if (!report.rows.length)
-      return res.status(404).json({ message: "Report not found" });
+
+    if (!report.rowCount){
+      const err = new Error("No data found!");
+      err.statusCode = 404;
+      return next(err);
+    }
+
     res.status(200).json({ report: report.rows[0] });
   }),
 
@@ -23,7 +35,11 @@ const reportController = {
     const guideID = req.user.id;
     const tourID = req.params.id;
 
-    if(req.role != "guide") return res.status(400).json({error: "You are not allowed to do this action!"});
+    if(req.role != "guide"){
+      const err = new Error("You are not allowed to do this action!");
+      err.statusCode = 400;
+      return next(err);
+    }
 
     const newReport = await client.query(
       "INSERT INTO Report (Description) VALUES ($1) RETURNING *",

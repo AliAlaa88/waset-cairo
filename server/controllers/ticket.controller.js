@@ -8,6 +8,13 @@ const ticketController = {
       "SELECT * FROM Ticket WHERE TouristID = $1",
       [touristID]
     );
+
+    if(!tickets){
+      const err = new Error("No data found!");
+      err.statusCode = 404;
+      return next(err);
+    }
+
     res.status(200).json({ tickets: tickets.rows });
   }),
 
@@ -16,15 +23,16 @@ const ticketController = {
     const touristID = req.user.id;
     const tourID = req.params.id;
 
-    if(req.role != "tourist") return res.status(400).json({error: "You are not allowed to do this action!"});
+    if(req.role != "tourist"){
+      const err = new Error("You are not allowed to do this action!");
+      err.statusCode = 400;
+      return next(err);
+    }
 
     const ticket = await client.query(
       "INSERT INTO Ticket(TouristID, TourID, Price) VALUES ($1, $2, $3)",
       [touristID, tourID, price]
     );
-
-    if (!ticket)
-      return res.status(400).json({ message: "Ticket not created" });
     
     res.status(201).json({ message: "Ticket created" });
   }),

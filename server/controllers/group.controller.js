@@ -29,10 +29,10 @@ const groupController = {
         const {prefferedMonument, commonLanguage, name} = req.body;
         const creatorID = req.user.id;
 
-        if(req.role != "tourist") return res.status(400).json({error: "You are not allowed to do this action!"});
-
-        if(!commonLanguage || !name || !creatorID){
-            return res.status(404).json({error: "Missing required fields!"});
+        if(req.role != "tourist"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
         }
 
         const create = await client.query(
@@ -49,8 +49,6 @@ const groupController = {
         const groupID = req.params.id;
         const userID = req.user.id;
 
-        //only a tourist can delete his group? or can the operator delete any group he wants??
-
         const del = await client.query(
             "DELETE FROM TOURIST_GROUP WHERE ID = $1 AND CREATORID = $2",
             [groupID, userID]
@@ -65,9 +63,13 @@ const groupController = {
         const touristID = req.user.id;
         const groupID = req.params.id;
 
-        if(req.role != "tourist") return res.status(400).json({error: "You are not allowed to do this action!"});
+        if(req.role != "tourist"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
 
-        const join = client.query(
+        const join = await client.query(
             "INSERT INTO GROUP_MEMBERS VALUES($1, $2) RETURNING *;",
             [touristID, groupID]
         );
@@ -79,7 +81,7 @@ const groupController = {
         const touristID = req.user.id;
         const groupID = req.params.id;
         
-        const leave = client.query(
+        const leave = await client.query(
             "DELETE FROM GROUP_MEMBERS WHERE TOURISTID = $1 AND GROUPID = $2;",
             [touristID, groupID]
         );

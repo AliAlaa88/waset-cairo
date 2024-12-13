@@ -5,23 +5,27 @@ import client from '../dbConfig.js';
 const authMiddleware = catchAsync(async (req, res, next) => {
     const token = req.cookies?.token;
     if (!token) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      const err = new Error("Unauthorized!");
+      err.statusCode = 401;
+      return next(err);
     }
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const id = decoded.id;
-    const role = decoded.role;
-    // how to determine which to select from them ???
-    let user;
-    if(role === "tourist")
-      user = await client.query('SELECT * FROM Tourist WHERE ID = $1', [id]);
-    else if(role === "guide")
-      user = await client.query('SELECT * FROM Tour_Guide WHERE ID = $1', [id]);
-    else if(role === "operator")
-      user = await client.query('SELECT * FROM Tour_Operator WHERE ID = $1', [id]);
-    if (!user.rows.length)
-      return res.status(401).json({ message: 'Unauthorized' });
+    const role = decoded.role === "operator"? "Tour_Operator" : decoded.role === "guide"? "Tour_Guide" : "Tourist";
+
+    const user = await client.query(
+      `SELECT * FROM ${role} WHERE ID = $1`, [id]
+    );
+
+    if (!user.rowCount){
+      const err = new Error("Unauthorized!");
+      err.statusCode = 401;
+      return next(err);
+    }
+    
     req.user = user.rows[0];
-    req.role = role; 
+    req.role = decoded.role; 
     next();
 });
 
