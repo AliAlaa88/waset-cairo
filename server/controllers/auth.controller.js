@@ -115,6 +115,57 @@ const authController = {
 		res.status(201).json({ message: "Logged In", data: user });
 	}),
 
+	touristEditProfile: catchAsync(async (req, res, next) => {
+		const { FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, Nationality, Language } = req.body;
+
+		if(req.role != "tourist"){
+			const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+		}
+		
+		const update = await client.query(
+			"UPDATE Tourist SET FName = $1, LName = $2, UserName = $3, Email = $4, Gender = $5, PhoneNumber = $6, BirthDate = $7, Nationality = $8, Language = $9 WHERE ID = $10 RETURNING *;",
+			[FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, Nationality, Language, req.user.id]
+		);
+
+		res.status(201).json({ message: "User updated", data: update.rows });
+	}),
+
+	guideEditProfile: catchAsync(async (req, res, next) => {
+		const { FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, Language, Specialization } = req.body;
+
+		if(req.role != "guide"){
+			const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+		}
+		
+		const update = await client.query(
+			"UPDATE Tour_Guide SET FName = $1, LName = $2, UserName = $3, Email = $4, Gender = $5, PhoneNumber = $6, BirthDate = $7, Language = $8, Specialization = $9 WHERE ID = $10 RETURNING *;",
+			[FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, Language, Specialization, req.user.id]
+		);
+
+		res.status(201).json({ message: "User updated", data: update.rows });
+	}),
+
+	operatorEditProfile: catchAsync(async (req, res, next)=>{
+		const { FName, LName, UserName, Email, Gender, PhoneNum, BirthDate } = req.body;
+
+		if(req.role != "operator"){
+			const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+		}
+
+		const update = await client.query(
+			"UPDATE Tour_Operator SET FName = $1, LName = $2, UserName = $3, Email = $4, Gender = $5, PhoneNumber = $6, BirthDate = $7 WHERE ID = $8",
+			[FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, req.user.id]
+		);
+
+		res.status(201).json({ message: "User updated", data: update.rows });
+	}),
+
 	updatePassword: catchAsync(async (req, res, next) => {
 		const {currPassword, newPassword} = req.body;
 		const user_role = req.role === "operator"? "Tour_Operator" : req.role === "guide"? "Tour_Guide" : "Tourist";

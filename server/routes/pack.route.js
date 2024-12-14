@@ -7,7 +7,7 @@ const packRouter = Router();
 packRouter.get('/', packController.getAllPacks);
 packRouter.get('/:id', packController.getPack);
 
-packRouter.post('/create', authMiddleware, packController.createPack);
-packRouter.delete('/delete/:id', authMiddleware, packController.deletePack);
+packRouter.post('/', authMiddleware, packController.createPack);
+packRouter.delete('/:id', authMiddleware, packController.deletePack);
 
 export default packRouter;

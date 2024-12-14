@@ -4,7 +4,9 @@ import client from "../dbConfig.js";
 const packController = {
     getAllPacks: catchAsync(async (req, res, next) => {
         const allPacks = await client.query(
-            "SELECT * FROM TOUR_PACKAGE;"
+            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monument ids"
+            FROM TOUR_PACKAGE LEFT JOIN PACKAGE_MONUMENT ON ID = PACKAGEID
+            GROUP BY ID ORDER BY ID;`
         );
         
         if(allPacks.rowCount) return res.status(200).json(allPacks.rows);
@@ -14,7 +16,10 @@ const packController = {
     getPack: catchAsync(async (req, res, next) => {
         const packID = req.params.id;
         const pack = await client.query(
-            "SELECT * FROM TOUR_PACKAGE WHERE ID = $1;",
+            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monument ids"
+            FROM TOUR_PACKAGE LEFT JOIN PACKAGE_MONUMENT ON ID = PACKAGEID
+            WHERE ID = $1
+            GROUP BY ID;`,
             [packID]
         );
 

@@ -7,7 +7,7 @@ const tourRouter = Router();
 tourRouter.get("/", tourController.getAllTours);
 tourRouter.get("/:id", tourController.getTour);
 
-tourRouter.post("/create", authMiddleware, tourController.createTour);
-tourRouter.delete("/delete/:id", authMiddleware, tourController.deleteTour);
+tourRouter.post("/", authMiddleware, tourController.createTour);
+tourRouter.delete("/:id", authMiddleware, tourController.deleteTour);
 
 export default tourRouter;

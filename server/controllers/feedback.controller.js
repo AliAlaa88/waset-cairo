@@ -2,12 +2,12 @@ import catchAsync from "../utils/catchAsync.js";
 import client from "../dbConfig.js";
 
 const feedbackController = {
-  getAllFeedbacks: catchAsync(async (req, res) => {
+  getAllFeedbacks: catchAsync(async (req, res, next) => {
     const feedbacks = await client.query("SELECT * FROM Feedback");
     res.status(200).json({ feedbacks: feedbacks.rows });
   }),
 
-  getFeedback: catchAsync(async (req, res) => {
+  getFeedback: catchAsync(async (req, res, next) => {
     const { feedbackID } = req.params;
     const feedback = await client.query(
       "SELECT * FROM Feedback WHERE ID = $1",
@@ -22,7 +22,7 @@ const feedbackController = {
     res.status(200).json({ feedback: feedback.rows[0] });
   }),
 
-  insertFeedback: catchAsync(async (req, res) => {
+  insertFeedback: catchAsync(async (req, res, next) => {
     const { description, rating, type } = req.body;
     const touristID = req.user.id;
     const tourID = req.params.id;
@@ -44,7 +44,7 @@ const feedbackController = {
     );
 
     res.status(201).json({ message: "Feedback created", feedback: newFeedback.rows[0] });
-  }),
+  })
 };
 
 export default feedbackController;
