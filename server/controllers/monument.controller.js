@@ -3,8 +3,11 @@ import client from "../dbConfig.js";
 
 const monumentController = {
     getAllMonuments: catchAsync(async (req, res, next) => {
+        //groups all the photos from the monument_photos table into an array when returning
         const allMonuments = await client.query(
-            "SELECT * FROM MONUMENT;"
+            `SELECT ID, NAME, DESCRIPTION, LOCATION, ERA, FAMILY, OPENINGHOURS, ARRAY_AGG(PHOTOS) AS "photos"
+            FROM MONUMENT LEFT JOIN MONUMENT_PHOTOS ON ID = MONUMENTID
+            GROUP BY ID ORDER BY ID;`
         );
 
         if(allMonuments.rowCount) return res.status(200).json(allMonuments.rows);
@@ -13,8 +16,12 @@ const monumentController = {
     }),
     getMonument: catchAsync(async (req, res, next) => {
         const monumentID = req.params.id;
+        
         const monument = await client.query(
-            "SELECT * FROM MONUMENT WHERE ID = $1;",
+            `SELECT ID, NAME, DESCRIPTION, LOCATION, ERA, FAMILY, OPENINGHOURS, ARRAY_AGG(PHOTOS) AS "photos"
+            FROM MONUMENT LEFT JOIN MONUMENT_PHOTOS ON ID = MONUMENTID
+            WHERE ID = $1
+            GROUP BY ID;`,
             [monumentID]
         );
 
@@ -56,6 +63,23 @@ const monumentController = {
         if(!del.rowCount) return res.status(404).json({ error: "Monument doesnt exist!" });
 
         return res.status(200).json({msg: "Deleted Monument Successfully!"});
+    }),
+    updateMonument: catchAsync(async (req, res, next) => {
+        const {name, description, location, era, family, openingHours} = req.body;
+        const monumentID = req.params.id;
+        
+        if(req.role != "operator"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
+
+        const update = await client.query(
+            `UPDATE MONUMENT SET NAME = $1, DESCRIPTION = $2, LOCATION = $3, ERA = $4, FAMILY = $5, OPENINGHOURS = $5 WHERE ID = $6 RETURNING *;`,
+            [name, description, location, era, family, openingHours, monumentID]
+        );
+
+        return res.status(201).json({msg: "Updated Monument Successfully!", data: update.rows});
     })
 };
 

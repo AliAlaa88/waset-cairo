@@ -5,5 +5,7 @@ const ticketRouter = Router();
 
 ticketRouter.get('/', authMiddleware, ticketController.getUserTickets);
 ticketRouter.post('/:id', authMiddleware, ticketController.insertTicket);
+ticketRouter.put('/:id', authMiddleware, ticketController.updateTicket);
+ticketRouter.delete('/:id', authMiddleware, ticketController.deleteTicket);
 
 export default ticketRouter

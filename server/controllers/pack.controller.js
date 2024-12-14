@@ -4,7 +4,9 @@ import client from "../dbConfig.js";
 const packController = {
     getAllPacks: catchAsync(async (req, res, next) => {
         const allPacks = await client.query(
-            "SELECT * FROM TOUR_PACKAGE;"
+            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monument ids"
+            FROM TOUR_PACKAGE LEFT JOIN PACKAGE_MONUMENT ON ID = PACKAGEID
+            GROUP BY ID ORDER BY ID;`
         );
         
         if(allPacks.rowCount) return res.status(200).json(allPacks.rows);
@@ -14,7 +16,10 @@ const packController = {
     getPack: catchAsync(async (req, res, next) => {
         const packID = req.params.id;
         const pack = await client.query(
-            "SELECT * FROM TOUR_PACKAGE WHERE ID = $1;",
+            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monument ids"
+            FROM TOUR_PACKAGE LEFT JOIN PACKAGE_MONUMENT ON ID = PACKAGEID
+            WHERE ID = $1
+            GROUP BY ID;`,
             [packID]
         );
 
@@ -61,6 +66,31 @@ const packController = {
         if(!del.rowCount) return res.status(400).json({error: "You are not allowed to do this!"});
 
         return res.status(200).json({msg: "Deleted Tour Package Successfully!"});
+    }),
+
+    updatePack: catchAsync(async (req, res, next) => {
+        const packID = req.params.id;
+        const {name, description, meetingLocation, type, duration, rating, price} = req.body;
+        
+        if(req.role != "operator"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
+
+        const update = await client.query(
+            `UPDATE TOUR_PACKAGE SET NAME = $1, DESCRIPTION = $2, MEETINGLOCATION = $3, TYPE = $4, DURATION = $5, RATING = $6, PRICE = $7
+            WHERE ID = $8 RETURNING *;`,
+            [name, description, meetingLocation, type, duration, rating, price, packID]
+        );
+
+        if(!update.rowCount){
+            const err = new Error("Event doesnt exist!");
+            err.statusCode = 404;
+            return next(err);
+        }
+
+        return res.status(200).json({msg: "Updated Tour Package Successfully!", data: update.rows});
     })
 };
 

@@ -4,7 +4,9 @@ import client from "../dbConfig.js";
 const eventController = {
     getAllEvents: catchAsync(async (req, res, next) => {
         const allEvents = await client.query(
-            "SELECT * FROM EVENT;"
+            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monument ids"
+            FROM EVENT LEFT JOIN EVENT_MONUMENT ON ID = EVENTID
+            GROUP BY ID ORDER BY ID;`
         );
 
         if(allEvents.rowCount) return res.status(200).json(allEvents.rows);
@@ -14,7 +16,10 @@ const eventController = {
     getEvent: catchAsync(async (req, res, next) => {
         const eventID = req.params.id;
         const event = await client.query(
-            "SELECT * FROM EVENT WHERE ID = $1;",
+            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monument ids"
+            FROM EVENT LEFT JOIN EVENT_MONUMENT ON ID = EVENTID
+            WHERE ID = $1
+            GROUP BY ID;`,
             [eventID]
         );
 
@@ -59,6 +64,31 @@ const eventController = {
         if(!del.rowCount) return res.status(400).json({error: "You are not allowed to do this action!"});
 
         return res.status(200).json({msg: "Deleted Event Successfully!"});
+    }),
+
+    updateEvent: catchAsync(async (req, res, next) => {
+        const eventID = req.params.id;
+        const {name, description, meetingLocation, type, duration, rating, price} = req.body;
+        
+        if(req.role != "operator"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
+
+        const update = await client.query(
+            `UPDATE EVENT SET NAME = $1, DESCRIPTION = $2, MEETINGLOCATION = $3, TYPE = $4, DURATION = $5, RATING = $6, PRICE = $7
+            WHERE ID = $8 RETURNING *;`,
+            [name, description, meetingLocation, type, duration, rating, price, eventID]
+        );
+
+        if(!update.rowCount){
+            const err = new Error("Event doesnt exist!");
+            err.statusCode = 404;
+            return next(err);
+        }
+
+        return res.status(200).json({msg: "Updated Event Successfully!", data: update.rows});
     })
 };
 
