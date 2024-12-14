@@ -20,7 +20,7 @@ const groupController = {
             [groupID]
         );
 
-        if(group.rowCount) return res.status(200).json(group.rows);
+        if(group.rowCount) return res.status(200).json(group.rows[0]);
 
         return res.status(404).json({error: "No data found!"});
     }),

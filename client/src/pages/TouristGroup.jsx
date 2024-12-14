@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import MyTouristGroup from "./MyTouristGroup";
 import OtherGroups from "./OtherGroups";
 import { CirclePlus } from "lucide-react";
+import { useGetGroupsQuery } from "../store/groupsSlice";
 const TouristGroup = () => {
 	return (
 		<div>
