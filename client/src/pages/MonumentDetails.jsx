@@ -19,25 +19,29 @@ const MonumentDetails = () => {
 						{/* Photos carousel or main image */}
 						<div className="mb-4">
 							<img
-								src={monument.image} // Display the first photo
+								// Display the first photo
 								alt={monument.name}
 								className="w-full h-64 object-cover rounded"
 							/>
 						</div>
 
 						<div className="p-6 text-black">
-							{/* Short description */}
-							<p className="text-lg font-semibold text-center mb-4">
+							<h1 className="text-s font-semibold mb-8">
 								{monument.description}
+							</h1>
+							<p className="text-lg font-semibold">
+								<strong>Name:</strong> {monument.name}
 							</p>
-
-							{/* Location */}
-							<p className="text-md font-semibold mb-2">
+							<p className="text-lg font-semibold">
 								<strong>Location:</strong> {monument.location}
 							</p>
-
-							{/* Opening hours */}
-							<p className="text-md font-semibold mb-2">
+							<p className="text-lg font-semibold">
+								<strong>Era:</strong> {monument.era}
+							</p>
+							<p className="text-lg font-semibold">
+								<strong>Family:</strong> {monument.family}
+							</p>
+							<p className="text-lg font-semibold">
 								<strong>Opening Hours:</strong> {monument.openinghours}
 							</p>
 						</div>

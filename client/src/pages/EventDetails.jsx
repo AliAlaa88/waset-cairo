@@ -25,16 +25,25 @@ const EventDetails = () => {
 
 						<div className="p-6 text-black">
 							{/* Short description */}
-							<p className="text-lg font-semibold text-center mb-4">
+							<h1 className="text-s font-semibold text-center mb-8">
 								{event.description}
-							</p>
+							</h1>
 
 							{/* Additional information */}
+							<p className="text-md font-semibold mb-2">
+								<strong>Name:</strong> {event.name}
+							</p>
 							<p className="text-md font-semibold mb-2">
 								<strong>Location:</strong> {event.meetinglocation}
 							</p>
 							<p className="text-md font-semibold mb-2">
+								<strong>Type:</strong> {event.type}
+							</p>
+							<p className="text-md font-semibold mb-2">
 								<strong>Duration:</strong> {event.duration} hours
+							</p>
+							<p className="text-md font-semibold mb-2">
+								<strong>Rating:</strong> {event.rating}
 							</p>
 							<p className="text-md font-semibold mb-2">
 								<strong>Price:</strong> E{event.price}
@@ -43,17 +52,17 @@ const EventDetails = () => {
 					</div>
 
 					{/* {relatedMonuments.length > 0 && (
-						<div className="mt-8">
-							<h3 className="text-2xl font-semibold text-center mb-4">
-								Related Monuments
-							</h3>
-							<div className="flex justify-evenly gap-4">
-								{relatedMonuments.map((monument) => (
-									<MonumentButton key={monument.id} monument={monument} />
-								))}
-							</div>
-						</div>
-					)} */}
+								<div className="mt-8">
+									<h3 className="text-2xl font-semibold text-center mb-4">
+										Related Monuments
+									</h3>
+									<div className="flex justify-evenly gap-4">
+										{relatedMonuments.map((monument) => (
+											<MonumentButton key={monument.id} monument={monument} />
+										))}
+									</div>
+								</div>
+							)} */}
 				</>
 			)}
 		</div>

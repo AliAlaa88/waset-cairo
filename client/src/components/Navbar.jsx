@@ -17,7 +17,7 @@ const Navbar = () => {
 				<img
 					src={profileAvatar}
 					alt="Icon"
-					className="w-24 h-24 rounded-full border-4 border-white object-cover mr-6"
+					className="w-12 h-12 rounded-full border-2 border-white object-cover mr-6"
 				/>
 
 				{/* Centered Tabs */}

@@ -24,36 +24,31 @@ const TourPackDetails = () => {
 						</div>
 
 						<div className="p-6 text-black">
-							{/* Short description */}
-							<p className="text-lg font-semibold text-center mb-4">
+							{/* Description */}
+							<h1 className="text-s font-semibold text-center mb-8">
 								{pack.description}
-							</p>
-
+							</h1>
 							{/* Additional information */}
 							<p className="text-md font-semibold mb-2">
-								<strong>Location:</strong> {pack.meetinglocation}
+								<strong>Name:</strong> {pack.name}
+							</p>
+							<p className="text-md font-semibold mb-2">
+								<strong>Meeting Location:</strong> {pack.meetinglocation}
+							</p>
+							<p className="text-md font-semibold mb-2">
+								<strong>Type:</strong> {pack.type}
 							</p>
 							<p className="text-md font-semibold mb-2">
 								<strong>Duration:</strong> {pack.duration} days
+							</p>
+							<p className="text-md font-semibold mb-2">
+								<strong>Rating:</strong> {pack.rating}
 							</p>
 							<p className="text-md font-semibold mb-2">
 								<strong>Price:</strong> E{pack.price}
 							</p>
 						</div>
 					</div>
-
-					{/* {relatedMonuments.length > 0 && (
-				<div className="mt-8">
-				<h3 className="text-2xl font-semibold text-center mb-4">
-				Related Monuments
-				</h3>
-				<div className="flex justify-evenly gap-4">
-				{relatedMonuments.map((monument) => (
-					<MonumentButton key={monument.id} monument={monument} />
-					))}
-					</div>
-					</div>
-					)} */}
 				</>
 			)}
 		</div>
