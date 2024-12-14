@@ -18,7 +18,7 @@ const monumentController = {
             [monumentID]
         );
 
-        if(monument.rowCount) return res.status(200).json(monument.rows);
+        if(monument.rowCount) return res.status(200).json(monument.rows[0]);
 
         return res.status(404).json({error: "No data found!"});
     }),

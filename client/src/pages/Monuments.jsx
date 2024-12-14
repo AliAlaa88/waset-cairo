@@ -1,17 +1,21 @@
-import { useSelector } from "react-redux";
 import SliderSection from "../components/SliderSection";
+import { useGetMonumentsQuery } from "../store/monumentSlice";
 
 const Monuments = () => {
-	const monuments = useSelector((state) => state.ui.monuments);
+	const { data: monuments, isFetching } = useGetMonumentsQuery();
 
 	return (
 		<div className="">
-			<SliderSection
-				title={"Monuments"}
-				description={"Explore the Pharonic Monuments and visit it"}
-				cards={monuments}
-				route={"home/monuments"}
-			/>
+			{isFetching ? (
+				<p>Loading...</p>
+			) : (
+				<SliderSection
+					title={"Monuments"}
+					description={"Explore the Pharonic Monuments and visit it"}
+					cards={monuments}
+					route={"home/monuments"}
+				/>
+			)}
 		</div>
 	);
 };

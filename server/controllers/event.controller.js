@@ -18,7 +18,7 @@ const eventController = {
             [eventID]
         );
 
-        if(event.rowCount) return res.status(200).json(event.rows);
+        if(event.rowCount) return res.status(200).json(event.rows[0]);
 
         return res.status(404).json({error: "No data found!"});
     }),

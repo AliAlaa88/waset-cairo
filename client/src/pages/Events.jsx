@@ -1,16 +1,22 @@
-import { useSelector } from "react-redux";
 import SliderSection from "../components/SliderSection";
+import { useGetEventsQuery } from "../store/eventSlice";
 
 const Events = () => {
-	const events = useSelector((state) => state.ui.events);
+	const { data: events, isFetching } = useGetEventsQuery();
 
 	return (
-		<SliderSection
-			title={"Events"}
-			description={"Select the Event you like and enjoy your tour"}
-			cards={events}
-			route={"home/events"}
-		/>
+		<>
+			{isFetching ? (
+				<p>Loading...</p>
+			) : (
+				<SliderSection
+					title={"Events"}
+					description={"Select the Event you like and enjoy your tour"}
+					cards={events}
+					route={"home/events"}
+				/>
+			)}
+		</>
 	);
 };
 

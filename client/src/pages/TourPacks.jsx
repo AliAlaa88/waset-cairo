@@ -1,17 +1,21 @@
 import SliderSection from "../components/SliderSection";
-import { useSelector } from "react-redux";
+import { useGetPacksQuery } from "../store/packSlice";
 
 const TourPacks = () => {
-	const packs = useSelector((state) => state.ui.packs);
+	const { data, isFetching } = useGetPacksQuery();
 
 	return (
 		<div className="">
-			<SliderSection
-				title={"Tour Packs"}
-				description={"Select the Tour-Pack you like and enjoy your tour"}
-				cards={packs}
-				route={"home/tour-packs"}
-			/>
+			{isFetching ? (
+				<p>Loading...</p>
+			) : (
+				<SliderSection
+					title={"Tour Packs"}
+					description={"Select the Tour-Pack you like and enjoy your tour"}
+					cards={data}
+					route={"home/tour-packs"}
+				/>
+			)}
 		</div>
 	);
 };

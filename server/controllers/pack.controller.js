@@ -18,7 +18,7 @@ const packController = {
             [packID]
         );
 
-        if(pack.rowCount) return res.status(200).json(pack.rows);
+        if(pack.rowCount) return res.status(200).json(pack.rows[0]);
 
         return res.status(404).json({error: "No data found!"});
     }),

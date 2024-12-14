@@ -50,10 +50,10 @@ function SliderSection({ title, description, cards, route }) {
 								/>
 								<div className="bg-gradient-to-r from-yellow-300 to-orange-400 text-white p-4 h-[100px]">
 									<h2 className="text-xl font-semibold text-sky-500 group-hover:drop-shadow-[0_1px_1px_rgba(255,255,255,1)]">
-										{card.title}
+										{card.name}
 									</h2>
 									<p className="text-m text-sky-500 mt-1 line-clamp-2 group-hover:drop-shadow-[0_1px_1px_rgba(255,255,255,1)]">
-										{card.shortDescription}
+										{card.description}
 									</p>
 								</div>
 							</NavLink>
