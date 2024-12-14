@@ -88,6 +88,44 @@ const groupController = {
 
         return res.status(200).json({msg: "Left Group Successfully!"});
     }),
+
+    getGroupMembers: catchAsync(async (req, res, next) => {
+        const groupID = req.params.id;
+
+        const members = await client.query(
+            `SELECT ID, FNAME, LNAME, USERNAME, EMAIL, GENDER, PHONENUMBER, BIRTHDATE, NATIONALITY, LANGUAGE
+            FROM TOURIST, GROUP_MEMBERS
+            WHERE ID = TOURISTID AND GROUPID = $1;`,
+            [groupID]
+        );
+
+        if(!members.rowCount) {
+            const err = new Error("No data found!");
+            err.statusCode = 404;
+            return next(err);
+        }
+
+        return res.status(200).json(members.rows);
+    }),
+
+    getTouristGroups: catchAsync(async (req, res, next) => {
+        const touristID = req.params.id;
+
+        const groups = await client.query(
+            `SELECT ID, NAME, COMMONLANGUAGE, CREATORID, PREFFEREDMONUMENT
+            FROM TOURIST_GROUP, GROUP_MEMBERS
+            WHERE ID = GROUPID AND TOURISTID = $1;`,
+            [touristID]
+        );
+
+        if(!groups.rowCount) {
+            const err = new Error("No data found!");
+            err.statusCode = 404;
+            return next(err);
+        }
+
+        return res.status(200).json(groups.rows);
+    })
 };
 
 export default groupController;

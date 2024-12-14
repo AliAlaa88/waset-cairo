@@ -8,6 +8,7 @@ packRouter.get('/', packController.getAllPacks);
 packRouter.get('/:id', packController.getPack);
 
 packRouter.post('/', authMiddleware, packController.createPack);
+packRouter.put('/:id', authMiddleware, packController.updatePack);
 packRouter.delete('/:id', authMiddleware, packController.deletePack);
 
 export default packRouter;

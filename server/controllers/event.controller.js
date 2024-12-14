@@ -64,6 +64,31 @@ const eventController = {
         if(!del.rowCount) return res.status(400).json({error: "You are not allowed to do this action!"});
 
         return res.status(200).json({msg: "Deleted Event Successfully!"});
+    }),
+
+    updateEvent: catchAsync(async (req, res, next) => {
+        const eventID = req.params.id;
+        const {name, description, meetingLocation, type, duration, rating, price} = req.body;
+        
+        if(req.role != "operator"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
+
+        const update = await client.query(
+            `UPDATE EVENT SET NAME = $1, DESCRIPTION = $2, MEETINGLOCATION = $3, TYPE = $4, DURATION = $5, RATING = $6, PRICE = $7
+            WHERE ID = $8 RETURNING *;`,
+            [name, description, meetingLocation, type, duration, rating, price, eventID]
+        );
+
+        if(!update.rowCount){
+            const err = new Error("Event doesnt exist!");
+            err.statusCode = 404;
+            return next(err);
+        }
+
+        return res.status(200).json({msg: "Updated Event Successfully!", data: update.rows});
     })
 };
 

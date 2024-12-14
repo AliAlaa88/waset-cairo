@@ -59,6 +59,30 @@ const tourController = {
         if(!del.rowCount) return res.status(400).json({error: "You are not allowed to do this action!"});
 
         res.status(200).json({msg: "Deleted Tour Successfully!"});
+    }),
+
+    updateTour: catchAsync(async (req, res, next) => {
+        const tourID = req.params.id;
+        const {startDate, endDate, ticketCap, eventID, tourpackageID} = req.body;
+
+        if(req.role != "operator"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
+
+        const update = await client.query(
+            `UPDATE TOUR SET STARTDATE = $1, ENDDATE = $2, TICKETCAPACITY = $3, EVENTID = $4, TOURPACKAGEID = $5 WHERE ID = $6 RETURNING *;`,
+            [startDate, endDate, ticketCap, eventID || null, tourpackageID || null, tourID]
+        );
+
+        if(!update.rowCount) {
+            const err = new Error("Tour doesnt exist!");
+            err.statusCode = 404;
+            return next(err);
+        }
+
+        return res.status(200).json({msg: "Updated Tour Successfully!", data: update.rows});
     })
 };
 

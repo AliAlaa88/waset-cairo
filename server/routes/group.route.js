@@ -6,6 +6,8 @@ const groupRouter = Router();
 
 groupRouter.get('/', groupController.getAllGroups);
 groupRouter.get('/:id', groupController.getGroup);
+groupRouter.get('/members/:id', authMiddleware, groupController.getGroupMembers);
+groupRouter.get('/tourist/:id', authMiddleware, groupController.getTouristGroups);
 
 groupRouter.post('/', authMiddleware, groupController.createGroup);
 groupRouter.delete('/:id', authMiddleware, groupController.deleteGroup);

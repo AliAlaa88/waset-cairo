@@ -7,7 +7,8 @@ const eventRouter = Router();
 eventRouter.get('/', eventController.getAllEvents);
 eventRouter.get('/:id', eventController.getEvent);
 
-eventRouter.post('/', eventController.createEvent);
-eventRouter.delete('/:id', eventController.deleteEvent);
+eventRouter.post('/', authMiddleware, eventController.createEvent);
+eventRouter.put('/:id', authMiddleware, eventController.updateEvent);
+eventRouter.delete('/:id', authMiddleware, eventController.deleteEvent);
 
 export default eventRouter;
