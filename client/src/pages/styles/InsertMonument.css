@@ -1,0 +1,112 @@
+body.insM-body {
+    font-family: 'Papyrus', 'Times New Roman', serif;
+    background-color: #f4e6c3; 
+    margin: 0;
+    padding: 0;
+    min-height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column; 
+    background-image: url('your-pharaoh-background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    cursor: url("src\assets\WhatsApp-Image-2024-12-14-at-11.28.01-PM.png") 8 8, auto; 
+
+}
+
+.insM-container {
+    background: rgba(255, 248, 220, 0.95); 
+    border: 3px solid #d4af37; 
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    width: 90%; 
+    max-width: 600px; 
+    padding: 20px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.insM-header {
+    font-size: 2rem;
+    color: #d4af37; 
+    text-shadow: 2px 2px #8b4513; 
+    margin-bottom: 20px;
+    padding-top: 10px; 
+}
+
+.insM-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.insM-input {
+    width: 100%; 
+    max-width: 500px;
+    padding: 10px;
+    border: 2px solid #d4af37; 
+    border-radius: 5px;
+    background-color: #fff8dc; 
+    font-size: 1rem;
+    color: #4b2c20; 
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.insM-input:focus {
+    outline: none;
+    border-color: #8b4513; 
+    box-shadow: 0 0 5px #8b4513;
+}
+
+button.insM-input, button.insM-submitBtn {
+    background-color: #d4af37; 
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 500px;
+    transition: transform 0.2s, background-color 0.3s;
+  }
+  
+  button.insM-input:hover, button.insM-submitBtn:hover {
+    background-color: #8b4513; /* Dark brown hover */
+    transform: scale(1.05);
+  }
+  
+  /* Added items section */
+  .insM-input-Addeditem {
+    margin-top: 20px;
+  }
+  
+  .insM-addH {
+    font-size: 1.5rem;
+    color: #4b2c20; /* Earthy brown */
+    margin-bottom: 10px;
+    text-shadow: 1px 1px #d4af37;
+  }
+  
+  .insM-listphoto {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .insM-photoitem {
+    background: rgba(244, 230, 195, 0.8); /* Parchment background */
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #d4af37;
+    font-size: 1rem;
+    color: #4b2c20;
+  }
+  
+  /* Submit button spacing */
+  .insM-submitBtn {
+    margin-top: 20px;
+  }
