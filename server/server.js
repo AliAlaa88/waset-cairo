@@ -15,11 +15,9 @@ app.use('/api', apiRouter);
 app.all('*', (req, res, next) => {
     const err = new Error("Endpoint not found!");
     err.statusCode = 404;
-    next(err)
+    next(err);
 });
-
 app.use(errorController);
-
 
 app.listen(PORT, () => {
     console.log(`Listening on port ${PORT}!`);

@@ -22,6 +22,7 @@ import Tours from "./components/Tours";
 import Report from "./pages/Report";
 import TourGuideSign from "./pages/TourGuideSign";
 import TourOperatorSign from "./pages/TourOperatorsign";
+import InsertMonument from "./pages/InsertMonument";
 
 function Router() {
 	return (
@@ -67,6 +68,7 @@ function Router() {
 				<Route path="mypacks" element={<MyPackes />} />
 				<Route path="report" element={<Report/>}/>
 				<Route path="*" element={<ErrorPage />} />
+				<Route path="insert-monument" element={<InsertMonument/>} />
 			</Routes>
 		</BrowserRouter>
 	);

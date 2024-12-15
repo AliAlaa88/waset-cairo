@@ -6,7 +6,7 @@ const monumentRouter = Router();
 
 monumentRouter.get("/", monumentController.getAllMonuments);
 monumentRouter.get("/:id", monumentController.getMonument);
-monumentRouter.post("/", authMiddleware, monumentController.createMonument);
+monumentRouter.post("/", monumentController.createMonument);
 monumentRouter.delete("/:id", authMiddleware, monumentController.deleteMonument);
 monumentRouter.put("/:id", authMiddleware, monumentController.updateMonument);
 

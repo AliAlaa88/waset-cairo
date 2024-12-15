@@ -1,14 +1,21 @@
-import { useState , useNavigate} from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAddMonumentMutation } from "../store/monumentSlice";
 
 function InsertMonument() {
-  const [discription, setdiscription] = useState('');
-  const [name, setName] = useState('');
-  const [location, setLocation] = useState('');
-  const [era, setEra] = useState('');
-  const [family, setFamily] = useState('');
-  const [openingHours, setOpeningHours] = useState("");
   const [text, setText] = useState(''); 
   const [photos, setPhotos] = useState([]); 
+
+  const [addMonument, {isLoading, isSuccess, isError, error}] = useAddMonumentMutation();
+  const [formData, setFormData] = useState({
+    name: "",
+    description: "",
+    location: "",
+    era: "",
+    family: "",
+    openingHours: "",
+    photos: [],
+  })
   const navigate = useNavigate();
 
   const handleAdd = (event) => {
@@ -19,11 +26,22 @@ function InsertMonument() {
     }
   };
 
-  function submit() {
-    //event.preventDefault(); 
-    console.log("Form submitted:", { name, discription, location, era, family, openingHours, photos });
-    navigate('profile');
+  async function submit(e) {
+    e.preventDefault();
+    formData.photos = photos
+    try {
+      await addMonument(formData).unwrap();
+      alert('Monument added successfully!');
+      navigate('/operator-home');
+    } catch (err) {
+      console.error('Failed to add monument: ', err);
+    }
   }
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
 
   return (
     <body className="insM-body">
@@ -36,49 +54,55 @@ function InsertMonument() {
               type="text"
               placeholder="Enter the Monument Name"
               required
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
             />
             <br />
             <textarea
               className="insM-input"
               cols="18"
               rows="5"
+              name="description"
               placeholder="Description"
-              value={discription}
-              onChange={(e) => setdiscription(e.target.value)}
+              value={formData.description}
+              onChange={handleChange}
             />
             <input
               className="insM-input"
               type="text"
               placeholder="Enter the Monument Location"
               required
-              value={location}
-              onChange={(e) => setLocation(e.target.value)}
+              name="location"
+              value={formData.location}
+              onChange={handleChange}
             />
             <input
               className="insM-input"
               type="text"
               placeholder="Enter the Monument Family"
               required
-              value={family}
-              onChange={(e) => setFamily(e.target.value)}
+              name="family"
+              value={formData.family}
+              onChange={handleChange}
             />
             <input
               className="insM-input"
               type="text"
               placeholder="Enter the Monument Opening Hours"
               required
-              value={openingHours}
-              onChange={(e) => setOpeningHours(e.target.value)}
+              name='openingHours'
+              value={formData.openingHours}
+              onChange={handleChange}
             />
             <input
               className="insM-input"
               type="text"
               placeholder="Enter the Monument Era"
               required
-              value={era}
-              onChange={(e) => setEra(e.target.value)}
+              name="era"
+              value={formData.era}
+              onChange={handleChange}
             />
             <br />
             <input
@@ -96,16 +120,16 @@ function InsertMonument() {
               <h3 className="insM-addH">Added Photos:</h3>
               <ul className="insM-listphoto">
                 {photos.map((photo, index) => (
-                  <li className="insM-photoitem" key={index}>
-                    {photo}
-                  </li>
+                  <img src={photo} className="insM-photoitem" key={index}/>
                 ))}
               </ul>
             </div>
           </div>
-          <button className="insM-submitBtn" type="submit">
+          <button disabled={isLoading} className="insM-submitBtn" type="submit">
             Create
           </button>
+          {isError && <p>Error: {error.data?.message || 'Failed to add monument'}</p>}
+          {isSuccess && <p>Monument added successfully!</p>}
         </form>
       </div>
     </body>

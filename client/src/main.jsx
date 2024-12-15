@@ -11,6 +11,7 @@ import "./pages/styles/Report.css"
 import "./pages/styles/CreateGroup.css"
 import "./pages/styles/TourGuideSign.css"
 import "./pages/styles/TourOperatorSign.css"
+import "./pages/styles/InsertMonument.css"
 
 import App from './App.jsx'
 

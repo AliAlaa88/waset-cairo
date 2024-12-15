@@ -30,19 +30,23 @@ const monumentController = {
         return res.status(404).json({error: "No data found!"});
     }),
     createMonument: catchAsync(async (req, res, next) => {
-        const {name, description, location, era, family, openingHours} = req.body;
+        const {name, description, location, era, family, openingHours, photos} = req.body;
         
-        if(req.role != "operator"){
-            const err = new Error("You are not allowed to do this action!");
-            err.statusCode = 400;
-            return next(err);
-        }
+        // if(req.role != "operator"){
+        //     const err = new Error("You are not allowed to do this action!");
+        //     err.statusCode = 400;
+        //     return next(err);
+        // }
 
         const create = await client.query(
             `INSERT INTO MONUMENT(NAME, DESCRIPTION, LOCATION, ERA, FAMILY, OPENINGHOURS)
             VALUES($1, $2, $3, $4, $5, $6) RETURNING *;`,
             [name, description, location, era, family, openingHours]
         );
+        
+        for(let i = 0; i < photos.length; i++){
+            await client.query("INSERT INTO MONUMENT_PHOTOS VALUES($1, $2);", [create.rows[0].id, photos[i]]);
+        }
 
         return res.status(201).json({msg: "Created Monument Successfully!", data: create.rows});
     }),

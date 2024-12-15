@@ -3,5 +3,6 @@ export default (error, req, res, next) => {
     res.status(error.statusCode).json({
         status: error.statusCode,
         msg: error.message
-    });
+    }); 
+    next();
 }
