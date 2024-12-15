@@ -10,6 +10,12 @@ export const groupSlice = apiSlice.injectEndpoints({
     getGroup: builder.query({
       query: (id) => `${groupsUrl}/${id}`,
     }),
+    getGroupMembers: builder.query({
+      query: (id) => `${groupsUrl}/members/${id}`,
+    }),
+    getTouristGroups: builder.query({
+      query: (id) => `${groupsUrl}/tourist/${id}`,
+    }),
     addGroup: builder.mutation({
       query: (group) => ({
         url: groupsUrl,
@@ -41,6 +47,8 @@ export const groupSlice = apiSlice.injectEndpoints({
 export const {
   useGetGroupsQuery,
   useGetGroupQuery,
+  useGetGroupMembersQuery,
+  useGetTouristGroupsQuery,
   useAddGroupMutation,
   useDeleteGroupMutation,
   useJoinGroupMutation,
