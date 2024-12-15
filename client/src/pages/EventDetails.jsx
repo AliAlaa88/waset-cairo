@@ -1,9 +1,11 @@
 import { useParams } from "react-router-dom";
-// import MonumentButton from "../components/MonumentButton";
+import MonumentButton from "../components/MonumentButton";
 import { useGetEventQuery } from "../store/eventSlice";
+import { useGetMonumentsQuery } from "../store/monumentSlice";
 
 const EventDetails = () => {
 	const { id } = useParams();
+	const { data: monuments, isFetching: monFetch } = useGetMonumentsQuery();
 	const { data: event, isFetching } = useGetEventQuery(id);
 
 	return (
@@ -50,19 +52,32 @@ const EventDetails = () => {
 							</p>
 						</div>
 					</div>
-
-					{/* {relatedMonuments.length > 0 && (
+					{monFetch ? (
+						<p>Loading...</p>
+					) : (
+						<>
+							{event.monumentids.length > 0 && (
 								<div className="mt-8">
 									<h3 className="text-2xl font-semibold text-center mb-4">
 										Related Monuments
 									</h3>
 									<div className="flex justify-evenly gap-4">
-										{relatedMonuments.map((monument) => (
-											<MonumentButton key={monument.id} monument={monument} />
-										))}
+										{event.monumentids.map(
+											(monument) =>
+												monument && (
+													<MonumentButton
+														key={monument.id}
+														monument={monuments.find(
+															(m) => m.id === monument.id
+														)}
+													/>
+												)
+										)}
 									</div>
 								</div>
-							)} */}
+							)}
+						</>
+					)}
 				</>
 			)}
 		</div>

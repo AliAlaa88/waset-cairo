@@ -17,6 +17,13 @@ export const packSlice = apiSlice.injectEndpoints({
         body: pack,
       }),
     }),
+    updatePack: builder.mutation({
+      query: (pack) => ({
+        url: `${packsUrl}/${pack.id}`,
+        method: "PUT",
+        body: pack,
+      }),
+    }),
     deletePack: builder.mutation({
       query: (id) => ({
         url: `${packsUrl}/${id}`,
@@ -30,5 +37,6 @@ export const {
   useGetPacksQuery,
   useGetPackQuery,
   useAddPackMutation,
+  useUpdatePackMutation,
   useDeletePackMutation,
 } = packSlice;

@@ -23,6 +23,13 @@ export const monumentSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    updateMonument: builder.mutation({
+      query: (monument) => ({
+        url: `${monumentsUrl}/${monument.id}`,
+        method: "PUT",
+        body: monument,
+      }),
+    }),
   }),
 });
 
@@ -31,4 +38,5 @@ export const {
   useGetMonumentQuery,
   useAddMonumentMutation,
   useDeleteMonumentMutation,
+  useUpdateMonumentMutation,
 } = monumentSlice;

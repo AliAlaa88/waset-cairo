@@ -17,6 +17,13 @@ export const eventSlice = apiSlice.injectEndpoints({
         body: event,
       }),
     }),
+    updateEvent: builder.mutation({
+      query: ({ id, ...patch }) => ({
+        url: `${eventsUrl}/${id}`,
+        method: "PUT",
+        body: patch,
+      }),
+    }),
     deleteEvent: builder.mutation({
       query: (id) => ({
         url: `${eventsUrl}/${id}`,
@@ -30,5 +37,6 @@ export const {
   useGetEventsQuery,
   useGetEventQuery,
   useAddEventMutation,
+  useUpdateEventMutation,
   useDeleteEventMutation,
 } = eventSlice;

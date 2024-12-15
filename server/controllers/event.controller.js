@@ -4,7 +4,7 @@ import client from "../dbConfig.js";
 const eventController = {
     getAllEvents: catchAsync(async (req, res, next) => {
         const allEvents = await client.query(
-            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monument ids"
+            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monumentids"
             FROM EVENT LEFT JOIN EVENT_MONUMENT ON ID = EVENTID
             GROUP BY ID ORDER BY ID;`
         );
@@ -16,7 +16,7 @@ const eventController = {
     getEvent: catchAsync(async (req, res, next) => {
         const eventID = req.params.id;
         const event = await client.query(
-            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monument ids"
+            `SELECT ID, NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, ARRAY_AGG(MONUMENTID) AS "monumentids"
             FROM EVENT LEFT JOIN EVENT_MONUMENT ON ID = EVENTID
             WHERE ID = $1
             GROUP BY ID;`,
