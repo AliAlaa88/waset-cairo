@@ -6,36 +6,35 @@ import jwt  from "jsonwebtoken";
 
 const authController = {
 	touristSignup: catchAsync(async (req, res, next) => {
-		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Nationality, Language } = req.body;
-		
-		const hashedPassword = await bcrypt.hash(Password, 12);
+		const { firstName, lastName, username, email, password, gender, phonenumber, birthdate, selectedCountry, selectedLanguage } = req.body;
+		const hashedPassword = await bcrypt.hash(password, 12);
 		const newUser = await client.query(
 			"INSERT INTO Tourist (FName, LName, UserName, Password, Email, Gender, PhoneNumber, BirthDate, Nationality, Language) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
-			[FName, LName, UserName, hashedPassword, Email, Gender, PhoneNum, BirthDate, Nationality, Language]
+			[firstName, lastName, username, hashedPassword, email, gender, phonenumber, birthdate, selectedCountry, selectedLanguage]
 		);
 
 		res.status(201).json({ message: "User created" });
 	}),
 
 	guideSignup: catchAsync(async (req, res, next) => {
-		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate, Language, Specialization } = req.body;
+		const { firstName, lastName, username, email, password, gender, phonenumber, birthdate, selectedLanguage, specialliztion } = req.body;
 		
-		const hashedPassword = await bcrypt.hash(Password, 12);
+		const hashedPassword = await bcrypt.hash(password, 12);
 		const newUser = await client.query(
 			"INSERT INTO Tour_Guide (FName, LName, UserName, Email, Password, Gender, PhoneNumber, BirthDate, Language, Specialization) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)",
-			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate, Language, Specialization]
+			[firstName, lastName, username, email, hashedPassword, gender, phonenumber, birthdate, selectedLanguage, specialliztion]
 		);
 
 		res.status(201).json({ message: "User created" });
 	}),
 
 	operatorSignup: catchAsync(async (req, res, next) => {
-		const { FName, LName, UserName, Email, Password, Gender, PhoneNum, BirthDate } = req.body;
+		const { firstName, lastName, username, email, password, gender, phonenumber, birthdate } = req.body;
 
-		const hashedPassword = await bcrypt.hash(Password, 12);
+		const hashedPassword = await bcrypt.hash(password, 12);
 		const newUser = await client.query(
-			"INSERT INTO Tour_Operator(FName, LName, UserName, Email, Password, Gender, PhoneNumber, BirthDate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
-			[FName, LName, UserName, Email, hashedPassword, Gender, PhoneNum, BirthDate]
+			"INSERT INTO Tour_Operator (FName, LName, UserName, Email, Password, Gender, PhoneNumber, BirthDate) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
+			[firstName, lastName, username, email, hashedPassword, gender, phonenumber, birthdate]
 		);
 
 		res.status(201).json({ message: "User created" });

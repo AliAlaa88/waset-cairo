@@ -7,8 +7,20 @@ export const tourSlice = apiSlice.injectEndpoints({
     getTours: builder.query({
       query: () => ({ url: toursUrl, method: "GET" }),
     }),
+    getToursThatDidntStart: builder.query({
+      query: () => ({ url: `${toursUrl}/didnt-start`, method: "GET" }),
+    }),
     getTour: builder.query({
       query: (id) => `${toursUrl}/${id}`,
+    }),
+    getTouristsGoingToTour: builder.query({
+      query: (tourid) => ({ url: `${toursUrl}/tourists/${tourid}`, method: "GET" }),
+    }),
+    getToursByGuide: builder.query({
+      query: (guideid) => ({ url: `${toursUrl}/guide/${guideid}`, method: "GET" }),
+    }),
+    getTouristTourHistory: builder.query({
+      query: (touristid) => ({ url: `${toursUrl}/tourist/${touristid}`, method: "GET" }),
     }),
     addTour: builder.mutation({
       query: (tour) => ({
@@ -28,7 +40,11 @@ export const tourSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetToursQuery,
-  useGetTourtQuery,
+  useGetToursThatDidntStartQuery,
+  useGetTourQuery,
+  useGetTouristsGoingToTourQuery,
+  useGetToursByGuideQuery,
+  useGetTouristTourHistoryQuery,
   useAddTourMutation,
   useDeleteTourMutation,
 } = tourSlice;

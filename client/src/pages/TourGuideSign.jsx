@@ -1,8 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useState,useEffect} from "react";
+import { useGuideSignupMutation } from "../store/registrationSlice";
 
 function Signup() {
     const navigate = useNavigate();
+    const [guideSignup] = useGuideSignupMutation();
+
     const [code,setcode] = useState('');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -38,9 +41,25 @@ function Signup() {
             .catch((error) => console.error("Error fetching countries:", error));
     }, []);
 
-    function signin(event) {
+    async function signin(event) {
         event.preventDefault();
-        navigate('/');
+		try {
+			const res = await guideSignup({
+				firstName,
+				lastName,
+				username,
+				phonenumber,
+				email,
+				password,
+				birthdate,
+				gender,
+				selectedLanguage,
+				specialliztion,
+			}).unwrap();
+			navigate("/");
+		} catch (err) {
+			console.log(err?.data?.message || err.error);
+		}
     }
 
     return (
@@ -158,9 +177,9 @@ function Signup() {
                         <input
                             type="radio"
                             name="gender"
-                            value="male"
+                            value="M"
                             required
-                            checked={gender === "male"}
+                            checked={gender === "M"}
                             onChange={(e) => setGender(e.target.value)}
                         />
                         Male
@@ -169,8 +188,8 @@ function Signup() {
                         <input
                             type="radio"
                             name="gender"
-                            value="female"
-                            checked={gender === "female"}
+                            value="F"
+                            checked={gender === "F"}
                             onChange={(e) => setGender(e.target.value)}
                         />
                         Female
