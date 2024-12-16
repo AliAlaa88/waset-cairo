@@ -83,6 +83,54 @@ const tourController = {
         }
 
         return res.status(200).json({msg: "Updated Tour Successfully!", data: update.rows});
+    }),
+
+    getTouristsGoingToTour: catchAsync(async (req, res, next) => {
+        const tourID = req.params.tourid;
+        const tourists = await client.query(
+            `SELECT FNAME, LNAME, USERNAME, EMAIL, GENDER, PHONENUMBER, BIRTHDATE, NATIONALITY, LANGUAGE, JOINDATE
+            FROM TOURIST AS T, TICKET AS TK, TOUR AS TR
+            WHERE T.ID = TK.TOURISTID AND TK.TOURID = TR.ID AND TK.TOURID = $1;`,
+            [tourID]
+        );
+        if(!tourists.rowCount) return res.status(404).json({error: "No data found!"});
+
+        return res.status(200).json(tourists.rows);
+    }),
+
+    getToursByGuide: catchAsync(async (req, res, next) => {
+        const guideID = req.params.guideid;
+        const tours = await client.query(
+            `SELECT * FROM TOUR WHERE TOURGUIDEID = $1`,
+            [guideID]
+        );
+
+        if(!tours.rowCount) return res.status(404).json({error: "No data found!"});
+
+        return res.status(200).json(tours.rows);
+    }),
+
+    getToursThatDidntStart: catchAsync(async (req, res, next) => {
+        const tours = await client.query(
+            "SELECT * FROM TOUR WHERE STARTDATE > CURRENT_DATE;"
+        );
+        if(!tours.rowCount) return res.status(404).json({error: "No data found!"});
+
+        return res.status(200).json(tours.rows);
+    }),
+    
+    getTouristTourHistory: catchAsync(async (req, res, next) => {
+        const touristID = req.params.touristid;
+
+        const tours = await client.query(
+            `SELECT T.*
+            FROM TICKET TK JOIN TOUR T ON TK.TOURID = T.ID
+            WHERE TK.TOURISTID = $1;`, [touristID]
+        );
+
+        if(!tours.rowCount) return res.status(404).json({error: "No data found!"});
+
+        return res.status(200).json(tours.rows);
     })
 };
 

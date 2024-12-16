@@ -49,6 +49,12 @@ const authController = {
 			[UserName]
 		);
 
+		if(user.rows[0].banned == "1"){
+			const err = new Error("You are permanently banned!");
+			err.statusCode = 404;
+			return next(err);
+		}
+
 		if (!user.rowCount){
 			const err = new Error("Invalid credentials!");
 			err.statusCode = 400;
