@@ -247,7 +247,7 @@ const Profile = () => {
 					</div>
 
 					<div className="flex items-end">
-						<Link to="/home">
+						<Link to="/tourist-home">
 							<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">
 								<Home className="mr-2" size={20} /> Home
 							</button>

@@ -24,35 +24,35 @@ const Navbar = () => {
 				<div>
 					<ul className="flex items-center w-full text-xl">
 						<li className="text-gray-700 hover:text-white">
-							<Link to="/home">
+							<Link to="/tourist-home">
 								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">
 									<TicketsPlane className="mr-2" size={20} /> Tours
 								</button>
 							</Link>
 						</li>
 						<li className="text-gray-700 hover:text-white">
-							<Link to="/home/tour-packs">
+							<Link to="/tourist-home/tour-packs">
 								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center hover:bg-yellow-400">
 									<Package className="mr-2" size={20} /> Tour Packs
 								</button>
 							</Link>
 						</li>
 						<li className="text-gray-700 hover:text-white">
-							<Link to="/home/events">
+							<Link to="/tourist-home/events">
 								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center hover:bg-yellow-400">
 									<CalendarDays className="mr-2" size={20} /> Events
 								</button>
 							</Link>
 						</li>
 						<li className="text-gray-700 hover:text-white">
-							<Link to="/home/monuments">
+							<Link to="/tourist-home/monuments">
 								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center hover:bg-yellow-400">
 									<Pyramid className="mr-2" size={20} /> Monuments
 								</button>
 							</Link>
 						</li>
 						<li className="text-gray-700 hover:text-white">
-							<Link to="/home/groups">
+							<Link to="/tourist-home/groups">
 								<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center hover:bg-yellow-400">
 									<Users className="mr-2" size={20} /> Groups
 								</button>
@@ -63,7 +63,7 @@ const Navbar = () => {
 
 				{/* Right Section with Profile Link */}
 				<div className="flex items-end text-xl">
-					<Link to="/profile">
+					<Link to="/tourist-home/profile">
 						<button className="bg-transparent text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">
 							<CircleUserRound className="mr-2" size={20} /> Profile
 						</button>

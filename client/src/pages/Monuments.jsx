@@ -13,7 +13,7 @@ const Monuments = () => {
 					title={"Monuments"}
 					description={"Explore the Pharonic Monuments and visit it"}
 					cards={monuments}
-					route={"home/monuments"}
+					route={"tourist-home/monuments"}
 				/>
 			)}
 		</div>

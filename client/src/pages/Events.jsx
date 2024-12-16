@@ -13,7 +13,7 @@ const Events = () => {
 					title={"Events"}
 					description={"Select the Event you like and enjoy your tour"}
 					cards={events}
-					route={"home/events"}
+					route={"tourist-home/events"}
 				/>
 			)}
 		</>

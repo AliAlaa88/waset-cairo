@@ -31,12 +31,15 @@ function Router() {
 				<Route path="/" element={<Login />} />
 
 				<Route path="/sign-up" element={<Signup />} />
-				<Route path="/guide-sign" element={<TourGuideSign/>} />
-				<Route path="/operator-sign" element={<TourOperatorSign/>} />
+				<Route path="/guide-sign" element={<TourGuideSign />} />
+				<Route path="/operator-sign" element={<TourOperatorSign />} />
+				<Route path="/tourist-home/profile">
+					<Route index element={<Profile />} />
+					<Route path="edit" element={<EditProfile />} />
+				</Route>
 
-				<Route path="/home" element={<RootLayout />}>
+				<Route path="tourist-home" element={<RootLayout />}>
 					<Route index element={<Tours />} />
-
 					<Route path="groups">
 						<Route index element={<TouristGroup />} />
 						<Route path=":id" element={<TouristGroupDetails />} />
@@ -59,16 +62,12 @@ function Router() {
 					</Route>
 				</Route>
 
-				<Route path="profile">
-					<Route index element={<Profile />} />
-					<Route path="edit" element={<EditProfile />} />
-				</Route>
 				<Route path="guide-home" element={<TourGuideHomePage />} />
 				<Route path="operator-home" element={<TourOperatorHomePage />} />
 				<Route path="mypacks" element={<MyPackes />} />
-				<Route path="report" element={<Report/>}/>
+				<Route path="report" element={<Report />} />
 				<Route path="*" element={<ErrorPage />} />
-				<Route path="insert-monument" element={<InsertMonument/>} />
+				<Route path="insert-monument" element={<InsertMonument />} />
 			</Routes>
 		</BrowserRouter>
 	);

@@ -41,11 +41,11 @@ const authController = {
 	}),
 
 	touristLogin: catchAsync(async (req, res, next) => {
-		const { UserName, Password } = req.body;
+		const { username, password } = req.body;
 		const role = "tourist";
 		const user = await client.query(
 			"SELECT * FROM Tourist WHERE UserName = $1",
-			[UserName]
+			[username]
 		);
 
 		if(user.rows[0].banned == "1"){
@@ -60,7 +60,7 @@ const authController = {
 			return next(err);
 		}
 
-		const isMatch = await bcrypt.compare(Password, user.rows[0].password);
+		const isMatch = await bcrypt.compare(password, user.rows[0].password);
 		if (!isMatch){
 			const err = new Error("Invalid Credentials!");
 			err.statusCode = 400;
@@ -68,15 +68,15 @@ const authController = {
 		}
 
 		generateToken(res, user.rows[0].id, role); // this adds token to cookie
-		res.status(201).json({ message: "Logged In", data: user.rows });
+		res.status(201).json({ message: "Logged In", body: user.rows });
 	}),
 
 	guideLogin: catchAsync(async (req, res, next) => {
-		const { UserName, Password } = req.body;
+		const { username, password } = req.body;
 		const role = "guide";
 		const user = await client.query(
 			"SELECT * FROM Tour_Guide WHERE UserName = $1",
-			[UserName]
+			[username]
 		);
 
 		if (!user.rowCount){
@@ -85,7 +85,7 @@ const authController = {
 			return next(err);
 		}
 
-		const isMatch = await bcrypt.compare(Password, user.rows[0].password);
+		const isMatch = await bcrypt.compare(password, user.rows[0].password);
 		if (!isMatch){
 			const err = new Error("Invalid Credentials!");
 			err.statusCode = 400;
@@ -93,15 +93,15 @@ const authController = {
 		}
 
 		generateToken(res, user.rows[0].id, role); // this adds token to cookie
-		res.status(201).json({ message: "Logged In", data: user });
+		res.status(201).json({ message: "Logged In", body: user });
 	}),
 
 	operatorLogin: catchAsync(async (req, res, next) => {
-		const { UserName, Password } = req.body;
+		const { username, password } = req.body;
 		const role = "operator";
 		const user = await client.query(
 			"SELECT * FROM Tour_Operator WHERE UserName = $1",
-			[UserName]
+			[username]
 		);
 		if (!user.rowCount){
 			const err = new Error("Invalid credentials!");
@@ -109,7 +109,7 @@ const authController = {
 			return next(err);
 		}
 		
-		const isMatch = await bcrypt.compare(Password, user.rows[0].password);
+		const isMatch = await bcrypt.compare(password, user.rows[0].password);
 		if (!isMatch){
 			const err = new Error("Invalid Credentials!");
 			err.statusCode = 400;
@@ -117,7 +117,7 @@ const authController = {
 		}
 
 		generateToken(res, user.rows[0].id, role); // this adds token to cookie
-		res.status(201).json({ message: "Logged In", data: user });
+		res.status(201).json({ message: "Logged In", body: user });
 	}),
 
 	touristEditProfile: catchAsync(async (req, res, next) => {
