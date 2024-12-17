@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { setCredentials } from "../store/authSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
 	useTouristLoginMutation,
 	useGuideLoginMutation,
@@ -19,6 +19,14 @@ function Login() {
 
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+	useEffect(() => {
+		if (userInfo) {
+			navigate(`/${role}-home`);
+		}
+	}, [userInfo]);
 
 	const Logclik = async (event) => {
 		event.preventDefault();
@@ -41,9 +49,9 @@ function Login() {
 						alert("Please select a role");
 						break;
 				}
-        // dispatch(setCredentials({ ...res?.body }));
-        console.log(res?.body);
-				navigate(`/${role}-home`);
+        dispatch(setCredentials({ ...res?.body }));
+        console.log(res);
+				navigate(`/`);
 			} catch (err) {
 				console.log(err?.data?.message || err.error);
 			}
