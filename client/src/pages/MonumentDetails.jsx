@@ -22,6 +22,7 @@ const MonumentDetails = () => {
 								// Display the first photo
 								alt={monument.name}
 								className="w-full h-64 object-cover rounded"
+								src={monument.photos? monument.photos[0] : "https://th.bing.com/th/id/R.2351827d896995f1f6e12e89176f3d9b?rik=t258KJio4%2bo0PA&pid=ImgRaw&r=0"}
 							/>
 						</div>
 

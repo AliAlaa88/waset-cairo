@@ -2,7 +2,7 @@ import catchAsync from "../utils/catchAsync.js";
 import client from "../dbConfig.js";
 
 const userController = {
-  getAllTourists: catchAsync(async (req, res) => {
+  getAllTourists: catchAsync(async (req, res, next) => {
     if(req.role != "operator"){
       const err = new Error("You are not allowed to do this action!");
       err.statusCode = 400;
@@ -20,7 +20,7 @@ const userController = {
     res.status(200).json({ tourists: tourists.rows });
   }),
 
-  getTourist: catchAsync(async (req, res) => {
+  getTourist: catchAsync(async (req, res, next) => {
     if(req.role != "operator"){
       const err = new Error("You are not allowed to do this action!");
       err.statusCode = 400;
@@ -42,7 +42,7 @@ const userController = {
     res.status(200).json({ tourist: tourist.rows[0] });
   }),
 
-  getAllGuides: catchAsync(async (req, res) => {
+  getAllGuides: catchAsync(async (req, res, next) => {
     if(req.role != "operator"){
       const err = new Error("You are not allowed to do this action!");
       err.statusCode = 400;
@@ -60,12 +60,12 @@ const userController = {
     res.status(200).json({ guides: guides.rows });
   }),
 
-  getGuide: catchAsync(async (req, res) => {
-    if(req.role != "operator"){
-      const err = new Error("You are not allowed to do this action!");
-      err.statusCode = 400;
-      return next(err);
-    }
+  getGuide: catchAsync(async (req, res, next) => {
+    // if(req.role != "operator"){
+    //   const err = new Error("You are not allowed to do this action!");
+    //   err.statusCode = 400;
+    //   return next(err);
+    // }
 
     const { guideID } = req.params;
     const guide = await client.query(
@@ -207,7 +207,30 @@ const userController = {
     if(!insights.rowCount) return res.status(404).json({error: "No data found!"});
 
     return res.status(200).json(insights.rows);
-  })
+  }),
+
+  getTouristsGoingToGuideTours: catchAsync(async (req, res, next) => {
+    const guideID = req.params.id;
+    // if(req.role != "guide"){
+    //     const err = new Error("You are not allowed to do this action!");
+    //     err.statusCode = 400;
+    //     return next(err);
+    // }
+
+    const tourists = await client.query(
+      `SELECT T.ID, T.FNAME, T.LNAME, T.USERNAME, T.EMAIL, T.PHONENUMBER, TK.TOURID, TR.STARTDATE, COALESCE(TP.NAME, E.NAME) AS tripName
+      FROM TOURIST T
+      JOIN TICKET TK ON T.ID = TK.TOURISTID
+      JOIN TOUR TR ON TK.TOURID = TR.ID
+      LEFT JOIN TOUR_PACKAGE TP ON TP.ID = TR.TOURPACKAGEID
+      LEFT JOIN EVENT E ON E.ID = TR.EVENTID
+      WHERE TR.TOURGUIDEID = $1 AND TR.STARTDATE > CURRENT_DATE;`, [guideID]
+    )
+
+    if(!tourists.rowCount) return res.status(404).json({error: "No data found!"});
+
+    return res.status(200).json(tourists.rows);
+})
 };
 
 export default userController;
