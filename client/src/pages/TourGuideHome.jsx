@@ -11,7 +11,6 @@ import {
 import PendingToursContent from './guide home page components/PendingTours';
 import ToursHistoryContent from './guide home page components/ToursHistory';
 import ClientManagementContent from './guide home page components/ClientManagement';
-import NotificationsContent from './guide home page components/Notifications';
 import SettingsContent from './guide home page components/Settings';
 
 const TourGuideHome = () => {
@@ -34,11 +33,6 @@ const TourGuideHome = () => {
       label: 'Client Management' 
     },
     { 
-      id: 'notifications', 
-      icon: <Bell className="w-5 h-5" />, 
-      label: 'Notifications' 
-    },
-    { 
       id: 'settings', 
       icon: <Settings className="w-5 h-5" />, 
       label: 'Settings' 
@@ -53,8 +47,6 @@ const TourGuideHome = () => {
         return <ToursHistoryContent />;
       case 'clientManagement':
         return <ClientManagementContent />;
-      case 'notifications':
-        return <NotificationsContent />;
       case 'settings':
         return <SettingsContent />;
       default:

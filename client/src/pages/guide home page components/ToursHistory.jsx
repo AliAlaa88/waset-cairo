@@ -3,38 +3,43 @@ import { Link } from 'react-router-dom';
 import { 
     Star
 } from 'lucide-react';
+import { useGetToursByGuideQuery } from '../../store/tourSlice';
 
 const ToursHistoryContent = () => {
-    const tourHistory = [
-    {
-        id: 1,
-        tourName: "Pyramids of Giza Expedition",
-        date: "May 15, 2024",
-        location: "Giza, Cairo",
-        duration: "Full Day",
-        groupSize: 12,
-        averageRating: 2.7
-    },
-    {
-        id: 2,
-        tourName: "Luxor Temple Historical Journey",
-        date: "April 22, 2024", 
-        location: "Luxor, Upper Egypt",
-        duration: "Half Day",
-        groupSize: 8,
-        averageRating: 4.9
-    },
-    {
-        id: 3,
-        tourName: "Red Sea Beach Escape",
-        date: "March 10, 2024",
-        location: "Hurghada",
-        duration: "Full Day",
-        groupSize: 6,
-        averageRating: 3.5
-    }
-    ];
-    
+    //hard coded guide id
+    const {data: tourHistory, isFetching} = useGetToursByGuideQuery(1);
+
+    //dummy data
+    // const tourHistory = [
+    // {
+    //     id: 1,
+    //     tourName: "Pyramids of Giza Expedition",
+    //     date: "May 15, 2024",
+    //     location: "Giza, Cairo",
+    //     duration: "Full Day",
+    //     groupSize: 12,
+    //     averageRating: 2.7
+    // },
+    // {
+    //     id: 2,
+    //     tourName: "Luxor Temple Historical Journey",
+    //     date: "April 22, 2024", 
+    //     location: "Luxor, Upper Egypt",
+    //     duration: "Half Day",
+    //     groupSize: 8,
+    //     averageRating: 4.9
+    // },
+    // {
+    //     id: 3,
+    //     tourName: "Red Sea Beach Escape",
+    //     date: "March 10, 2024",
+    //     location: "Hurghada",
+    //     duration: "Full Day",
+    //     groupSize: 6,
+    //     averageRating: 3.5
+    // }
+    // ];
+    if(isFetching) return (<p>Loading...</p>);
     return (
     <div className="h-screen p-6">
         <div className="container mx-auto bg-white/80 rounded-2xl shadow-xl border border-gold-500 p-8">
@@ -48,21 +53,21 @@ const ToursHistoryContent = () => {
                     className="flex items-center bg-amber-50 rounded-xl p-6 shadow-md border border-gold-300 hover:bg-amber-100 transition-all duration-300"
                 >
                     <div className="flex-grow">
-                        <h2 className="text-2xl text-gold-700 mb-2">
-                            {tour.tourName}
+                        <h2 className="text-2xl text-yellow-700 mb-2">
+                            {tour.tripname}
                         </h2>
                         <div className="grid grid-cols-3 gap-4 text-gold-600">
                         <p>
-                            <span className="font-bold">Date:</span> {tour.date}
+                            <span className="font-bold">Date:</span> {tour.startdate.split("T")[0]}
                         </p>
                         <p>
-                            <span className="font-bold">Location:</span> {tour.location}
+                            <span className="font-bold">Location:</span> {tour.meetinglocation}
                         </p>
                         <p>
-                            <span className="font-bold">Duration:</span> {tour.duration}
+                            <span className="font-bold">Duration:</span> {tour.duration} hours
                         </p>
                         <p>
-                            <span className="font-bold">Group Size:</span> {tour.groupSize}
+                            <span className="font-bold">Group Size:</span> {tour.totaltickets}
                         </p>
                         <div className="flex items-center">
                             <span className="font-bold mr-2">Average Rating:</span>
@@ -71,17 +76,17 @@ const ToursHistoryContent = () => {
                                 <Star 
                                     key={index} 
                                     className={`w-5 h-5 ${
-                                    index < Math.round(tour.averageRating) 
+                                    index < Math.round(tour.averagerating) 
                                         ? 'text-yellow-500' 
                                         : 'text-gray-300'
                                     }`}
-                                    fill={index < Math.round(tour.averageRating) 
+                                    fill={index < Math.round(tour.averagerating) 
                                     ? '#F59E0B' 
                                     : 'none'}
                                 />
                                 ))}
                                 <span className="ml-2 text-gold-600">
-                                    ({tour.averageRating})
+                                    ({tour.averagerating || 0})
                                 </span>
                             </div>
                         </div>

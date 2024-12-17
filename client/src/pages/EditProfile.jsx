@@ -10,7 +10,6 @@ function EditProfile() {
 	const [lastName, setLastName] = useState(profileData.lastName);
 	const [username, setUsername] = useState(profileData.username);
 	const [email, setEmail] = useState(profileData.email);
-	const [password, setPassword] = useState(profileData.password);
 	const [birthdate, setBirthdate] = useState(profileData.birthdate);
 	const [gender, setGender] = useState(profileData.gender);
 
@@ -56,14 +55,6 @@ function EditProfile() {
 						required
 						value={email}
 						onChange={(e) => setEmail(e.target.value)}
-					/>
-					<input
-						className="signup-input"
-						type="password"
-						placeholder="Password"
-						required
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
 					/>
 					<label className="signup-label signup-birth-date">
 						<span>Birth Date:</span>

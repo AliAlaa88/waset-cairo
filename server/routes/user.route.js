@@ -9,8 +9,9 @@ userRouter.put('/tourists/promote/:id', authMiddleware, userController.promoteTo
 userRouter.put('/tourists/ban/:id', authMiddleware, userController.banTourist);
 userRouter.get('/tourists/fav', authMiddleware, userController.getTouristFavExperience);
 userRouter.get('/tourists/insights/:touristid', authMiddleware, userController.getTouristInsights);
+userRouter.get('/guides/touristsInTours/:id', userController.getTouristsGoingToGuideTours);
 userRouter.get('/guides', authMiddleware, userController.getAllGuides)
-userRouter.get('/guides/:guideID', authMiddleware, userController.getGuide)
+userRouter.get('/guides/:guideID', userController.getGuide)
 userRouter.put('/guides/promote/:id', authMiddleware, userController.promoteGuide);
 userRouter.get('/operators/packs/:opid', authMiddleware, userController.getOperatorPackages);
 userRouter.get('/operators/events/:opid', authMiddleware, userController.getOperatorEvents);

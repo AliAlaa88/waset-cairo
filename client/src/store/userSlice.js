@@ -34,6 +34,12 @@ export const userSlice = apiSlice.injectEndpoints({
 				method: "GET",
 			}),
 		}),
+		getTouristsGoingToGuideTours: builder.query({
+			query: (guideid) => ({
+				url: `${userUrl}/guides/touristsInTours/${guideid}`,
+				method: "GET"
+			})
+		}),
 		promoteGuide: builder.mutation({
 			query: (id) => ({
 				url: `${userUrl}/guides/promote/${id}`,
@@ -64,6 +70,7 @@ export const {
   useBanTouristMutation,
   useGetTouristFavExperienceQuery,
   useGetTouristInsightsQuery,
+  useGetTouristsGoingToGuideToursQuery,
   usePromoteGuideMutation,
   useGetOperatorPackagesQuery,
   useGetOperatorEventsQuery,

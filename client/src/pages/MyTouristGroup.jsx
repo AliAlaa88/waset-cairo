@@ -12,7 +12,7 @@ function MyTouristGroups() {
 				<h2 className="OGroup">My Tourist Groups</h2>
 				<div className="group_to_join">
 					<div className="LGroup">
-						{groups.map((g) => (
+						{groups?.map((g) => (
 							<div key={g.id} className="group-item">
 								{g.name}
 								<NavLink

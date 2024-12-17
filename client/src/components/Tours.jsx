@@ -49,7 +49,7 @@ const Tours = () => {
 						Available Tours
 					</h2>
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-black">
-						{tours.map((tour) => {
+						{tours?.map((tour) => {
 							const pack = packs.find((pack) => pack.id === tour.tourpackageid);
 							const event = events.find((event) => event.id === tour.eventid);
 							if (pack)
@@ -60,10 +60,10 @@ const Tours = () => {
 									>
 										<h3 className="text-xl font-semibold mb-2">{pack.name}</h3>
 										<p className="text-sm text-gray-500 mb-1">
-											Start Date: {tour.startdate}
+											Start Date: {tour.startdate.split("T")[0]}
 										</p>
 										<p className="text-sm text-gray-500 mb-6">
-											End Date: {tour.enddate}
+											End Date: {tour.enddate.split("T")[0]}
 										</p>
 
 										<div className="flex items-center justify-between mb-4">
@@ -103,10 +103,10 @@ const Tours = () => {
 									>
 										<h3 className="text-xl font-semibold mb-2">{event.name}</h3>
 										<p className="text-sm text-gray-500 mb-1">
-											Start Date: {tour.startdate}
+											Start Date: {tour.startdate.split("T")[0]}
 										</p>
 										<p className="text-sm text-gray-500 mb-6">
-											End Date: {tour.enddate}
+											End Date: {tour.enddate.split("T")[0]}
 										</p>
 
 										<div className="flex items-center justify-between mb-4">
@@ -146,10 +146,10 @@ const Tours = () => {
 									<>
 										<h3 className="text-xl font-semibold mb-2">No-Pack Tour</h3>
 										<p className="text-sm text-gray-500 mb-1">
-											Start Date: {tour.startdate}
+											Start Date: {tour.startdate.split("T")[0]}
 										</p>
 										<p className="text-sm text-gray-500 mb-6">
-											End Date: {tour.enddate}
+											End Date: {tour.enddate.split("T")[0]}
 										</p>
 
 										<div className="flex items-center justify-between mb-4">

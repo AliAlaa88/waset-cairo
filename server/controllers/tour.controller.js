@@ -101,7 +101,21 @@ const tourController = {
     getToursByGuide: catchAsync(async (req, res, next) => {
         const guideID = req.params.guideid;
         const tours = await client.query(
-            `SELECT * FROM TOUR WHERE TOURGUIDEID = $1`,
+            `SELECT TR.ID as id, 
+            TR.STARTDATE AS startdate,
+            COALESCE(TP.NAME, E.NAME) AS tripName,
+            COALESCE(TP.MEETINGLOCATION, E.MEETINGLOCATION) AS meetingLocation,
+            COALESCE(TP.DURATION, E.DURATION) AS duration,
+            COUNT(TK.ID) AS totalTickets,
+            AVG(F.RATING) AS averageRating
+            FROM TOUR TR
+            LEFT JOIN TOUR_PACKAGE TP ON TR.TOURPACKAGEID = TP.ID
+            LEFT JOIN EVENT E ON TR.EVENTID = E.ID
+            LEFT JOIN TICKET TK ON TR.ID = TK.TOURID
+            LEFT JOIN TOURIST_FEEDBACK TF ON TR.ID = TF.TOURID
+            LEFT JOIN FEEDBACK F ON TF.FEEDBACKID = F.ID
+            WHERE TR.TOURGUIDEID = $1
+            GROUP BY TR.ID, TR.STARTDATE, TP.NAME, TP.MEETINGLOCATION, TP.DURATION, E.NAME, E.MEETINGLOCATION, E.DURATION;`,
             [guideID]
         );
 
