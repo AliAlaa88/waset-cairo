@@ -4,7 +4,7 @@ import { useGetTouristsGoingToGuideToursQuery } from '../../store/userSlice';
 
 const ClientManagementContent = () => {
     //hard coded guide id 1 here.. should be replaced with current logged in guide id.
-    const {data: clients, isFetching} = useGetTouristsGoingToGuideToursQuery(1);
+    const {data: clients, isFetching, isError} = useGetTouristsGoingToGuideToursQuery(1);
 
     //dummy data for initial testing
     // const [clientsDummy, setClientsDummy] = useState([
@@ -38,6 +38,7 @@ const ClientManagementContent = () => {
     // ]);
     
     if(isFetching) return (<p>Loading...</p>);
+    if(isError) return(<p>An error has occured!</p>);
     return (
         <div className="bg-white p-6 rounded-xl shadow-md">
             <div className="flex justify-between items-center mb-6">

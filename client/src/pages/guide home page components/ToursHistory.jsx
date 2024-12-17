@@ -7,7 +7,7 @@ import { useGetToursByGuideQuery } from '../../store/tourSlice';
 
 const ToursHistoryContent = () => {
     //hard coded guide id
-    const {data: tourHistory, isFetching} = useGetToursByGuideQuery(1);
+    const {data: tourHistory, isFetching, isError} = useGetToursByGuideQuery(1);
 
     //dummy data
     // const tourHistory = [
@@ -40,6 +40,7 @@ const ToursHistoryContent = () => {
     // }
     // ];
     if(isFetching) return (<p>Loading...</p>);
+    if(isError) return (<p>An error has occured!</p>);
     return (
     <div className="h-screen p-6">
         <div className="container mx-auto bg-white/80 rounded-2xl shadow-xl border border-gold-500 p-8">

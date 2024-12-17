@@ -32,11 +32,11 @@ const monumentController = {
     createMonument: catchAsync(async (req, res, next) => {
         const {name, description, location, era, family, openingHours, photos} = req.body;
         
-        // if(req.role != "operator"){
-        //     const err = new Error("You are not allowed to do this action!");
-        //     err.statusCode = 400;
-        //     return next(err);
-        // }
+        if(req.role != "operator"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
 
         const create = await client.query(
             `INSERT INTO MONUMENT(NAME, DESCRIPTION, LOCATION, ERA, FAMILY, OPENINGHOURS)
