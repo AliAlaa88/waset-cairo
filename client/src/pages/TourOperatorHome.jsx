@@ -13,8 +13,8 @@ import {
 import logo from '../assets/8d01c511-6aae-4f11-9dfb-b4f3b8cd822a.webp'
 import MyPackes from './myPackeges';
 import MyEvents from './myEvents';
-import { useGetToursQuery } from '../store/tourSlice';
-import { useGetTouristsQuery } from '../store/userSlice';
+import { useGetToursThatDidntStartQuery } from '../store/tourSlice';
+import { useGetOperatorDashboardQuery, useGetCurrUserDataQuery, useGetOperatorEventsQuery, useGetOperatorPackagesQuery } from '../store/userSlice';
 import { useSelector } from 'react-redux';
 import UnauthorizedPage from './UnauthorizedPage';
 import { useOperatorLogoutMutation } from '../store/registrationSlice';
@@ -49,8 +49,11 @@ const TourOperatorHome = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [activeModal, setActiveModal] = useState("");
 
-  const {data: tours, isFetching: toursFetching, isError: tourError} = useGetToursQuery();
-  const {data: tourists, isFetching: touristFetching, isError: touristError} = useGetTouristsQuery();
+  const {data: tours, isFetching: toursFetching, isError: tourError} = useGetToursThatDidntStartQuery();
+  const {data: dashboard, isFetching: dashboardFetching, isError: dashboardError} = useGetOperatorDashboardQuery();
+  const {data: currUser, isFetching: currUserFetching, isError: currUserError} = useGetCurrUserDataQuery();
+  
+
   const {userInfo} = useSelector((state) => state.auth);
 
   const [operatorLogout] = useOperatorLogoutMutation();
@@ -164,13 +167,13 @@ const TourOperatorHome = () => {
       case 'dashboard':
         return (
           <div className="bg-gradient-to-br from-amber-100 to-amber-200 p-8 rounded-xl shadow-lg">
-            <h2 className="text-3xl font-bold text-amber-900 mb-6 text-center">Hi {mockUsers[0].name}!</h2>
+            <h2 className="text-3xl font-bold text-amber-900 mb-6 text-center">Hi {currUser?.fname}!</h2>
             <h2 className="text-2xl font-bold text-amber-900 mb-6">Dashboard Overview</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                { title: 'Total Tours', value: tours?.length, color: 'text-amber-700' },
-                { title: 'Total Customers', value: tourists?.length, color: 'text-amber-700' },
-                { title: 'Total Revenue', value: '45,678 LE', color: 'text-amber-700' }
+                { title: 'Total Tours', value: dashboard? dashboard[0].totaltours : 0, color: 'text-amber-700' },
+                { title: 'Total Customers', value: dashboard? dashboard[0].totalcustomers : 0, color: 'text-amber-700' },
+                { title: 'Total Revenue', value: (dashboard? dashboard[0].totalrevenue : 0) + " LE", color: 'text-amber-700' }
               ].map((card, index) => (
                 <div 
                   key={index} 
@@ -225,7 +228,7 @@ const TourOperatorHome = () => {
             </div>
             <br/>
             <div className="grid md:grid-cols-2 gap-6">
-              {mockTours.map(tour => (
+              {tours?.map(tour => (
                 <div 
                   key={tour.id} 
                   className="bg-white rounded-xl shadow-md p-6 border-2 border-amber-200 hover:scale-105 transition-transform"
@@ -233,8 +236,8 @@ const TourOperatorHome = () => {
                   <h3 className="text-2xl font-bold text-amber-900 mb-4">{tour.name}</h3>
                   <div className="space-y-2 text-amber-800">
                     <p>Price: {tour.price} LE</p>
-                    <p>Capacity: {tour.capacity}</p>
-                    <p>Booked: {tour.currentBookings}</p>
+                    <p>Capacity: {tour.ticketcapacity}</p>
+                    <p>Booked: {tour.bookedtickets}</p>
                     <button onClick={() => {setActiveModal("tour")}} className="w-full bg-amber-600 text-white py-2 rounded-md mt-4 hover:bg-amber-700">
                       Manage Tour
                     </button>
@@ -263,8 +266,9 @@ const TourOperatorHome = () => {
             <div className="space-y-4">
               <div className="border-b pb-4">
                 <h3 className="font-semibold text-amber-800 mb-2">Profile Information</h3>
-                <p className="text-sm text-gray-600">Name: {mockUsers[0].name}</p>
-                <p className="text-sm text-gray-600">Email: {mockUsers[0].email}</p>
+                <p className="text-sm text-gray-600">Name: {currUser?.fname}</p>
+                <p className="text-sm text-gray-600">Username: {currUser?.username}</p> 
+                <p className="text-sm text-gray-600">Email: {currUser?.email}</p>
                 <br/>
                 <Link>
 								  <button className="bg-amber-700 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-amber-800">
@@ -294,7 +298,6 @@ const TourOperatorHome = () => {
   };
 
   if(!userInfo || userInfo.role != "operator") return <UnauthorizedPage/>
-  
   return (
     <div className="flex min-h-screen bg-amber-50">
       {/*Sidebar*/}

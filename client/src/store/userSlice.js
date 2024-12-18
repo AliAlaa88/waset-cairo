@@ -51,19 +51,33 @@ export const userSlice = apiSlice.injectEndpoints({
 			}),
 		}),
 		getOperatorPackages: builder.query({
-			query: (opid) => ({
-				url: `${userUrl}/operators/packs/${opid}`,
+			query: () => ({
+				url: `${userUrl}/operators/packs`,
 				method: "GET",
 				credentials: 'include',
 			}),
 		}),
 		getOperatorEvents: builder.query({
-			query: (opid) => ({
-				url: `${userUrl}/operators/events/${opid}`,
+			query: () => ({
+				url: `${userUrl}/operators/events`,
 				method: "GET",
 				credentials: 'include',
 			}),
 		}),
+		getOperatorDashboard: builder.query({
+			query: () =>({
+				url: `${userUrl}/operators/dashboard`,
+				method: "GET",
+				credentials: "include"
+			})
+		}),
+		getCurrUserData: builder.query({
+			query: () => ({
+				url: `${userUrl}/currUser`,
+				method: "GET",
+				credentials: "include"
+			})
+		})
 	}),
 });
 
@@ -80,4 +94,6 @@ export const {
 	usePromoteGuideMutation,
 	useGetOperatorPackagesQuery,
 	useGetOperatorEventsQuery,
+	useGetOperatorDashboardQuery,
+	useGetCurrUserDataQuery
 } = userSlice;

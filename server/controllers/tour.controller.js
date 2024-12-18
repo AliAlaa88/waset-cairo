@@ -126,8 +126,16 @@ const tourController = {
 
     getToursThatDidntStart: catchAsync(async (req, res, next) => {
         const tours = await client.query(
-            "SELECT * FROM TOUR WHERE STARTDATE > CURRENT_DATE;"
+            `SELECT COALESCE(TP.NAME, E.NAME) AS name,
+            TK.PRICE, TR.TICKETCAPACITY, COUNT(TK.ID) AS bookedTickets
+            FROM TOUR TR
+            JOIN TICKET TK ON TK.TOURID = TR.ID
+            LEFT JOIN TOUR_PACKAGE TP ON TP.ID = TR.TOURPACKAGEID
+            LEFT JOIN EVENT E ON E.ID = TR.EVENTID
+            WHERE STARTDATE > CURRENT_DATE
+            GROUP BY TR.ID, TP.NAME, E.NAME, TK.PRICE, TR.TICKETCAPACITY;`
         );
+
         if(!tours.rowCount) return res.status(404).json({error: "No data found!"});
 
         return res.status(200).json(tours.rows);

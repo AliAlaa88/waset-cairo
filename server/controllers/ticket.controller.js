@@ -29,6 +29,17 @@ const ticketController = {
       return next(err);
     }
 
+    const capacity = await client.query(
+      `SELECT TR.TICKETCAPACITY,
+      COUNT(TK.ID) AS tickets
+      FROM TOUR TR JOIN TICKET TK ON TR.ID = TK.TOURID 
+      WHERE TR.ID = $1
+      GROUP BY TR.ID, TR.TICKETCAPACITY`,
+      [tourID]
+    );
+
+    if(capacity.rows[0].ticketcapacity === capacity.rows[0].tickets) return res.status(404).json({error: "Tour is currently on full capacity!"});
+
     const ticket = await client.query(
       "INSERT INTO Ticket(TouristID, TourID, Price) VALUES ($1, $2, $3)",
       [touristID, tourID, price]

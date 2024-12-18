@@ -23,7 +23,7 @@ const TourGuideHome = () => {
   const {data: guides, isFetching, isError} = useGetGuideQuery(userInfo.id);
   const navigate = useNavigate();
 
-  if(!userInfo || !userInfo.role) return (<UnauthorizedPage/>);
+  if(!userInfo || userInfo.role !== "guide") return (<UnauthorizedPage/>);
 
   const sidebarItems = [
     { 

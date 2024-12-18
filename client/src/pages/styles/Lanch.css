@@ -84,7 +84,7 @@
 .La-submitBtn {
     width: 100%;
     padding: 10px;
-    background-color: #007bff;
+    background-color:darkgoldenrod;
     color: white;
     border: none;
     border-radius: 5px;
@@ -94,5 +94,5 @@
 }
 
 .La-submitBtn:hover {
-    background-color: #0056b3;
+    background-color: goldenrod;
 }

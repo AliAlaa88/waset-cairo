@@ -4,9 +4,13 @@ import { useState } from "react";
 import { useGetToursQuery } from "../store/tourSlice";
 import { useGetPacksQuery } from "../store/packSlice";
 import { useGetEventsQuery } from "../store/eventSlice";
+import { useSelector } from "react-redux";
+import UnauthorizedPage from "../pages/UnauthorizedPage";
 
 const Tours = () => {
 	const [quantity, setQuantity] = useState({});
+
+	const {userInfo} = useSelector((state) => state.auth);
 
 	const handleIncrease = (id) => {
 		let value = quantity[id] ? quantity[id] : 0;
@@ -38,6 +42,8 @@ const Tours = () => {
 	const { data: tours, isFetching: tourFetching } = useGetToursQuery();
 	const { data: packs, isFetching: packsFetch } = useGetPacksQuery();
 	const { data: events, isFetching: eventsFetch } = useGetEventsQuery();
+
+	if(!userInfo || userInfo !== "tourist") return(<UnauthorizedPage/>); //still not working as it should but for now..
 	
 	return (
 		<div className="p-4">

@@ -169,7 +169,7 @@ const userController = {
   }),
 
   getOperatorPackages: catchAsync(async (req, res, next) => {
-    const opID = req.params.opid;
+    const opID = req.user.id;
     const packs = await client.query(
       "SELECT * FROM TOUR_PACKAGE WHERE OPERATORID = $1",
       [opID]
@@ -181,7 +181,7 @@ const userController = {
   }),
 
   getOperatorEvents: catchAsync(async (req, res, next) => {
-    const opID = req.params.opid;
+    const opID = req.user.id;
     const events = await client.query(
       "SELECT * FROM EVENT WHERE OPERATORID = $1",
       [opID]
@@ -240,6 +240,22 @@ const userController = {
       `SELECT * FROM ${role} WHERE ID = $1;`,
       [currUserID]
     );
+
+    return res.status(200).json(data.rows[0]);
+  }),
+
+  getOperatorDashboard: catchAsync(async (req, res, next) => {
+
+    const data = await client.query(
+      `SELECT COUNT(TR.ID) AS totalTours,
+      COUNT(T.ID) AS totalCustomers,
+      SUM(TK.PRICE) AS totalRevenue
+      FROM TOUR TR
+      JOIN TICKET TK ON TK.TOURID = TR.ID
+      JOIN TOURIST T ON T.ID = TK.TOURISTID;`
+    );
+
+    if(!data.rowCount) return res.status(404).json({error: "No data found!"});
 
     return res.status(200).json(data.rows);
   })

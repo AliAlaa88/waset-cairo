@@ -12,7 +12,9 @@ userRouter.get('/guides/touristsInTours/:id', userController.getTouristsGoingToG
 userRouter.get('/guides', userController.getAllGuides)
 userRouter.get('/guides/:guideID', userController.getGuide)
 userRouter.put('/guides/promote/:id', userController.promoteGuide);
-userRouter.get('/operators/packs/:opid', userController.getOperatorPackages);
-userRouter.get('/operators/events/:opid', userController.getOperatorEvents);
+userRouter.get('/operators/packs', userController.getOperatorPackages);
+userRouter.get('/operators/events', userController.getOperatorEvents);
+userRouter.get('/operators/dashboard', userController.getOperatorDashboard);
+userRouter.get('/currUser', userController.getCurrUserData);
 
 export default userRouter
