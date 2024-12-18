@@ -21,36 +21,22 @@ import { clearCredentials } from "../store/authSlice";
 
 const Profile = () => {
 	const [touristLogout] = useTouristLogoutMutation();
-	const [guideLogout] = useGuideLogoutMutation();
-	const [operatorLogout] = useOperatorLogoutMutation();
+	
 	const role = useSelector((state) => state.auth.userInfo.role ?? null);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+
 	const handleLogout = async (event) => {
 		event.preventDefault();
 		try {
-			let res;
-			switch (role) {
-				case "tourist":
-					res = await touristLogout().unwrap();
-					break;
-				case "guide":
-					res = await guideLogout().unwrap();
-					break;
-				case "operator":
-					res = await operatorLogout().unwrap();
-					break;
-				default:
-					alert("Please select a role");
-					break;
-			}
+			const res = await touristLogout().unwrap();
 			dispatch(clearCredentials({ ...res?.body }));
-			console.log(res);
 			navigate(`/`);
 		} catch (err) {
 			console.log(err?.data?.message || err.error);
 		}
 	};
+
 	const [activeTab, setActiveTab] = useState("overview");
 	const profileData = useSelector((state) => state.ui.profileData);
 

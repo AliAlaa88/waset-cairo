@@ -5,7 +5,7 @@
     font-family: 'Arial', sans-serif;
     background: linear-gradient(to bottom right, #67C9E6, #6AAACB);
     color: #fff;
-    background-image: url("C:\Users\pc\Documents\GitHub\testpage\my-react-app\src\assets\package img.jpg");
+    background-image: url("../../assets/package img.jpg");
 }
 
 .creP-contaner {
@@ -95,12 +95,12 @@ textarea.creP-input {
     background: #f9f9f9;
 }
 
-ul {
+.creP-ul {
     list-style: none;
     padding: 0;
 }
 
-ul li {
+.creP-li{
     background: #67C9E6;
     color: #fff;
     padding: 5px;

@@ -166,9 +166,9 @@ function CreatePack(){
                             </select>
                             <br/>
                             <h3>selected Monuments</h3>
-                            <ul>
+                            <ul className="creP-ul">
                                 {selectedMonument.map((option)=>(
-                                    <li key={option}>{option}</li>
+                                    <li className="creP-li" key={option}>{option}</li>
                                 ))}
 
 

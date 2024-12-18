@@ -2,9 +2,28 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import { Edit } from 'lucide-react';
 import { useGetGuideQuery } from '../../store/userSlice';
+import { useGuideLogoutMutation } from '../../store/registrationSlice';
+import { useDispatch } from 'react-redux';
+import { clearCredentials } from '../../store/authSlice';
+import { useNavigate } from 'react-router-dom';
 
-const SettingsContent = () => {
-    const {data: guide, isFetching, isError} = useGetGuideQuery(1);
+const SettingsContent = (props) => {
+    const {data: guide, isFetching, isError} = useGetGuideQuery(props.userInfo.id);
+
+    const [guideLogout] = useGuideLogoutMutation();
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogout = async (event) => {
+		event.preventDefault();
+		try {
+			const res = await guideLogout().unwrap();
+			dispatch(clearCredentials({ ...res?.body }));
+			navigate(`/`);
+		} catch (err) {
+			console.log(err?.data?.message || err);
+		}
+	};
 
     if(isFetching) return(<p>Loading...</p>);
     if(isError) return(<p>An error has occured!</p>);
@@ -32,7 +51,7 @@ const SettingsContent = () => {
                 </div>
                 <div>
                     <hr/><br/>
-                    <button className="bg-amber-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-800 transition">
+                    <button onClick={handleLogout} className="bg-amber-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-800 transition">
                         Logout 
                     </button>
                 </div>

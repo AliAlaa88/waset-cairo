@@ -15,6 +15,12 @@ import MyPackes from './myPackeges';
 import MyEvents from './myEvents';
 import { useGetToursQuery } from '../store/tourSlice';
 import { useGetTouristsQuery } from '../store/userSlice';
+import { useSelector } from 'react-redux';
+import UnauthorizedPage from './UnauthorizedPage';
+import { useOperatorLogoutMutation } from '../store/registrationSlice';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { clearCredentials } from '../store/authSlice';
 
 //test data
 const mockUsers = [
@@ -43,8 +49,24 @@ const TourOperatorHome = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [activeModal, setActiveModal] = useState("");
 
-  const {data: tours, isFetching: toursFetching} = useGetToursQuery();
-  const {data: tourists, isFetching: touristFetching} = useGetTouristsQuery();
+  const {data: tours, isFetching: toursFetching, isError: tourError} = useGetToursQuery();
+  const {data: tourists, isFetching: touristFetching, isError: touristError} = useGetTouristsQuery();
+  const {userInfo} = useSelector((state) => state.auth);
+
+  const [operatorLogout] = useOperatorLogoutMutation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = async (event) => {
+		event.preventDefault();
+		try {
+			const res = await operatorLogout().unwrap();
+			dispatch(clearCredentials({ ...res?.body }));
+			navigate(`/`);
+		} catch (err) {
+			console.log(err?.data?.message || err.error);
+		}
+	};
 
   const tourModalInfo = {
     title: "What’s Next for This Tour?",
@@ -258,7 +280,7 @@ const TourOperatorHome = () => {
               </div>
               <div>
               <hr/><br/>
-              <button className="bg-amber-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-800 transition">
+              <button onClick={handleLogout} className="bg-amber-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-800 transition">
                   Logout 
                 </button>
               </div>
@@ -271,6 +293,8 @@ const TourOperatorHome = () => {
     }
   };
 
+  if(!userInfo || userInfo.role != "operator") return <UnauthorizedPage/>
+  
   return (
     <div className="flex min-h-screen bg-amber-50">
       {/*Sidebar*/}

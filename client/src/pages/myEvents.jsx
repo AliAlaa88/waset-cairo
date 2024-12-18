@@ -1,6 +1,7 @@
 
 import React, { useState } from "react";
 import Lanch from "./Lanch";
+import { Link } from "react-router-dom";
 
 function MyEvents() {
     const [activeModal, setActiveModal] = useState(null);
@@ -15,9 +16,11 @@ function MyEvents() {
             <div className="eventToLanch">
 
                 <div className="m-4 flex justify-end">
-                    <button className="w-40 bg-amber-600 text-white py-2 rounded-md hover:bg-amber-700">
-                        Create an Event
-                    </button>
+                    <Link to="/create-event">
+                        <button className="w-40 bg-amber-600 text-white py-2 rounded-md hover:bg-amber-700">
+                            Create an Event
+                        </button>
+                    </Link>
                 </div>
 
                 <div className="ELGroup">

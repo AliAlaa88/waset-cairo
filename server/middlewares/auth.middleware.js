@@ -3,7 +3,6 @@ import catchAsync from '../utils/catchAsync.js';
 import client from '../dbConfig.js';
 
 const authMiddleware = catchAsync(async (req, res, next) => {
-    console.log(req);
     const token = req.cookies?.token;
     if (!token) {
       const err = new Error("Unauthorized!");

@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link, redirect } from "react-router-dom";
 import { setCredentials } from "../store/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
 	useTouristLoginMutation,
 	useGuideLoginMutation,
@@ -24,7 +25,7 @@ function Login() {
 
 	useEffect(() => {
 		if (userInfo) {
-			navigate(`/${role}-home`);
+			navigate(`/${userInfo.role || role}-home`);
 		}
 	}, [userInfo]);
 
@@ -49,11 +50,11 @@ function Login() {
 						alert("Please select a role");
 						break;
 				}
-        dispatch(setCredentials({ ...res?.body }));
-        console.log(res?.body);
-				navigate(`/`);
+				dispatch(setCredentials({ ...res?.body }));
+				navigate(`/`, { state: { triggerFetch: true } });
+			
 			} catch (err) {
-				console.log(err?.data?.message || err.error);
+				console.log(err?.data?.message || err);
 			}
 		}
 	};
@@ -62,7 +63,7 @@ function Login() {
 		<div className="login-container">
 			<div className="login-box">
 				<h1 className="login-title">Login</h1>
-				<form onSubmit={Logclik}>
+				<form onSubmit={Logclik} method="post">
 					<div className="inputs">
 						<div className="input">
 							<input

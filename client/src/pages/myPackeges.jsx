@@ -20,9 +20,11 @@ function MyPackes() {
                             Add a Monument
                         </button>
                     </Link>
-                    <button className="w-48 bg-amber-600 text-white py-2 rounded-md hover:bg-amber-700">
-                        Create a Tour Package
-                    </button>
+                    <Link to="/create-pack">
+                        <button className="w-48 bg-amber-600 text-white py-2 rounded-md hover:bg-amber-700">
+                            Create a Tour Package
+                        </button>
+                    </Link>
                 </div>
                 
                 <div className="LGroup">

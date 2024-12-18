@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { User, Mail, Phone, MapPin, Calendar } from 'lucide-react';
 import { useGetTouristsGoingToGuideToursQuery } from '../../store/userSlice';
 
-const ClientManagementContent = () => {
+const ClientManagementContent = (props) => {
     //hard coded guide id 1 here.. should be replaced with current logged in guide id.
     const {data: clients, isFetching, isError} = useGetTouristsGoingToGuideToursQuery(1);
 

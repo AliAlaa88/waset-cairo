@@ -36,7 +36,7 @@ function SliderSection({ title, description, cards, route }) {
 				modules={[EffectCoverflow, Pagination, Navigation]}
 				className="swiper-container relative flex items-center justify-center"
 			>
-				{cards.map((card) => (
+				{cards?.map((card) => (
 					<SwiperSlide
 						key={card.id}
 						className="slide flex items-center justify-center h-[350px]"

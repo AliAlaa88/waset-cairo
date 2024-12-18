@@ -5,7 +5,7 @@ import {
 } from 'lucide-react';
 import { useGetToursByGuideQuery } from '../../store/tourSlice';
 
-const ToursHistoryContent = () => {
+const ToursHistoryContent = (props) => {
     //hard coded guide id
     const {data: tourHistory, isFetching, isError} = useGetToursByGuideQuery(1);
 

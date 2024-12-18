@@ -17,7 +17,7 @@ const authSlice = createSlice({
     setCredentials: (state, action) => {
       const token = Cookies.get("token");
       state.userInfo = token
-      ? JSON.stringify(jwtDecode(token))
+      ? jwtDecode(token)
       : null;
       localStorage.setItem("userInfo", state.userInfo);
     },

@@ -4,7 +4,7 @@ import {
   XCircle
 } from 'lucide-react';
 
-const PendingToursContent = () => {
+const PendingToursContent = (props) => {
     const [pendingTours, setPendingTours] = useState([
         { 
         id: 1, 

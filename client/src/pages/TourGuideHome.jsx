@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Clipboard, 
   Settings, 
@@ -12,9 +12,18 @@ import PendingToursContent from './guide home page components/PendingTours';
 import ToursHistoryContent from './guide home page components/ToursHistory';
 import ClientManagementContent from './guide home page components/ClientManagement';
 import SettingsContent from './guide home page components/Settings';
+import UnauthorizedPage from './UnauthorizedPage';
+import { useSelector } from 'react-redux';
+import { useGetGuideQuery } from '../store/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 const TourGuideHome = () => {
   const [activeSection, setActiveSection] = useState('assignedTours');
+  const {userInfo} = useSelector((state) => state.auth);
+  const {data: guides, isFetching, isError} = useGetGuideQuery(userInfo.id);
+  const navigate = useNavigate();
+
+  if(!userInfo || !userInfo.role) return (<UnauthorizedPage/>);
 
   const sidebarItems = [
     { 
@@ -42,15 +51,15 @@ const TourGuideHome = () => {
   const renderContent = () => {
     switch(activeSection) {
       case 'assignedTours':
-        return <PendingToursContent />;
+        return <PendingToursContent userInfo={userInfo}/>;
       case 'tourHistory':
-        return <ToursHistoryContent />;
+        return <ToursHistoryContent userInfo={userInfo} />;
       case 'clientManagement':
-        return <ClientManagementContent />;
+        return <ClientManagementContent userInfo={userInfo} />;
       case 'settings':
-        return <SettingsContent />;
+        return <SettingsContent userInfo={userInfo} />;
       default:
-        return <PendingToursContent />;
+        return <PendingToursContent userInfo={userInfo} />;
     }
   };
 

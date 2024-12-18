@@ -23,6 +23,8 @@ import Report from "./pages/Report";
 import TourGuideSign from "./pages/TourGuideSign";
 import TourOperatorSign from "./pages/TourOperatorsign";
 import InsertMonument from "./pages/InsertMonument";
+import CreatePack from "./pages/CreatePacke";
+import CreateEvent from "./pages/CreateEvent"
 
 function Router() {
 	return (
@@ -68,6 +70,8 @@ function Router() {
 				<Route path="report" element={<Report />} />
 				<Route path="*" element={<ErrorPage />} />
 				<Route path="insert-monument" element={<InsertMonument />} />
+				<Route path="create-pack" element={<CreatePack />} />
+				<Route path="create-event" element={<CreateEvent />} />
 			</Routes>
 		</BrowserRouter>
 	);

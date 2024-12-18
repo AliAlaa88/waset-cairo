@@ -5,7 +5,7 @@
     font-family: 'Arial', sans-serif;
     background: linear-gradient(to bottom right, #67C9E6, #6AAACB);
     color: #fff;
-    background-image: url("C:\Users\pc\Documents\GitHub\testpage\my-react-app\src\assets\package img.jpg");
+    background-image: url("../../assets/package img.jpg");
 }
 
 .Ev-contaner {
