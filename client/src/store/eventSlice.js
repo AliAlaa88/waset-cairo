@@ -5,16 +5,24 @@ const eventsUrl = "/events";
 export const eventSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getEvents: builder.query({
-      query: () => ({ url: eventsUrl, method: "GET" }),
+      query: () => ({ 
+        url: eventsUrl, 
+        method: "GET",
+        credentials: 'include'
+      }),
     }),
     getEvent: builder.query({
-      query: (id) => `${eventsUrl}/${id}`,
+      query: (id) => ({
+        url: `${eventsUrl}/${id}`,
+        credentials: 'include'
+      }),
     }),
     addEvent: builder.mutation({
       query: (event) => ({
         url: eventsUrl,
         method: "POST",
         body: event,
+        credentials: 'include'
       }),
     }),
     updateEvent: builder.mutation({
@@ -22,12 +30,14 @@ export const eventSlice = apiSlice.injectEndpoints({
         url: `${eventsUrl}/${id}`,
         method: "PUT",
         body: patch,
+        credentials: 'include'
       }),
     }),
     deleteEvent: builder.mutation({
       query: (id) => ({
         url: `${eventsUrl}/${id}`,
         method: "DELETE",
+        credentials: 'include'
       }),
     }),
   }),

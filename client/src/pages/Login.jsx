@@ -50,7 +50,7 @@ function Login() {
 						break;
 				}
         dispatch(setCredentials({ ...res?.body }));
-        console.log(res);
+        console.log(res?.body);
 				navigate(`/`);
 			} catch (err) {
 				console.log(err?.data?.message || err.error);

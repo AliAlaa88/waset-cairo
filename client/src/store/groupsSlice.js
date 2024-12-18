@@ -5,52 +5,56 @@ const groupsUrl = "/groups";
 export const groupSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getGroups: builder.query({
-      query: () => ({ url: groupsUrl, method: "GET" }),
+      query: () => ({ url: groupsUrl, method: "GET", credentials: "include" }),
     }),
     getGroup: builder.query({
-      query: (id) => `${groupsUrl}/${id}`,
+      query: (id) => ({ url: `${groupsUrl}/${id}`, method: "GET", credentials: "include" }),
     }),
     getGroupMembers: builder.query({
-      query: (id) => `${groupsUrl}/members/${id}`,
+      query: (id) => ({ url: `${groupsUrl}/members/${id}`, method: "GET", credentials: "include" }),
     }),
     getTouristGroups: builder.query({
-      query: (id) => `${groupsUrl}/tourist/${id}`,
+      query: (id) => ({ url: `${groupsUrl}/tourist/${id}`, method: "GET", credentials: "include" }),
     }),
     addGroup: builder.mutation({
       query: (group) => ({
         url: groupsUrl,
         method: "POST",
         body: group,
+        credentials: "include",
       }),
     }),
     deleteGroup: builder.mutation({
       query: (id) => ({
         url: `${groupsUrl}/${id}`,
         method: "DELETE",
+        credentials: "include",
       }),
     }),
     joinGroup: builder.mutation({
       query: (id) => ({
         url: `${groupsUrl}/join/${id}`,
         method: "POST",
+        credentials: "include",
       }),
     }),
     leaveGroup: builder.mutation({
       query: (id) => ({
         url: `${groupsUrl}/leave/${id}`,
         method: "DELETE",
+        credentials: "include",
       }),
     }),
   }),
 });
 
 export const {
-  useGetGroupsQuery,
-  useGetGroupQuery,
-  useGetGroupMembersQuery,
-  useGetTouristGroupsQuery,
-  useAddGroupMutation,
-  useDeleteGroupMutation,
-  useJoinGroupMutation,
-  useLeaveGroupMutation,
+	useGetGroupsQuery,
+	useGetGroupQuery,
+	useGetGroupMembersQuery,
+	useGetTouristGroupsQuery,
+	useAddGroupMutation,
+	useDeleteGroupMutation,
+	useJoinGroupMutation,
+	useLeaveGroupMutation,
 } = groupSlice;

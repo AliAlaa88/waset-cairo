@@ -1,6 +1,11 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+	useTouristLogoutMutation,
+	useGuideLogoutMutation,
+	useOperatorLogoutMutation,
+} from "../store/registrationSlice";
 import {
 	User,
 	Ticket,
@@ -10,15 +15,44 @@ import {
 	Archive,
 	Medal,
 	Home,
-	Settings
+	Settings,
 } from "lucide-react";
-
+import { clearCredentials } from "../store/authSlice";
 
 const Profile = () => {
+	const [touristLogout] = useTouristLogoutMutation();
+	const [guideLogout] = useGuideLogoutMutation();
+	const [operatorLogout] = useOperatorLogoutMutation();
+	const role = useSelector((state) => state.auth.userInfo.role ?? null);
+	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const handleLogout = async (event) => {
+		event.preventDefault();
+		try {
+			let res;
+			switch (role) {
+				case "tourist":
+					res = await touristLogout().unwrap();
+					break;
+				case "guide":
+					res = await guideLogout().unwrap();
+					break;
+				case "operator":
+					res = await operatorLogout().unwrap();
+					break;
+				default:
+					alert("Please select a role");
+					break;
+			}
+			dispatch(clearCredentials({ ...res?.body }));
+			console.log(res);
+			navigate(`/`);
+		} catch (err) {
+			console.log(err?.data?.message || err.error);
+		}
+	};
 	const [activeTab, setActiveTab] = useState("overview");
-
 	const profileData = useSelector((state) => state.ui.profileData);
-
 
 	const renderOverview = () => (
 		<div className="grid md:grid-cols-3 gap-6">
@@ -192,40 +226,45 @@ const Profile = () => {
 		</div>
 	);
 
-
 	const renderSettings = () => {
-		return(
-		<div className="bg-yellow-50 p-6 rounded-xl shadow-md">
-            <h3 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
-				<Settings className="mr-2 text-yellow-600" />
-				Settings
-			</h3>
-            <div className="space-y-4">
-            	<div className="border-b pb-4">
-                	<h3 className="font-semibold text-amber-800 mb-2">Profile Information</h3>
-                	<p className="text-sm text-gray-600">Name: saif </p>
-                	<p className="text-sm text-gray-600">Email: saif@email.com</p>
-                	<br/>
-                	<Link to="edit">
-						<button className="bg-yellow-600 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">
-							<Edit className="mr-2" size={20} /> Edit Profile
+		return (
+			<div className="bg-yellow-50 p-6 rounded-xl shadow-md">
+				<h3 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
+					<Settings className="mr-2 text-yellow-600" />
+					Settings
+				</h3>
+				<div className="space-y-4">
+					<div className="border-b pb-4">
+						<h3 className="font-semibold text-amber-800 mb-2">
+							Profile Information
+						</h3>
+						<p className="text-sm text-gray-600">Name: saif </p>
+						<p className="text-sm text-gray-600">Email: saif@email.com</p>
+						<br />
+						<Link to="edit">
+							<button className="bg-yellow-600 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">
+								<Edit className="mr-2" size={20} /> Edit Profile
+							</button>
+						</Link>
+					</div>
+					<div>
+						<h3 className="font-semibold text-amber-800 mb-2">Account</h3>
+						<button className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition">
+							Change Password
 						</button>
-					</Link>
-            	</div>
-            	<div>
-                	<h3 className="font-semibold text-amber-800 mb-2">Account</h3>
-                	<button className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition">
-            			Change Password
-                	</button>
-            	</div>
-            	<div>
-            		<hr/><br/>
-            		<button className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition">
-            			Logout 
-                	</button>
-            	</div>
-            </div>
-        </div>	
+					</div>
+					<div>
+						<hr />
+						<br />
+						<button
+							onClick={handleLogout}
+							className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition"
+						>
+							Logout
+						</button>
+					</div>
+				</div>
+			</div>
 		);
 	};
 

@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import MonumentButton from "../components/MonumentButton";
+// import MonumentButton from "../components/MonumentButton";
 import { useGetPackQuery } from "../store/packSlice";
-import { useGetMonumentsQuery } from "../store/monumentSlice";
+// import { useGetMonumentsQuery } from "../store/monumentSlice";
 
 const TourPackDetails = () => {
 	const { id } = useParams();
-	const { data: monuments, isFetching: monFetch } = useGetMonumentsQuery();
+	// const { data: monuments, isFetching: monFetch } = useGetMonumentsQuery();
 	const { data: pack, isFetching } = useGetPackQuery(id);
 
 	return (
@@ -51,7 +51,7 @@ const TourPackDetails = () => {
 							</p>
 						</div>
 					</div>
-					{monFetch ? (
+					{/* {monFetch ? (
 						<p>Loading...</p>
 					) : (
 						<>
@@ -76,7 +76,7 @@ const TourPackDetails = () => {
 								</div>
 							)}
 						</>
-					)}
+					)} */}
 				</>
 			)}
 		</div>

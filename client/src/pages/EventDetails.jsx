@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
-import MonumentButton from "../components/MonumentButton";
+// import MonumentButton from "../components/MonumentButton";
 import { useGetEventQuery } from "../store/eventSlice";
-import { useGetMonumentsQuery } from "../store/monumentSlice";
+// import { useGetMonumentsQuery } from "../store/monumentSlice";
 
 const EventDetails = () => {
 	const { id } = useParams();
-	const { data: monuments, isFetching: monFetch } = useGetMonumentsQuery();
+	// const { data: monuments, isFetching: monFetch } = useGetMonumentsQuery();
 	const { data: event, isFetching } = useGetEventQuery(id);
 
 	return (
@@ -52,7 +52,7 @@ const EventDetails = () => {
 							</p>
 						</div>
 					</div>
-					{monFetch ? (
+					{/* {monFetch ? (
 						<p>Loading...</p>
 					) : (
 						<>
@@ -77,7 +77,7 @@ const EventDetails = () => {
 								</div>
 							)}
 						</>
-					)}
+					)} */}
 				</>
 			)}
 		</div>

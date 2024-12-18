@@ -1,19 +1,18 @@
 import { Router } from 'express'
-import authMiddleware from '../middlewares/auth.middleware.js'
 import userController from '../controllers/user.controller.js'
 const userRouter = Router()
 
-userRouter.get('/tourists', authMiddleware, userController.getAllTourists)
-userRouter.get('/tourists/:touristID', authMiddleware, userController.getTourist)
-userRouter.put('/tourists/promote/:id', authMiddleware, userController.promoteTourist);
-userRouter.put('/tourists/ban/:id', authMiddleware, userController.banTourist);
-userRouter.get('/tourists/fav', authMiddleware, userController.getTouristFavExperience);
-userRouter.get('/tourists/insights/:touristid', authMiddleware, userController.getTouristInsights);
+userRouter.get('/tourists', userController.getAllTourists)
+userRouter.get('/tourists/:touristID', userController.getTourist)
+userRouter.put('/tourists/promote/:id', userController.promoteTourist);
+userRouter.put('/tourists/ban/:id', userController.banTourist);
+userRouter.get('/tourists/fav', userController.getTouristFavExperience);
+userRouter.get('/tourists/insights/:touristid', userController.getTouristInsights);
 userRouter.get('/guides/touristsInTours/:id', userController.getTouristsGoingToGuideTours);
-userRouter.get('/guides', authMiddleware, userController.getAllGuides)
+userRouter.get('/guides', userController.getAllGuides)
 userRouter.get('/guides/:guideID', userController.getGuide)
-userRouter.put('/guides/promote/:id', authMiddleware, userController.promoteGuide);
-userRouter.get('/operators/packs/:opid', authMiddleware, userController.getOperatorPackages);
-userRouter.get('/operators/events/:opid', authMiddleware, userController.getOperatorEvents);
+userRouter.put('/guides/promote/:id', userController.promoteGuide);
+userRouter.get('/operators/packs/:opid', userController.getOperatorPackages);
+userRouter.get('/operators/events/:opid', userController.getOperatorEvents);
 
 export default userRouter
