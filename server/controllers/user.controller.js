@@ -230,7 +230,20 @@ const userController = {
     if(!tourists.rowCount) return res.status(404).json({error: "No data found!"});
 
     return res.status(200).json(tourists.rows);
-})
+  }),
+
+  getCurrUserData: catchAsync(async (req, res, next) => {
+    const currUserID = req.user.id;
+    const role = req.role === "operator"? "Tour_Operator" : req.role === "guide"? "Tour_Guide" : "Tourist";
+
+    const data = await client.query(
+      `SELECT * FROM ${role} WHERE ID = $1;`,
+      [currUserID]
+    );
+
+    return res.status(200).json(data.rows);
+  })
+
 };
 
 export default userController;

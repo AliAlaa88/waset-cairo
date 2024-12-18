@@ -5,7 +5,7 @@ const monumentsUrl = "/monuments";
 export const monumentSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMonuments: builder.query({
-      query: () => ({ url: monumentsUrl, method: "GET" }),
+      query: () => ({ url: monumentsUrl, method: "GET", credentials: "include"}),
     }),
     getMonument: builder.query({
       query: (id) => `${monumentsUrl}/${id}`,

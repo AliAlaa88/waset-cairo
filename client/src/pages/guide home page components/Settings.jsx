@@ -4,10 +4,10 @@ import { Edit } from 'lucide-react';
 import { useGetGuideQuery } from '../../store/userSlice';
 
 const SettingsContent = () => {
-    const {data: guide, isFetching} = useGetGuideQuery(1);
-    console.log(guide);
+    const {data: guide, isFetching, isError} = useGetGuideQuery(1);
 
     if(isFetching) return(<p>Loading...</p>);
+    if(isError) return(<p>An error has occured!</p>);
     return (
         <div className="bg-white p-6 rounded-xl shadow-md">
             <h2 className="text-2xl font-bold text-amber-900 mb-4">Settings</h2>

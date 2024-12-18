@@ -48,15 +48,15 @@ const authController = {
 			[username]
 		);
 
-		if(user.rows[0].banned == "1"){
-			const err = new Error("You are permanently banned!");
-			err.statusCode = 404;
-			return next(err);
-		}
-
 		if (!user.rowCount){
 			const err = new Error("Invalid credentials!");
 			err.statusCode = 400;
+			return next(err);
+		}
+
+		if(user.rows[0].banned == "1"){
+			const err = new Error("You are permanently banned!");
+			err.statusCode = 404;
 			return next(err);
 		}
 
@@ -66,8 +66,8 @@ const authController = {
 			err.statusCode = 400;
 			return next(err);
 		}
-
 		generateToken(res, user.rows[0].id, role); // this adds token to cookie
+
 		res.status(201).json({ message: "Logged In", body: user.rows });
 	}),
 
@@ -205,12 +205,15 @@ const generateToken = (res, id, role) => {
 	const token = jwt.sign({ id, role }, process.env.JWT_SECRET, {
 		expiresIn: process.env.JWT_EXPIRES_IN,
 	});
-
+	
 	// Save token in cookie
 	res.cookie("token", token, {
 		httpOnly: true,
-		secure: process.env.NODE_ENV === "production",
+    	secure: true,  
+		secure: process.env.NODE_ENV === "production"
 	});
+
+	return token;
 };
 
 export default authController;

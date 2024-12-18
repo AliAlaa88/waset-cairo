@@ -16,6 +16,7 @@ export const registrationSlice = apiSlice.injectEndpoints({
       url: `${authUrl}/tourist/login`,
       method: "POST",
       body: data,
+      credentials: "include"
     }),
   }),
   touristEditProfile: builder.mutation({

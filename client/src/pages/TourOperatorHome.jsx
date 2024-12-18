@@ -13,6 +13,8 @@ import {
 import logo from '../assets/8d01c511-6aae-4f11-9dfb-b4f3b8cd822a.webp'
 import MyPackes from './myPackeges';
 import MyEvents from './myEvents';
+import { useGetToursQuery } from '../store/tourSlice';
+import { useGetTouristsQuery } from '../store/userSlice';
 
 //test data
 const mockUsers = [
@@ -40,6 +42,9 @@ const mockTours = [
 const TourOperatorHome = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [activeModal, setActiveModal] = useState("");
+
+  const {data: tours, isFetching: toursFetching} = useGetToursQuery();
+  const {data: tourists, isFetching: touristFetching} = useGetTouristsQuery();
 
   const tourModalInfo = {
     title: "What’s Next for This Tour?",
@@ -141,8 +146,8 @@ const TourOperatorHome = () => {
             <h2 className="text-2xl font-bold text-amber-900 mb-6">Dashboard Overview</h2>
             <div className="grid md:grid-cols-3 gap-6">
               {[
-                { title: 'Total Tours', value: '24', color: 'text-amber-700' },
-                { title: 'Total Customers', value: '456', color: 'text-amber-700' },
+                { title: 'Total Tours', value: tours?.length, color: 'text-amber-700' },
+                { title: 'Total Customers', value: tourists?.length, color: 'text-amber-700' },
                 { title: 'Total Revenue', value: '45,678 LE', color: 'text-amber-700' }
               ].map((card, index) => (
                 <div 

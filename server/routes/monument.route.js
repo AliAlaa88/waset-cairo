@@ -4,7 +4,7 @@ import monumentController from "../controllers/monument.controller.js";
 
 const monumentRouter = Router();
 
-monumentRouter.get("/", monumentController.getAllMonuments);
+monumentRouter.get("/", authMiddleware, monumentController.getAllMonuments);
 monumentRouter.get("/:id", monumentController.getMonument);
 monumentRouter.post("/", monumentController.createMonument);
 monumentRouter.delete("/:id", authMiddleware, monumentController.deleteMonument);
