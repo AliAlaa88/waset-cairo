@@ -117,12 +117,26 @@ const groupController = {
             WHERE ID = GROUPID AND TOURISTID = $1;`,
             [touristID]
         );
+        
+        
+        // if(!groups.rowCount) {
+        //     const err = new Error("No data found!");
+        //     err.statusCode = 404;
+        //     return next(err);
+        // }
 
-        if(!groups.rowCount) {
-            const err = new Error("No data found!");
-            err.statusCode = 404;
-            return next(err);
-        }
+        return res.status(200).json(groups.rows);
+    }),
+
+    getOtherGroups: catchAsync(async (req, res, next) => {
+        const touristID = req.params.id;
+
+        const groups = await client.query(
+            `SELECT ID, NAME, COMMONLANGUAGE, CREATORID, PREFFEREDMONUMENT
+            FROM TOURIST_GROUP
+            WHERE ID NOT IN (SELECT GROUPID FROM GROUP_MEMBERS WHERE TOURISTID = $1);`,
+            [touristID]
+        );
 
         return res.status(200).json(groups.rows);
     })

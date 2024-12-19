@@ -1,104 +1,143 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { useGetMonumentsQuery } from "../store/monumentSlice";
+import { useAddGroupMutation } from "../store/groupsSlice";
 function CreateGroup() {
-  const [name, setname] = useState('');
-  const [description, setdescription] = useState('');
-  const [language, setlanguage] = useState('');
-  const navigate = useNavigate();
-  const [selectedMonument, setselectedMonument] = useState("");
+	const [name, setname] = useState("");
+	const [description, setdescription] = useState("");
+	const [selectedLanguage, setSelectedLanguage] = useState("");
+	const [languages, setLanguages] = useState([]);
+	const [selectedMonument, setselectedMonument] = useState(-1);
+	const navigate = useNavigate();
+	const { data: monuments, isFetching } = useGetMonumentsQuery();
+	const [createGroup] = useAddGroupMutation();
+	useEffect(() => {
+		fetch("https://restcountries.com/v3.1/all")
+			.then((response) => response.json())
+			.then((data) => {
+				const uniqueLanguages = new Set();
+				data.forEach((country) => {
+					if (country.languages) {
+						Object.values(country.languages).forEach((lang) =>
+							uniqueLanguages.add(lang)
+						);
+					}
+				});
+				setLanguages([...uniqueLanguages].sort((a, b) => a.localeCompare(b)));
+			})
+			.catch((error) => console.error("Error fetching countries:", error));
+	}, []);
 
-  const MonumentOption = [
-  "Option 1",
-  "Option 2",
-  "Option 3",
-  "Option 4",
-  "Option 5",
-];
-const handleChange1= (event)=>{
+	const Creclik = async (event) => {
+		event.preventDefault();
+		if (!name || !description || !selectedLanguage || !selectedMonument) {
+			alert("Please fill in all the required information");
+		} else {
+			try {
+				const res = await createGroup({
+					name,
+					commonLanguage: selectedLanguage,
+					prefferedMonument: selectedMonument,
+				}).unwrap();
+				navigate("../");
+			} catch (error) {
+				console.error("Failed to create group:", error);
+			}
+		}
+	};
 
-  setselectedMonument(event.target.value);
-};
+	function Cancel() {
+		console.log("return to home page");
+		navigate("../");
+	}
 
-  const Creclik = (event) => {
-    event.preventDefault();
-
-    if (!name || !description) {
-      alert('Please fill in both group name and description');
-    } else {
-      navigate('/home');
-    }
-  };
-
-
-function Cancel(){
-    console.log("return to home page");
-    navigate('/home');
-}
-
-
-  return (
-    <body className= "cerG-body">
-      <div className="create-container">
-        <div className="create-box">
-          <h1 className="create-title">Create tourist group</h1>
-          <form onSubmit={Creclik}>
-            <div className="inputs">
-              <div className="input">
-                <input 
-                  type="text" 
-                  required 
-                  placeholder="Group name"
-                  value={name}  
-                  onChange={(e) => setname(e.target.value)} 
-                />
-              </div>
-              <div className="input">
-                <input 
-                  type="text" 
-                  required 
-                  placeholder="language"
-                  value={language}  
-                  onChange={(e) => setlanguage(e.target.value)} 
-                />
-                <br/>
-                <label className ="creG-optionlable">Choose Option</label>
-                <select className="creG-input" 
-                  
-                  value={selectedMonument}
-                  onChange={handleChange1}
-                  >
-                      <option value="" disabled>
-                          select option
-                      </option>
-                      {MonumentOption.map((option)=>(
-                          <option key={option} value={option}>
-                              {option}
-                          </option>
-                      ))}
-                  </select>
-                  <br/>
-              </div>
-              <div className="input">
-                <textarea 
-                  type="text"
-                  cols="18" rows="5"
-                  required 
-                  placeholder="description" 
-                  value={description} 
-                  onChange={(e) => setdescription(e.target.value)} 
-                />
-              </div>
-            </div>
-            <div className="cbuttons">
-              <button className="cancelBtn" type="button" onClick={() => Cancel()}>Cancel</button>
-              <button className="submitBtn" type="submit">Create</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </body>
-  );
+	return (
+		<div className="cerG-body">
+			{isFetching ? (
+				<p>Loading...</p>
+			) : (
+				<div className="create-container">
+					<div className="create-box">
+						<h1 className="create-title">Create tourist group</h1>
+						<form onSubmit={Creclik}>
+							<div className="inputs">
+								<div className="input">
+									<input
+										type="text"
+										required
+										placeholder="Group name"
+										value={name}
+										onChange={(e) => setname(e.target.value)}
+									/>
+								</div>
+								<label className="creG-optionlable">
+									Choose Common Language
+								</label>
+								<select
+									className="creG-input"
+									value={selectedLanguage}
+									onChange={(e) => setSelectedLanguage(e.target.value)}
+								>
+									<option value="" disabled className="slc-lang">
+										Select a Language
+									</option>
+									{languages.map((language, index) => (
+										<option key={index} value={language}>
+											{language}
+										</option>
+									))}
+								</select>
+								<br />
+								<br />
+								<label className="creG-optionlable">
+									Choose Preffered Monument
+								</label>
+								<select
+									className="creG-input"
+									value={selectedMonument}
+									onChange={(e) => setselectedMonument(e.target.value)}
+								>
+									<option value="" disabled>
+										Select a Monument
+									</option>
+									{monuments.map((option) => (
+										<option key={option.id} value={option.id}>
+											{option.name}
+										</option>
+									))}
+								</select>
+								<br />
+								<br />
+								<div className="input">
+									<textarea
+										type="text"
+										cols="18"
+										rows="5"
+										required
+										placeholder="description"
+										value={description}
+										onChange={(e) => setdescription(e.target.value)}
+									/>
+								</div>
+							</div>
+							<div className="cbuttons">
+								<button
+									className="cancelBtn"
+									type="button"
+									onClick={() => Cancel()}
+								>
+									Cancel
+								</button>
+								<button className="submitBtn" type="submit">
+									Create
+								</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			)}
+		</div>
+	);
 }
 
 export default CreateGroup;

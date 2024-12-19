@@ -2,10 +2,21 @@ import { Link } from "react-router-dom";
 import MyTouristGroup from "./MyTouristGroup";
 import OtherGroups from "./OtherGroups";
 import { CirclePlus } from "lucide-react";
-import { useGetGroupsQuery } from "../store/groupsSlice";
+import {
+	useGetGroupsQuery,
+	useGetTouristGroupsQuery,
+	useGetOtherGroupsQuery,
+} from "../store/groupsSlice";
+import { useSelector } from "react-redux";
 const TouristGroup = () => {
+	const id = useSelector((state) => state.auth.userInfo.id);
+
 	const { data: allGroups, isFetching } = useGetGroupsQuery();
-	// should get curr user id then get his enrolled groups and filter the allGroups array to my and others
+	const { data: myGroups, isFetching: myGroupsFetch } =
+		useGetTouristGroupsQuery(id);
+	const { data: otherGroups, isFetching: otherGroupsFetch } =
+		useGetOtherGroupsQuery(id);
+
 	return (
 		<div>
 			<h2 className="text-center text-3xl font-bold mb-8 text-yellow-800">
@@ -16,12 +27,12 @@ const TouristGroup = () => {
 					<CirclePlus className="mr-2" size={20} /> Create Group
 				</button>
 			</Link>
-			{isFetching ? (
+			{isFetching || myGroupsFetch || otherGroupsFetch ? (
 				<p>Loading...</p>
 			) : (
 				<>
-					<MyTouristGroup data={allGroups} />
-					<OtherGroups />
+					<MyTouristGroup data={myGroups ?? []} />
+					<OtherGroups data={otherGroups ?? []} />
 				</>
 			)}
 		</div>

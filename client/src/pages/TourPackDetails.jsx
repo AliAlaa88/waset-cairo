@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-// import MonumentButton from "../components/MonumentButton";
+import MonumentButton from "../components/MonumentButton";
 import { useGetPackQuery } from "../store/packSlice";
 // import { useGetMonumentsQuery } from "../store/monumentSlice";
 
@@ -51,32 +51,27 @@ const TourPackDetails = () => {
 							</p>
 						</div>
 					</div>
-					{/* {monFetch ? (
-						<p>Loading...</p>
-					) : (
-						<>
-							{pack.monumentids.length > 0 && (
-								<div className="mt-8">
-									<h3 className="text-2xl font-semibold text-center mb-4">
-										Related Monuments
-									</h3>
-									<div className="flex justify-evenly gap-4">
-										{pack.monumentids.map(
-											(monument) =>
-												monument && (
-													<MonumentButton
-														key={monument.id}
-														monument={monuments.find(
-															(m) => m.id === monument.id
-														)}
-													/>
-												)
-										)}
-									</div>
+
+					<>
+						{/* {pack.monumentid?.length > 0 && (
+							<div className="mt-8">
+								<h3 className="text-2xl font-semibold text-center mb-4">
+									Related Monuments
+								</h3>
+								<div className="flex justify-evenly gap-4">
+									{pack.monumentids.map(
+										(monument) =>
+											monument && (
+												<MonumentButton
+													key={monument.id}
+													monumentID={monument.id}
+												/>
+											)
+									)}
 								</div>
-							)}
-						</>
-					)} */}
+							</div>
+						)} */}
+					</>
 				</>
 			)}
 		</div>
