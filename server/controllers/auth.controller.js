@@ -121,7 +121,7 @@ const authController = {
 	}),
 
 	touristEditProfile: catchAsync(async (req, res, next) => {
-		const { FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, Nationality, Language } = req.body;
+		const { firstName, lastName, username, email, gender, birthdate, bio, phoneNo } = req.body;
 
 		if(req.role != "tourist"){
 			const err = new Error("You are not allowed to do this action!");
@@ -130,8 +130,8 @@ const authController = {
 		}
 		
 		const update = await client.query(
-			"UPDATE Tourist SET FName = $1, LName = $2, UserName = $3, Email = $4, Gender = $5, PhoneNumber = $6, BirthDate = $7, Nationality = $8, Language = $9 WHERE ID = $10 RETURNING *;",
-			[FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, Nationality, Language, req.user.id]
+			"UPDATE Tourist SET FName = $1, LName = $2, UserName = $3, Email = $4, Gender = $5, PhoneNumber = $6, BirthDate = $7, Bio = $8 WHERE ID = $9 RETURNING *;",
+			[firstName, lastName, username, email, gender, phoneNo, birthdate, bio, req.user.id]
 		);
 
 		res.status(201).json({ message: "User updated", data: update.rows });
@@ -209,7 +209,7 @@ const generateToken = (res, id, role) => {
 	// Save token in cookie
 	res.cookie("token", token, {
 		// httpOnly: true,
-    	// secure: true,  
+		// secure: true,  
 		secure: process.env.NODE_ENV === "production"
 	});
 
