@@ -1,4 +1,5 @@
-import { useState , useNavigate } from "react";
+import { useState  } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CreatePack(){
     //const [OperaturId,setOperaturId] = useState();
@@ -34,7 +35,7 @@ function CreatePack(){
 
 
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handelchange1= (event)=>{
 

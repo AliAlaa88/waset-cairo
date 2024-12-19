@@ -43,7 +43,7 @@ const Tours = () => {
 	const { data: packs, isFetching: packsFetch } = useGetPacksQuery();
 	const { data: events, isFetching: eventsFetch } = useGetEventsQuery();
 
-	if(!userInfo || userInfo !== "tourist") return(<UnauthorizedPage/>); //still not working as it should but for now..
+	if(!userInfo || userInfo.role !== "tourist") return(<UnauthorizedPage/>); //still not working as it should but for now..
 	
 	return (
 		<div className="p-4">

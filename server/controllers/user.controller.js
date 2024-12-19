@@ -17,7 +17,7 @@ const userController = {
       return next(err);
     }
     
-    res.status(200).json({ tourists: tourists.rows });
+    res.status(200).json(tourists.rows);
   }),
 
   getTourist: catchAsync(async (req, res, next) => {
@@ -39,7 +39,7 @@ const userController = {
       return next(err);
     }
 
-    res.status(200).json({ tourist: tourist.rows[0] });
+    res.status(200).json(tourist.rows[0]);
   }),
 
   getAllGuides: catchAsync(async (req, res, next) => {
@@ -57,7 +57,7 @@ const userController = {
       return next(err);
     }
 
-    res.status(200).json({ guides: guides.rows });
+    res.status(200).json(guides.rows);
   }),
 
   getGuide: catchAsync(async (req, res, next) => {
@@ -79,7 +79,7 @@ const userController = {
       return next(err);
     }
     
-    return res.status(200).json({ guide: guide.rows[0] });
+    return res.status(200).json(guide.rows[0]);
   }),
   promoteTourist: catchAsync(async (req, res, next) =>{
     const touristID = req.params.id;

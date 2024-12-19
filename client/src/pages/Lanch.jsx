@@ -53,6 +53,8 @@ function Lanch({ visible, closeModal }) {
                                 type="date"
                                 required
                                 value={startDate}
+                                //sets minimum allowable date as today (cannot choose previous dates)
+                                min={new Date().toISOString().split("T")[0]}
                                 onChange={(e) => setstartDate(e.target.value)}
                             />
                             <br />

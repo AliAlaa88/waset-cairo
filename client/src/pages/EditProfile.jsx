@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 function EditProfile() {
-  const profileData = useSelector((state) => state.ui.profileData);
+  	const profileData = useSelector((state) => state.ui.profileData);
 	const navigate = useNavigate();
 
 	const [firstName, setFirstName] = useState(profileData.firstName);

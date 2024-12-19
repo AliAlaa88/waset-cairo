@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   Users, 
@@ -8,7 +8,8 @@ import {
   Wand,
   Package,
   CalendarDays,
-  Edit
+  Edit,
+  X
 } from 'lucide-react';
 import logo from '../assets/8d01c511-6aae-4f11-9dfb-b4f3b8cd822a.webp'
 import MyPackes from './myPackeges';
@@ -21,38 +22,20 @@ import { useOperatorLogoutMutation } from '../store/registrationSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearCredentials } from '../store/authSlice';
+import { useGetTouristsQuery, useGetGuidesQuery } from '../store/userSlice';
+import { usePromoteTouristMutation, usePromoteGuideMutation } from '../store/userSlice';
 
-//test data
-const mockUsers = [
-  { id: 1, name: 'John Doe', role: 'Tour Guide', email: 'john@email.com' },
-  { id: 2, name: 'Smith Williams ', role: 'Operator', email: 'smith@email.com' }
-];
-
-const mockTours = [
-  { 
-    id: 1, 
-    name: 'Pyramids of Giza Expedition', 
-    price: 750, 
-    capacity: 20, 
-    currentBookings: 15 
-  },
-  { 
-    id: 2, 
-    name: 'Luxor Historical Journey', 
-    price: 800, 
-    capacity: 15, 
-    currentBookings: 10 
-  }
-];
 
 const TourOperatorHome = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [activeModal, setActiveModal] = useState("");
+  const [activeTab, setActiveTab] = useState("Tourists");
 
   const {data: tours, isFetching: toursFetching, isError: tourError} = useGetToursThatDidntStartQuery();
   const {data: dashboard, isFetching: dashboardFetching, isError: dashboardError} = useGetOperatorDashboardQuery();
   const {data: currUser, isFetching: currUserFetching, isError: currUserError} = useGetCurrUserDataQuery();
-  
+  const {data: tourists, isFetching: touristsFetching, isError: touristsError} = useGetTouristsQuery();
+  const {data: guides, isFetching: guidesFetching, isError: guidesError} = useGetGuidesQuery();
 
   const {userInfo} = useSelector((state) => state.auth);
 
@@ -67,9 +50,32 @@ const TourOperatorHome = () => {
 			dispatch(clearCredentials({ ...res?.body }));
 			navigate(`/`);
 		} catch (err) {
-			console.log(err?.data?.message || err.error);
+			console.log(err?.data?.message || err);
 		}
 	};
+
+  //still not complete
+  const handlePromote = async (role, id) => {
+    if(role === "Tourist"){
+      try{
+        const [promoteTourist] = usePromoteTouristMutation(id);
+        await promoteTourist().unwrap();
+        alert('User has been promoted to an operator!');
+        setActiveModal("");
+      }
+      catch(err){
+        console.error(err);
+      }
+    }
+    else{
+      try{
+        const [promoteGuide] = usePromoteGuideMutation();
+      }
+      catch(err){
+        console.error(err);
+      }
+    }
+  }
 
   const tourModalInfo = {
     title: "What’s Next for This Tour?",
@@ -121,35 +127,38 @@ const TourOperatorHome = () => {
 
   const showModal = (modalInfo) => {
     return(
-      <div class="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+      <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
         {/*makes the background gray to give the modal effect*/}
-        <div class="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+        <div className="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
 
-        <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
       
-            <div class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-              <div class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                <div class="sm:flex sm:items-start">
-                  <div class="mx-auto flex size-12 shrink-0 items-center justify-center bg-amber-100 rounded-full sm:mx-0 sm:size-10">
+            <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+              <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div className="flex items-start">
+                  <div className="mx-auto flex size-12 shrink-0 items-center justify-center bg-amber-100 rounded-full sm:mx-0 sm:size-10">
                     <Wand size={26} color='#B8860B'/>
                   </div>
-                  <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <h3 class="text-base font-semibold text-gray-900" id="modal-title">{modalInfo.title}</h3>
-                    <div class="mt-2">
-                      <p class="text-sm text-gray-500">
+                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <h3 className="text-base font-semibold text-gray-900" id="modal-title">{modalInfo.title}</h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
                         {modalInfo.text}
                       </p>
                     </div>
                   </div>
+                  <div onClick={() => setActiveModal("")} className="flex justify-end items-end ml-28 cursor-pointer hover:bg-slate-300 rounded-lg">
+                    <X size={26}/>
+                  </div>
                 </div>
               </div>
-              <div class="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button onClick={() => {setActiveModal("")}} type="button" class="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 sm:ml-3 sm:w-auto">
+              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                <button onClick={() => {setActiveModal("")}} type="button" className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 sm:ml-3 sm:w-auto">
                   {modalInfo.button1}
                 </button>
-                <button onClick={() => {setActiveModal("")}} type="button" class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-200 sm:mt-0 sm:w-auto">
+                <button onClick={() => {setActiveModal("")}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-200 sm:mt-0 sm:w-auto">
                   {modalInfo.button2}
                 </button>
               </div>
@@ -188,23 +197,39 @@ const TourOperatorHome = () => {
         );
       
       case 'user-management':
+        if(touristsFetching || guidesFetching) return (<p>Loading...</p>);
         return (
           <div className="bg-gradient-to-br from-amber-100 to-amber-200 p-8 rounded-xl shadow-lg">
             <h2 className="text-3xl font-bold text-amber-900 mb-6">User Management</h2>
+            <div className="flex space-x-4 mb-6">
+                {["Tourists", "Guides"].map((tab) => (
+                <button
+                  key={tab}
+                  className={`px-4 py-2 rounded-full capitalize flex items-center ${
+                    activeTab === tab
+                      ? "bg-amber-600 text-white"
+                      : "bg-amber-200 text-yellow-800 hover:bg-amber-500"
+                  }`}
+                  onClick={() => setActiveTab(tab)}
+                >
+                  {tab}
+                </button>
+                ))}
+            </div>
             <div className="bg-white rounded-xl shadow-md overflow-hidden">
               <table className="w-full">
                 <thead className="bg-amber-100">
-                  <tr>
+                  <tr key="columnname">
                     {['Name', 'Role', 'Email', 'Actions'].map(header => (
                       <th key={header} className="p-4 text-left text-amber-900">{header}</th>
                     ))}
                   </tr>
                 </thead>
                 <tbody>
-                  {mockUsers.map(user => (
+                  {(activeTab === "Tourists"? tourists : guides).map(user => (
                     <tr key={user.id} className="border-b hover:bg-amber-50">
-                      <td className="p-4">{user.name}</td>
-                      <td className="p-4">{user.role}</td>
+                      <td className="p-4">{user.fname} {user.lname}</td>
+                      <td className="p-4">{activeTab}</td>
                       <td className="p-4">{user.email}</td>
                       <td className="p-4">
                         <button onClick={() => {setActiveModal("user")}} className="bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-700">
@@ -213,9 +238,9 @@ const TourOperatorHome = () => {
                       </td>
                     </tr>
                   ))}
-                  {activeModal === "user"? showModal(userModalInfo) : ""}
                 </tbody>
               </table>
+              {activeModal === "user"? showModal(userModalInfo) : ""}
             </div>
           </div>
         );
