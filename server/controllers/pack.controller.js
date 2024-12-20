@@ -42,11 +42,10 @@ const packController = {
             VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`,
             [name, description, meetingLocation, type, duration, rating, price, opID]
         );
-
-        for(const i = 0; i < monumentids.length; i++){
+        for(let i = 0; i < monumentids.length; i++){
             await client.query(
                 "INSERT INTO PACKAGE_MONUMENT VALUES($1, $2);",
-                [create.rows.id, monumentids[i]]
+                [create.rows[0].id, monumentids[i]]
             );
         }
 
