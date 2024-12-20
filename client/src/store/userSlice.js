@@ -26,6 +26,9 @@ export const userSlice = apiSlice.injectEndpoints({
 		banTourist: builder.mutation({
 			query: (id) => ({ url: `${userUrl}/tourists/ban/${id}`, method: "PUT", credentials: 'include' }),
 		}),
+		unbanTourist: builder.mutation({
+			query: (id) => ({url: `${userUrl}/tourists/unban/${id}`, method: "PUT", credentials: "include"}),
+		}),
 		getTouristFavExperience: builder.query({
 			query: () => ({ url: `${userUrl}/tourists/fav`, method: "GET", credentials: 'include' }),
 		}),
@@ -88,6 +91,7 @@ export const {
 	useGetGuideQuery,
 	usePromoteTouristMutation,
 	useBanTouristMutation,
+	useUnbanTouristMutation,
 	useGetTouristFavExperienceQuery,
 	useGetTouristInsightsQuery,
 	useGetTouristsGoingToGuideToursQuery,

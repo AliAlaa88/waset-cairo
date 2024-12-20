@@ -6,6 +6,7 @@ userRouter.get('/tourists', userController.getAllTourists)
 userRouter.get('/tourists/:touristID', userController.getTourist)
 userRouter.put('/tourists/promote/:id', userController.promoteTourist);
 userRouter.put('/tourists/ban/:id', userController.banTourist);
+userRouter.put('/tourists/unban/:id', userController.unbanTourist);
 userRouter.get('/tourists/fav', userController.getTouristFavExperience);
 userRouter.get('/tourists/insights/:touristid', userController.getTouristInsights);
 userRouter.get('/guides/touristsInTours/:id', userController.getTouristsGoingToGuideTours);

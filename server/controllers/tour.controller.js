@@ -126,10 +126,11 @@ const tourController = {
 
     getToursThatDidntStart: catchAsync(async (req, res, next) => {
         const tours = await client.query(
-            `SELECT COALESCE(TP.NAME, E.NAME) AS name,
+            `SELECT TR.ID, 
+            COALESCE(TP.NAME, E.NAME) AS name,
             TK.PRICE, TR.TICKETCAPACITY, COUNT(TK.ID) AS bookedTickets
             FROM TOUR TR
-            JOIN TICKET TK ON TK.TOURID = TR.ID
+            LEFT JOIN TICKET TK ON TK.TOURID = TR.ID
             LEFT JOIN TOUR_PACKAGE TP ON TP.ID = TR.TOURPACKAGEID
             LEFT JOIN EVENT E ON E.ID = TR.EVENTID
             WHERE STARTDATE > CURRENT_DATE

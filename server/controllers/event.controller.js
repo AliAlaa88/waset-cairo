@@ -28,7 +28,7 @@ const eventController = {
         return res.status(404).json({error: "No data found!"});
     }),
     createEvent: catchAsync(async (req, res, next) => {
-        const {name, description, meetingLocation, type, duration, rating, price} = req.body;
+        const {name, description, meetingLocation, type, duration, rating, price, monumentids} = req.body;
         const opID = req.user.id;
 
         if(req.role != "operator"){
@@ -42,6 +42,13 @@ const eventController = {
             VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`,
             [name, description, meetingLocation, type, duration, rating, price, opID]
         );
+
+        for(const i = 0; i < monumentids.length; i++){
+            await client.query(
+                "INSERT INTO EVENT_MONUMENT VALUES($1, $2);", 
+                [create.rows.id, monumentids[i]]
+            );
+        }
 
         return res.status(201).json({msg: "Created Event Successfully!", data: create.rows});
 

@@ -14,8 +14,8 @@ import {
 import logo from '../assets/8d01c511-6aae-4f11-9dfb-b4f3b8cd822a.webp'
 import MyPackes from './myPackeges';
 import MyEvents from './myEvents';
-import { useGetToursThatDidntStartQuery } from '../store/tourSlice';
-import { useGetOperatorDashboardQuery, useGetCurrUserDataQuery, useGetOperatorEventsQuery, useGetOperatorPackagesQuery } from '../store/userSlice';
+import { useDeleteTourMutation, useGetToursThatDidntStartQuery } from '../store/tourSlice';
+import { useGetOperatorDashboardQuery, useGetCurrUserDataQuery, useUnbanTouristMutation } from '../store/userSlice';
 import { useSelector } from 'react-redux';
 import UnauthorizedPage from './UnauthorizedPage';
 import { useOperatorLogoutMutation } from '../store/registrationSlice';
@@ -23,12 +23,13 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearCredentials } from '../store/authSlice';
 import { useGetTouristsQuery, useGetGuidesQuery } from '../store/userSlice';
-import { usePromoteTouristMutation, usePromoteGuideMutation } from '../store/userSlice';
+import { usePromoteTouristMutation, usePromoteGuideMutation, useBanTouristMutation } from '../store/userSlice';
+import Lanch from './Lanch';
 
 
 const TourOperatorHome = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
-  const [activeModal, setActiveModal] = useState("");
+  const [activeModal, setActiveModal] = useState({type: "", params:{}});
   const [activeTab, setActiveTab] = useState("Tourists");
 
   const {data: tours, isFetching: toursFetching, isError: tourError} = useGetToursThatDidntStartQuery();
@@ -36,6 +37,11 @@ const TourOperatorHome = () => {
   const {data: currUser, isFetching: currUserFetching, isError: currUserError} = useGetCurrUserDataQuery();
   const {data: tourists, isFetching: touristsFetching, isError: touristsError} = useGetTouristsQuery();
   const {data: guides, isFetching: guidesFetching, isError: guidesError} = useGetGuidesQuery();
+  const [promoteTourist] = usePromoteTouristMutation();
+  const [promoteGuide] = usePromoteGuideMutation();
+  const [banTourist] = useBanTouristMutation();
+  const [unbanTourist] = useUnbanTouristMutation();
+  const [deleteTour] = useDeleteTourMutation();
 
   const {userInfo} = useSelector((state) => state.auth);
 
@@ -54,41 +60,60 @@ const TourOperatorHome = () => {
 		}
 	};
 
-  //still not complete
+
   const handlePromote = async (role, id) => {
-    if(role === "Tourist"){
+    if(role === "Tourists"){
       try{
-        const [promoteTourist] = usePromoteTouristMutation(id);
-        await promoteTourist().unwrap();
-        alert('User has been promoted to an operator!');
-        setActiveModal("");
+        await promoteTourist(id).unwrap();
       }
       catch(err){
-        console.error(err);
+        console.log(err);
       }
     }
-    else{
+    else if(role === "Guides"){
       try{
-        const [promoteGuide] = usePromoteGuideMutation();
+        await promoteGuide(id).unwrap();
       }
       catch(err){
-        console.error(err);
+        console.log(err);
       }
+    }
+    else return;
+    alert('User has been promoted to an operator!');
+    window.location.reload();
+  }
+
+  const handleBan = async (id) => {
+    try{
+      await banTourist(id).unwrap();
+      alert('User has been banned successfully!');
+      window.location.reload();
+    }
+    catch(err){
+      console.log(err);
     }
   }
 
-  const tourModalInfo = {
-    title: "What’s Next for This Tour?",
-    text: "Keep the tour fresh by updating its details, or remove it completely if it's no longer needed. The choice is yours!",
-    button1: "Delete Tour",
-    button2: "Edit Tour"
+  const handleUnban = async (id) => {
+    try{
+      await unbanTourist(id).unwrap();
+      alert('User has been unbanned successfully!');
+      window.location.reload();
+    }
+    catch(err){
+      console.log(err);
+    }
   }
 
-  const userModalInfo = {
-    title: "Manage User Permissions",
-    text: "What would you like to do with this user?",
-    button1: "Ban User",
-    button2: "Promote"
+  const handleDeleteTour = async (id) =>{
+    try{
+      await deleteTour(id).unwrap();
+      alert("Tour has been deleted successfully!");
+      window.location.reload();
+    }
+    catch(err){
+      console.log(err);
+    }
   }
 
   const sections = [
@@ -125,7 +150,7 @@ const TourOperatorHome = () => {
   ];
 
 
-  const showModal = (modalInfo) => {
+  const showTourModal = (id) => {
     return(
       <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
@@ -142,24 +167,71 @@ const TourOperatorHome = () => {
                     <Wand size={26} color='#B8860B'/>
                   </div>
                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                    <h3 className="text-base font-semibold text-gray-900" id="modal-title">{modalInfo.title}</h3>
+                    <h3 className="text-base font-semibold text-gray-900" id="modal-title">What’s Next for This Tour?</h3>
                     <div className="mt-2">
                       <p className="text-sm text-gray-500">
-                        {modalInfo.text}
+                        Keep the tour fresh by updating its details, or remove it completely if it's no longer needed. The choice is yours!
                       </p>
                     </div>
                   </div>
-                  <div onClick={() => setActiveModal("")} className="flex justify-end items-end ml-28 cursor-pointer hover:bg-slate-300 rounded-lg">
+                  <div onClick={() => setActiveModal({type: "", params:{}})} className="flex justify-end items-end ml-28 cursor-pointer hover:bg-slate-300 rounded-lg">
                     <X size={26}/>
                   </div>
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button onClick={() => {setActiveModal("")}} type="button" className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 sm:ml-3 sm:w-auto">
-                  {modalInfo.button1}
+                <button onClick={() => {handleDeleteTour(id)}} type="button" className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 sm:ml-3 sm:w-auto">
+                  Delete Tour
                 </button>
-                <button onClick={() => {setActiveModal("")}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-200 sm:mt-0 sm:w-auto">
-                  {modalInfo.button2}
+                <button onClick={() => {}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-200 sm:mt-0 sm:w-auto">
+                  Edit Tour
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+
+
+  const showUserModal = (role, id, banned) => {
+    return(
+      <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+
+        {/*makes the background gray to give the modal effect*/}
+        <div className="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
+
+        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+      
+            <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+              <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                <div className="flex items-start">
+                  <div className="mx-auto flex size-12 shrink-0 items-center justify-center bg-amber-100 rounded-full sm:mx-0 sm:size-10">
+                    <Wand size={26} color='#B8860B'/>
+                  </div>
+                  <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                    <h3 className="text-base font-semibold text-gray-900" id="modal-title">Manage User Permissions</h3>
+                    <div className="mt-2">
+                      <p className="text-sm text-gray-500">
+                        What would you like to do with this user?
+                      </p>
+                    </div>
+                  </div>
+                  <div onClick={() => setActiveModal({type: "", params:{}})} className="flex justify-end items-end ml-28 cursor-pointer hover:bg-slate-300 rounded-lg">
+                    <X size={26}/>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                {role === "Tourists"? 
+                <button onClick={() => {banned === '1'? handleUnban(id) : handleBan(id)}} type="button" className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 sm:ml-3 sm:w-auto">
+                  {banned === '1'? "Unban User" : "Ban User"}
+                </button> : ""}
+                <button onClick={() => {handlePromote(role, id)}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-200 sm:mt-0 sm:w-auto">
+                  Promote
                 </button>
               </div>
             </div>
@@ -232,7 +304,7 @@ const TourOperatorHome = () => {
                       <td className="p-4">{activeTab}</td>
                       <td className="p-4">{user.email}</td>
                       <td className="p-4">
-                        <button onClick={() => {setActiveModal("user")}} className="bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-700">
+                        <button onClick={() => {setActiveModal({type: "user", params: {id: user.id, role: activeTab, banned: user.banned || 0}})}} className="bg-amber-600 text-white px-4 py-2 rounded-md hover:bg-amber-700">
                           Manage
                         </button>
                       </td>
@@ -240,7 +312,7 @@ const TourOperatorHome = () => {
                   ))}
                 </tbody>
               </table>
-              {activeModal === "user"? showModal(userModalInfo) : ""}
+              {activeModal.type === "user"? showUserModal(activeModal.params.role, activeModal.params.id, activeModal.params.banned) : ""}
             </div>
           </div>
         );
@@ -263,13 +335,13 @@ const TourOperatorHome = () => {
                     <p>Price: {tour.price} LE</p>
                     <p>Capacity: {tour.ticketcapacity}</p>
                     <p>Booked: {tour.bookedtickets}</p>
-                    <button onClick={() => {setActiveModal("tour")}} className="w-full bg-amber-600 text-white py-2 rounded-md mt-4 hover:bg-amber-700">
+                    <button onClick={() => {setActiveModal({type: "tour", params: {id: tour.id}})}} className="w-full bg-amber-600 text-white py-2 rounded-md mt-4 hover:bg-amber-700">
                       Manage Tour
                     </button>
                   </div>
                 </div>
               ))}
-              {activeModal === "tour"? showModal(tourModalInfo) : ""}
+              {activeModal.type === "tour"? showTourModal(activeModal.params.id) : ""}
             </div>
           </div>
         );

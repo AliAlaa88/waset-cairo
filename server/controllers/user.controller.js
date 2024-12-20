@@ -61,11 +61,6 @@ const userController = {
   }),
 
   getGuide: catchAsync(async (req, res, next) => {
-    // if(req.role != "operator"){
-    //   const err = new Error("You are not allowed to do this action!");
-    //   err.statusCode = 400;
-    //   return next(err);
-    // }
 
     const { guideID } = req.params;
     const guide = await client.query(
@@ -145,6 +140,25 @@ const userController = {
 
     return res.status(201).json({msg: "User has been banned successfully!"});
   }),
+
+  unbanTourist: catchAsync(async (req, res, next) => {
+    const touristID = req.params.id;
+
+    if(req.role != "operator"){
+      const err = new Error("You are not allowed to do this action!");
+      err.statusCode = 400;
+      return next(err);
+    }
+
+    const unban = await client.query(
+      "UPDATE TOURIST SET BANNED = '0' WHERE ID = $1;",
+      [touristID]
+    )
+
+    if(!unban.rowCount) return res.status(404).json({error: "User doesnt exist!"}); 
+
+    return res.status(201).json({msg: "User has been unbanned successfully!"});
+  }),
   getTouristFavExperience: catchAsync(async (req, res, next) => {
     const touristID = req.params.id;
 
@@ -211,11 +225,11 @@ const userController = {
 
   getTouristsGoingToGuideTours: catchAsync(async (req, res, next) => {
     const guideID = req.params.id;
-    // if(req.role != "guide"){
-    //     const err = new Error("You are not allowed to do this action!");
-    //     err.statusCode = 400;
-    //     return next(err);
-    // }
+    if(req.role != "guide"){
+        const err = new Error("You are not allowed to do this action!");
+        err.statusCode = 400;
+        return next(err);
+    }
 
     const tourists = await client.query(
       `SELECT T.ID, T.FNAME, T.LNAME, T.USERNAME, T.EMAIL, T.PHONENUMBER, TK.TOURID, TR.STARTDATE, COALESCE(TP.NAME, E.NAME) AS tripName

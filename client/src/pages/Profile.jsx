@@ -246,8 +246,9 @@ const Profile = () => {
 							<h3 className="font-semibold text-amber-800 mb-2">
 								Profile Information
 							</h3>
-							<p className="text-sm text-gray-600">Name: saif </p>
-							<p className="text-sm text-gray-600">Email: saif@email.com</p>
+							<p className="text-sm text-gray-600">Name: {profileData.fname} {profileData.lname} </p>
+							<p className="text-sm text-gray-600">Username: {profileData.username}</p>
+							<p className="text-sm text-gray-600">Email: {profileData.email}</p>
 							<br />
 							<Link to="edit">
 								<button className="bg-yellow-600 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-yellow-400">

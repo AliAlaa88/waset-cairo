@@ -19,7 +19,7 @@ const TouristGroupDetails = () => {
 								Common Language: {group.commonlanguage}
 							</p>
 							<p className="text-md font-semibold mb-2">
-								<strong>Participants:</strong> {groupMembers.length}
+								<strong>Participants:</strong> {groupMembers?.length || 0}
 							</p>
 						</div>
 					</div>
