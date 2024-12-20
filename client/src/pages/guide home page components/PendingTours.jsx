@@ -3,41 +3,41 @@ import {
   CheckCircle,
   XCircle
 } from 'lucide-react';
+import { useGetPendingToursByGuideQuery, useGetToursByGuideQuery, useAssignTourMutation, useDeleteTourMutation } from '../../store/tourSlice';
 
 const PendingToursContent = (props) => {
-    const [pendingTours, setPendingTours] = useState([
-        { 
-        id: 1, 
-        name: 'Pyramids of Giza Expedition', 
-        date: '2024-07-15', 
-        clients: 4,
-        details: 'Full day tour exploring the Giza Pyramid Complex' 
-        },
-        { 
-        id: 2, 
-        name: 'Luxor Temple Historical Tour', 
-        date: '2024-07-20', 
-        clients: 6,
-        details: 'In-depth exploration of Luxor Temple and surrounding historical sites' 
+    const {data: pendingTours, isFetching: pendingFetching, isError: pendingError} = useGetPendingToursByGuideQuery();
+    const {data: assignedTours, isFetching: assignedFetching, isError: assignedError} = useGetToursByGuideQuery(props.userInfo.id);
+    const [deleteTour] = useDeleteTourMutation();
+    const [assignTour] = useAssignTourMutation();
+
+    const handleAcceptTour = async (id) => {
+        try{
+            await assignTour(id).unwrap();
+            window.location.reload();
         }
-    ]);
-    const [assignedTours, setAssignedTours] = useState([]);
-
-    const handleAcceptTour = (tour) => {
-        setPendingTours(pendingTours.filter(t => t.id !== tour.id));
-        setAssignedTours([...assignedTours, {...tour}]);
+        catch(err){
+            console.log(err.error);
+        }
     };
 
-    const handleDeclineTour = (tourId) => {
-        setPendingTours(pendingTours.filter(t => t.id !== tourId));
+    const handleDeclineTour = async (id) => {
+        try{
+            await deleteTour(id).unwrap();
+            window.location.reload();
+        }
+        catch(err){
+            console.log(err.error);
+        }
     };
 
+    if(pendingFetching || assignedFetching) return(<p>Loading...</p>);
     return (
         <div className="space-y-8">
             {/* Pending Tours Section */}
             <div className="bg-white p-6 rounded-xl shadow-md">
                 <h2 className="text-2xl font-bold text-amber-900 mb-4">Pending Tours</h2>
-                {pendingTours.length === 0 ? (
+                {pendingError    ? (
                     <p className="text-gray-600">No pending tours at the moment.</p>
                 ) : (
                 <div className="space-y-4">
@@ -45,13 +45,14 @@ const PendingToursContent = (props) => {
                     <div key={tour.id} className="border-b pb-3 last:border-b-0">
                         <div className="flex justify-between items-center">
                             <div>
-                                <h3 className="font-semibold text-amber-800">{tour.name}</h3>
-                                <p className="text-sm text-gray-600">Date: {tour.date}</p>
-                                <p className="text-xs text-gray-500 mt-1">{tour.details}</p>
+                                <h3 className="font-semibold text-xl text-amber-800">{tour.name}</h3>
+                                <p className="text-sm font-bold text-gray-600">Date: {tour.startdate.split("T")[0]}</p>
+                                <p className="text-sm text-gray-600">Tourists Coming: {tour.bookedtickets}</p>
+                                <p className="text-sm text-gray-600">Ticket Capacity: {tour.ticketcapacity}</p>
                             </div>
                             <div className="flex space-x-3">
                                 <button 
-                                    onClick={() => handleAcceptTour(tour)}
+                                    onClick={() => handleAcceptTour(tour.id)}
                                     className="text-green-600 hover:text-green-800 transition"
                                     title="Accept Tour"
                                 >
@@ -72,29 +73,30 @@ const PendingToursContent = (props) => {
             )}
             </div>
 
-        {/* Assigned Tours Section */}
-        <div className="bg-white p-6 rounded-xl shadow-md">
-            <h2 className="text-2xl font-bold text-amber-900 mb-4">Assigned Tours</h2>
-            {assignedTours.length === 0 ? (
-                <p className="text-gray-600">No tours have been assigned yet.</p>
-            ) : (
-            <div className="space-y-4">
-                {assignedTours.map((tour) => (
-                <div key={tour.id} className="border-b pb-3 last:border-b-0">
-                    <div className="flex justify-between items-center">
-                        <div>
-                            <h3 className="font-semibold text-amber-800">{tour.name}</h3>
-                            <p className="text-sm text-gray-600">Date: {tour.date}</p>
-                            <p className="text-xs text-gray-500 mt-1">{tour.details}</p>
+            {/* Assigned Tours Section */}
+            <div className="bg-white p-6 rounded-xl shadow-md">
+                <h2 className="text-2xl font-bold text-amber-900 mb-4">Assigned Tours</h2>
+                {assignedError ? (
+                    <p className="text-gray-600">No tours have been assigned yet.</p>
+                ) : (
+                <div className="space-y-4">
+                    {assignedTours?.map((tour) => (
+                    <div key={tour.id} className="border-b pb-3 last:border-b-0">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <h3 className="font-semibold text-amber-800">{tour.tripname}</h3>
+                                <p className="text-sm text-gray-600">Date: {tour.startdate.split("T")[0]}</p>
+                                <p className="text-sm text-gray-600">Tourists Coming: {tour.totaltickets}</p>
+                                <p className="text-sm text-gray-600">Ticket Capacity: {tour.ticketcapacity}</p>
+                            </div>
+                            <span className="text-sm text-green-600">Assigned ✓</span>
                         </div>
-                        <span className="text-sm text-green-600">Assigned ✓</span>
                     </div>
+                    ))}
                 </div>
-                ))}
+                )}
             </div>
-            )}
         </div>
-    </div>
     );
 };
 

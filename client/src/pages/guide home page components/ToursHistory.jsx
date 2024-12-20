@@ -6,7 +6,8 @@ import {
 import { useGetToursByGuideQuery } from '../../store/tourSlice';
 
 const ToursHistoryContent = (props) => {
-    const {data: tourHistory, isFetching, isError} = useGetToursByGuideQuery(props.userInfo.id);
+    let {data: tourHistory, isFetching, isError} = useGetToursByGuideQuery(props.userInfo.id);
+    tourHistory = tourHistory.filter((tour) => new Date(tour.enddate) < new Date()); //get only tours that has ended
 
     if(isFetching) return (<p>Loading...</p>);
     if(isError) return (<p>An error has occured!</p>);
@@ -17,7 +18,7 @@ const ToursHistoryContent = (props) => {
                 Tour History
             </h1>
             <div className="space-y-6">
-            {tourHistory.map((tour) => (
+            {tourHistory.length === 0? "No tours to show!" : tourHistory.map((tour) => (
                 <div 
                     key={tour.id} 
                     className="flex items-center bg-amber-50 rounded-xl p-6 shadow-md border border-gold-300 hover:bg-amber-100 transition-all duration-300"

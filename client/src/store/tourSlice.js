@@ -45,6 +45,20 @@ export const tourSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    getPendingToursByGuide: builder.query({
+      query: () => ({
+        url: `${toursUrl}/guide/pending`,
+        method: "GET",
+        credentials: "include"
+      })
+    }),
+    assignTour: builder.mutation({
+      query: (id) => ({
+        url: `${toursUrl}/assign/${id}`,
+        method: "PUT",
+        credentials: "include"
+      })
+    })
   }),
 });
 
@@ -58,4 +72,6 @@ export const {
   useAddTourMutation,
   useUpdateTourMutation,
   useDeleteTourMutation,
+  useGetPendingToursByGuideQuery,
+  useAssignTourMutation
 } = tourSlice;

@@ -43,17 +43,10 @@ const tourController = {
     }),
     deleteTour: catchAsync(async (req, res, next) => {
         const tourID = req.params.id;
-        const opID = req.user.id;
-
-        if(req.role != "operator"){
-            const err = new Error("You are not allowed to do this action!");
-            err.statusCode = 400;
-            return next(err);
-        }
         
         const del = await client.query(
-            "DELETE FROM TOUR WHERE ID = $1 AND OPERATORID = $2;",
-            [tourID, opID]
+            "DELETE FROM TOUR WHERE ID = $1;",
+            [tourID]
         );
 
         if(!del.rowCount) return res.status(400).json({error: "You are not allowed to do this action!"});
@@ -71,10 +64,22 @@ const tourController = {
             return next(err);
         }
 
-        const update = await client.query(
-            `UPDATE TOUR SET STARTDATE = $1, ENDDATE = $2, TOURGUIDEID = $3, TICKETCAPACITY = $4, EVENTID = $5, TOURPACKAGEID = $6 WHERE ID = $7 RETURNING *;`,
-            [startDate, endDate, tourguideID, ticketCap, eventID || null, tourpackageID || null, tourID]
+        const tour = await client.query(
+            "SELECT TOURGUIDEID FROM TOUR WHERE ID = $1", [tourID]
         );
+        let update;
+        if(tourguideID === tour.rows[0].tourguideid){
+            update = await client.query(
+                `UPDATE TOUR SET STARTDATE = $1, ENDDATE = $2, TOURGUIDEID = $3, TICKETCAPACITY = $4, EVENTID = $5, TOURPACKAGEID = $6 WHERE ID = $7 RETURNING *;`,
+                [startDate, endDate, tourguideID, ticketCap, eventID || null, tourpackageID || null, tourID]
+            );
+        }
+        else{ //if changed this tour to another guide, make it pending again
+            update = await client.query(
+                `UPDATE TOUR SET STARTDATE = $1, ENDDATE = $2, TOURGUIDEID = $3, TICKETCAPACITY = $4, EVENTID = $5, TOURPACKAGEID = $6, STATUS = 'pending' WHERE ID = $7 RETURNING *;`,
+                [startDate, endDate, tourguideID, ticketCap, eventID || null, tourpackageID || null, tourID]
+            );
+        }
 
         if(!update.rowCount) {
             const err = new Error("Tour doesnt exist!");
@@ -103,10 +108,12 @@ const tourController = {
         const tours = await client.query(
             `SELECT TR.ID as id, 
             TR.STARTDATE AS startdate,
+            TR.ENDDATE AS endDate,
             COALESCE(TP.NAME, E.NAME) AS tripName,
             COALESCE(TP.MEETINGLOCATION, E.MEETINGLOCATION) AS meetingLocation,
             COALESCE(TP.DURATION, E.DURATION) AS duration,
             COUNT(TK.ID) AS totalTickets,
+            TR.TICKETCAPACITY,
             AVG(F.RATING) AS averageRating
             FROM TOUR TR
             LEFT JOIN TOUR_PACKAGE TP ON TR.TOURPACKAGEID = TP.ID
@@ -114,7 +121,7 @@ const tourController = {
             LEFT JOIN TICKET TK ON TR.ID = TK.TOURID
             LEFT JOIN TOURIST_FEEDBACK TF ON TR.ID = TF.TOURID
             LEFT JOIN FEEDBACK F ON TF.FEEDBACKID = F.ID
-            WHERE TR.TOURGUIDEID = $1 AND TR.ENDDATE < CURRENT_DATE
+            WHERE TR.TOURGUIDEID = $1 AND TR.STATUS = 'assigned'
             GROUP BY TR.ID, TR.STARTDATE, TP.NAME, TP.MEETINGLOCATION, TP.DURATION, E.NAME, E.MEETINGLOCATION, E.DURATION;`,
             [guideID]
         );
@@ -157,6 +164,54 @@ const tourController = {
         if(!tours.rowCount) return res.status(404).json({error: "No data found!"});
 
         return res.status(200).json(tours.rows);
+    }),
+
+    getPendingToursByGuide: catchAsync(async (req, res, next) => {
+        const guideID = req.user.id;
+
+        if(req.role != "guide"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
+
+        const tours = await client.query(
+            `SELECT TR.ID, 
+            TR.STARTDATE,
+            COALESCE(TP.NAME, E.NAME) AS name,
+            TR.TICKETCAPACITY, 
+            COUNT(TK.ID) AS bookedTickets
+            FROM TOUR TR
+            LEFT JOIN TICKET TK ON TK.TOURID = TR.ID
+            LEFT JOIN TOUR_PACKAGE TP ON TP.ID = TR.TOURPACKAGEID
+            LEFT JOIN EVENT E ON E.ID = TR.EVENTID
+            WHERE TR.TOURGUIDEID = $1 AND TR.STATUS = 'pending'
+            GROUP BY TR.ID, TR.STARTDATE, TP.NAME, E.NAME, TR.TICKETCAPACITY`,
+            [guideID]
+        );
+
+        if(!tours.rowCount) return res.status(404).json({error: "No data found!"});
+
+        return res.status(200).json(tours.rows);
+    }),
+
+    assignTour: catchAsync(async (req, res, next) => {
+        const tourID = req.params.id;
+
+        if(req.role != "guide"){
+            const err = new Error("You are not allowed to do this action!");
+            err.statusCode = 400;
+            return next(err);
+        }
+
+        const update = await client.query(
+            "UPDATE TOUR SET STATUS = 'assigned' WHERE ID = $1",
+            [tourID]
+        );
+
+        if(!update.rowCount) return res.status(404).json({error: "Tour doesnt exist!"});
+
+        return res.status(201).json({msg: "Assigned Tour Successfully!"});
     })
 };
 

@@ -7,11 +7,13 @@ tourRouter.get("/", tourController.getAllTours);
 tourRouter.get("/didnt-start", tourController.getToursThatDidntStart);
 tourRouter.get("/:id", tourController.getTour);
 tourRouter.get("/tourists/:tourid", tourController.getTouristsGoingToTour);
+tourRouter.get("/guide/pending", tourController.getPendingToursByGuide);
 tourRouter.get("/guide/:guideid", tourController.getToursByGuide);
 tourRouter.get("/tourist/:touristid", tourController.getTouristTourHistory);
 
 tourRouter.post("/", tourController.createTour);
 tourRouter.put("/:id", tourController.updateTour);
+tourRouter.put("/assign/:id", tourController.assignTour);
 tourRouter.delete("/:id", tourController.deleteTour);
 
 export default tourRouter;
