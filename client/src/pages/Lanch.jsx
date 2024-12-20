@@ -73,6 +73,9 @@ function Lanch({ visible, closeModal, type, id, tourID }) {
         <div className="modal-overlay" onClick={closeModal}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="La-container">
+                    <button className="close-btn" onClick={closeModal}>
+                        &times; {/* This is the HTML entity for "X" */}
+                    </button>
                     <form className="La-form" onSubmit={submit}>
                         <div className="La-inputs">
                             <label className="La-label">Choose Guide</label>
