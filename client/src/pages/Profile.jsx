@@ -19,10 +19,10 @@ import {
 } from "lucide-react";
 import logo from '../assets/exploreEgy.png'
 import { clearCredentials } from "../store/authSlice";
+import ChangePasswordModal from "./ChangePasswordModal";
 
 const Profile = () => {
-	const [currPassword, setCurrPassword] = useState("");
-	const [newPassword, setNewPassword] = useState("");
+	const [passwordModalOpen, setPasswordModalOpen] = useState(false);
 	const [updatePassword] = useUpdatePasswordMutation();
 	const [touristLogout] = useTouristLogoutMutation();
 	const [activeTab, setActiveTab] = useState("overview");
@@ -30,22 +30,16 @@ const Profile = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
-	const handlePasswordChange = async (event) => {
-		event.preventDefault();
-		if (!currPassword || !newPassword) {
-			alert("Please fill in all fields");
-			return;
-		}
+	const handlePasswordChange = async ({currentPassword, newPassword}) => {
 		try {
-			const res = await updatePassword({ currPassword, newPassword }).unwrap();
+			const res = await updatePassword({ currPassword: currentPassword, newPassword: newPassword }).unwrap();
 			alert(res?.msg);
-			setCurrPassword("");
-			setNewPassword("");
+			setPasswordModalOpen(false);
 		} catch (err) {
-			if (err.data.msg === "Invalid Credentials!") {
+			if (err?.data?.msg === "Invalid Credentials!") {
 				alert("Wrong current password");
 			}
-			console.log(err?.data?.message || err.error);
+			console.log(err.data.msg || err);
 		}
 	};
 
@@ -257,27 +251,20 @@ const Profile = () => {
 								</button>
 							</Link>
 						</div>
-						<div>
-							<h3 className="font-semibold text-amber-800 mb-2">Account</h3>
-							<input
-								type="text"
-								placeholder="current password"
-								value={currPassword}
-								onChange={(e) => setCurrPassword(e.target.value)}
-							/>
-							<input
-								type="text"
-								placeholder="new password"
-								value={newPassword}
-								onChange={(e) => setNewPassword(e.target.value)}
-							/>
-							<button
-								className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition"
-								onClick={handlePasswordChange}
-							>
+
+						<button
+							onClick={() => setPasswordModalOpen(true)}
+							className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition"
+						>
 								Change Password
-							</button>
-						</div>
+						</button>
+						
+						<ChangePasswordModal
+							isOpen={passwordModalOpen}
+							onClose={() => setPasswordModalOpen(false)}
+							onSubmit={handlePasswordChange}
+						/>
+
 						<div>
 							<hr />
 							<br />

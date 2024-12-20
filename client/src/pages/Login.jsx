@@ -52,7 +52,8 @@ function Login() {
 						break;
 				}
 				dispatch(setCredentials({ ...res?.body }));
-				navigate(`/`, { state: { triggerFetch: true } });
+				// navigate(`/`, { state: { triggerFetch: true } });
+				window.location.href = "/";
 			
 			} catch (err) {
 				if (err?.data?.msg == "Invalid Credentials!") {

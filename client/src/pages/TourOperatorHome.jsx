@@ -18,19 +18,20 @@ import { useDeleteTourMutation, useGetToursThatDidntStartQuery } from '../store/
 import { useGetOperatorDashboardQuery, useGetCurrUserDataQuery, useUnbanTouristMutation } from '../store/userSlice';
 import { useSelector } from 'react-redux';
 import UnauthorizedPage from './UnauthorizedPage';
-import { useOperatorLogoutMutation } from '../store/registrationSlice';
+import { useOperatorLogoutMutation, useUpdatePasswordMutation } from '../store/registrationSlice';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { clearCredentials } from '../store/authSlice';
 import { useGetTouristsQuery, useGetGuidesQuery } from '../store/userSlice';
 import { usePromoteTouristMutation, usePromoteGuideMutation, useBanTouristMutation } from '../store/userSlice';
 import Lanch from './Lanch';
-
+import ChangePasswordModal from './ChangePasswordModal';
 
 const TourOperatorHome = () => {
   const [activeSection, setActiveSection] = useState('dashboard');
   const [activeModal, setActiveModal] = useState({type: "", params:{}});
   const [activeTab, setActiveTab] = useState("Tourists");
+  const [passwordModalOpen, setPasswordModalOpen] = useState(false);
 
   const {data: tours, isFetching: toursFetching, isError: tourError} = useGetToursThatDidntStartQuery();
   const {data: dashboard, isFetching: dashboardFetching, isError: dashboardError} = useGetOperatorDashboardQuery();
@@ -42,6 +43,7 @@ const TourOperatorHome = () => {
   const [banTourist] = useBanTouristMutation();
   const [unbanTourist] = useUnbanTouristMutation();
   const [deleteTour] = useDeleteTourMutation();
+  const [updatePassword] = useUpdatePasswordMutation();
 
   const {userInfo} = useSelector((state) => state.auth);
 
@@ -115,6 +117,19 @@ const TourOperatorHome = () => {
       console.log(err);
     }
   }
+
+  const handlePasswordChange = async ({currentPassword, newPassword}) => {
+		try {
+			const res = await updatePassword({ currPassword: currentPassword, newPassword: newPassword }).unwrap();
+			alert(res?.msg);
+			setPasswordModalOpen(false);
+		} catch (err) {
+			if (err?.data?.msg === "Invalid Credentials!") {
+				alert("Wrong current password");
+			}
+			console.log(err.data.msg || err);
+		}
+	};
 
   const sections = [
     { 
@@ -254,7 +269,7 @@ const TourOperatorHome = () => {
               {[
                 { title: 'Total Tours', value: dashboard? dashboard[0].totaltours : 0, color: 'text-amber-700' },
                 { title: 'Total Customers', value: dashboard? dashboard[0].totalcustomers : 0, color: 'text-amber-700' },
-                { title: 'Total Revenue', value: (dashboard? dashboard[0].totalrevenue : 0) + " LE", color: 'text-amber-700' }
+                { title: 'Total Revenue', value: (dashboard? dashboard[0].totalrevenue || 0 : 0) + " LE", color: 'text-amber-700' }
               ].map((card, index) => (
                 <div 
                   key={index} 
@@ -369,17 +384,22 @@ const TourOperatorHome = () => {
                 <p className="text-sm text-gray-600">Username: {currUser?.username}</p> 
                 <p className="text-sm text-gray-600">Email: {currUser?.email}</p>
                 <br/>
-                <Link to="edit">
-								  <button className="bg-amber-700 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-amber-800">
-								  <Edit className="mr-2" size={20} /> Edit Profile
-								</button>
-							</Link>
+                <a href="/operator-home/edit">
+				          <button className="bg-amber-700 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-amber-800">
+								    <Edit className="mr-2" size={20} /> Edit Profile
+								  </button>
+							  </a>
               </div>
               <div>
                 <h3 className="font-semibold text-amber-800 mb-2">Account</h3>
-                <button className="bg-amber-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-800 transition">
+                <button onClick={() => setPasswordModalOpen(true)} className="bg-amber-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-amber-800 transition">
                   Change Password
                 </button>
+                <ChangePasswordModal
+                  isOpen={passwordModalOpen}
+                  onClose={() => setPasswordModalOpen(false)}
+                  onSubmit={handlePasswordChange}
+                />
               </div>
               <div>
               <hr/><br/>
