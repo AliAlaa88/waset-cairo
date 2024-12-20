@@ -254,7 +254,7 @@ const TourOperatorHome = () => {
               {[
                 { title: 'Total Tours', value: dashboard? dashboard[0].totaltours : 0, color: 'text-amber-700' },
                 { title: 'Total Customers', value: dashboard? dashboard[0].totalcustomers : 0, color: 'text-amber-700' },
-                { title: 'Total Revenue', value: (dashboard? dashboard[0].totalrevenue : 0) + " LE", color: 'text-amber-700' }
+                { title: 'Total Revenue', value: (dashboard? dashboard[0].totalrevenue || 0 : 0) + " LE", color: 'text-amber-700' }
               ].map((card, index) => (
                 <div 
                   key={index} 
@@ -369,11 +369,11 @@ const TourOperatorHome = () => {
                 <p className="text-sm text-gray-600">Username: {currUser?.username}</p> 
                 <p className="text-sm text-gray-600">Email: {currUser?.email}</p>
                 <br/>
-                <Link to="edit">
-								  <button className="bg-amber-700 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-amber-800">
-								  <Edit className="mr-2" size={20} /> Edit Profile
-								</button>
-							</Link>
+                <a href="/operator-home/edit">
+				          <button className="bg-amber-700 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-amber-800">
+								    <Edit className="mr-2" size={20} /> Edit Profile
+								  </button>
+							  </a>
               </div>
               <div>
                 <h3 className="font-semibold text-amber-800 mb-2">Account</h3>

@@ -43,7 +43,7 @@ const EditProfileOperator = () => {
 				birthdate,
 				gender,
 			}).unwrap();
-			navigate("/");
+			window.location.href = "/";
 		} catch (err) {
 			console.log(err?.data?.message || err);
 		}

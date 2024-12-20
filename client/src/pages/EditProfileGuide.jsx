@@ -46,7 +46,8 @@ const EditProfileGuide = () => {
 				gender,
 				specialization,
 			}).unwrap();
-			navigate("/");
+			// navigate("/");
+            window.location.href = "/";
 		} catch (err) {
 			console.log(err?.data?.message || err);
 		}

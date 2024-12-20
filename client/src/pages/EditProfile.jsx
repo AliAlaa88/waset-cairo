@@ -45,7 +45,7 @@ function EditProfile() {
 				bio,
 				phoneNo,
 			}).unwrap();
-			window.location.reload();
+			window.location.href = "/tourist-home/profile";
 		} catch (err) {
 			console.log(err?.data?.message || err.error);
 		}
