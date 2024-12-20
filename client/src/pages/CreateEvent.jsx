@@ -4,7 +4,6 @@ function CreateEvent(){
     //const [OperaturId,setOperaturId] = useState();
     const [discription, setdiscription] = useState('');
     const [duration, setduration] = useState();
-    const [hourOrday, sethourOrday] = useState('');
     const [name, setname] = useState('');
     const [price, setprice] = useState('');
     const [mettingLoc, setmettingLoc] = useState('');
@@ -89,7 +88,7 @@ function CreateEvent(){
 
                     <div className="Ev-duration">
                         <br />
-                    <label>Number of day/hour</label>
+                    <label>Duration</label>
                     <input className = "Ev-input" type= "number"
                     min= "0" max= "10" 
                     placeholder="enter duration of event"
@@ -98,35 +97,11 @@ function CreateEvent(){
                     onChange={(e) => setduration(e.target.value)}
                     />
 
-                        <div className="Ev-radio-group">
-                        <span className= "pdayhour">day/hour</span>
-                        <br />
-                        <label>
-                            <input
-                                type="radio"
-                                name="type"
-                                value="day"
-                                required
-                                checked={hourOrday === "day"}
-                                onChange={(e) => sethourOrday(e.target.value)}
-                            />
-                            day
-                        </label>
-                        <label>
-                            <input
-                                type="radio"
-                                name="type"
-                                value="hour"
-                                checked={hourOrday === "hour"}
-                                onChange={(e) => sethourOrday(e.target.value)}
-                                />
-                                hour
-                        </label>
-                        </div>
+                        
                     </div>
                     <br />
 
-                    <label className= "packtype">Package Type</label>
+                    <label className= "packtype">Event Type</label>
                     <select className="Ev-input" 
                 
                     value={selectedType}
@@ -144,7 +119,7 @@ function CreateEvent(){
                     <br/>
                     
                     <div className= "Ev-input">
-                    <label className= "eventtype">Event Type</label>
+                    <label className= "eventtype">Monument</label>
                     <select className="Ev-input" 
                 
                     value={selectedEvent}
