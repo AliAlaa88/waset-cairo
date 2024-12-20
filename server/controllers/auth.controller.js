@@ -49,7 +49,7 @@ const authController = {
 		);
 
 		if (!user.rowCount){
-			const err = new Error("Invalid credentials!");
+			const err = new Error("Invalid Credentials!");
 			err.statusCode = 400;
 			return next(err);
 		}
@@ -80,7 +80,7 @@ const authController = {
 		);
 
 		if (!user.rowCount){
-			const err = new Error("Invalid credentials!");
+			const err = new Error("Invalid Credentials!");
 			err.statusCode = 400;
 			return next(err);
 		}
@@ -104,7 +104,7 @@ const authController = {
 			[username]
 		);
 		if (!user.rowCount){
-			const err = new Error("Invalid credentials!");
+			const err = new Error("Invalid Credentials!");
 			err.statusCode = 400;
 			return next(err);
 		}

@@ -55,7 +55,6 @@ function Login() {
 				navigate(`/`, { state: { triggerFetch: true } });
 			
 			} catch (err) {
-				console.log(err?.data?.msg || err);
 				if (err?.data?.msg == "Invalid Credentials!") {
 					alert("Incorrect username or password or role \n Please try again");
 				}

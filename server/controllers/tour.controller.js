@@ -24,7 +24,7 @@ const tourController = {
         return res.status(404).json({error: "No data found!"});
     }),
     createTour: catchAsync(async (req, res, next) => {
-        const {startDate, endDate, ticketCap, eventID, tourpackageID} = req.body;
+        const {startDate, endDate, tourguideID, ticketCap, eventID, tourpackageID} = req.body;
         const opID = req.user.id;
 
         if(req.role != "operator"){
@@ -34,9 +34,9 @@ const tourController = {
         }
 
         const create = await client.query(
-            `INSERT INTO TOUR (STARTDATE, ENDDATE, TICKETCAPACITY, OPERATORID, EVENTID, TOURPACKAGEID)
-            VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
-            [startDate, endDate, ticketCap, opID, eventID || null, tourpackageID || null]
+            `INSERT INTO TOUR (STARTDATE, ENDDATE, TOURGUIDEID, TICKETCAPACITY, OPERATORID, EVENTID, TOURPACKAGEID)
+            VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *`,
+            [startDate, endDate, tourguideID, ticketCap, opID, eventID || null, tourpackageID || null]
         );
         
         res.status(201).json({msg: "Created tour successfully!", data: create.rows});
@@ -63,7 +63,7 @@ const tourController = {
 
     updateTour: catchAsync(async (req, res, next) => {
         const tourID = req.params.id;
-        const {startDate, endDate, ticketCap, eventID, tourpackageID} = req.body;
+        const {startDate, endDate, tourguideID, ticketCap, eventID, tourpackageID} = req.body;
 
         if(req.role != "operator"){
             const err = new Error("You are not allowed to do this action!");
@@ -72,8 +72,8 @@ const tourController = {
         }
 
         const update = await client.query(
-            `UPDATE TOUR SET STARTDATE = $1, ENDDATE = $2, TICKETCAPACITY = $3, EVENTID = $4, TOURPACKAGEID = $5 WHERE ID = $6 RETURNING *;`,
-            [startDate, endDate, ticketCap, eventID || null, tourpackageID || null, tourID]
+            `UPDATE TOUR SET STARTDATE = $1, ENDDATE = $2, TOURGUIDEID = $3, TICKETCAPACITY = $4, EVENTID = $5, TOURPACKAGEID = $6 WHERE ID = $7 RETURNING *;`,
+            [startDate, endDate, tourguideID, ticketCap, eventID || null, tourpackageID || null, tourID]
         );
 
         if(!update.rowCount) {
@@ -114,7 +114,7 @@ const tourController = {
             LEFT JOIN TICKET TK ON TR.ID = TK.TOURID
             LEFT JOIN TOURIST_FEEDBACK TF ON TR.ID = TF.TOURID
             LEFT JOIN FEEDBACK F ON TF.FEEDBACKID = F.ID
-            WHERE TR.TOURGUIDEID = $1
+            WHERE TR.TOURGUIDEID = $1 AND TR.ENDDATE < CURRENT_DATE
             GROUP BY TR.ID, TR.STARTDATE, TP.NAME, TP.MEETINGLOCATION, TP.DURATION, E.NAME, E.MEETINGLOCATION, E.DURATION;`,
             [guideID]
         );
@@ -126,15 +126,18 @@ const tourController = {
 
     getToursThatDidntStart: catchAsync(async (req, res, next) => {
         const tours = await client.query(
-            `SELECT TR.ID, 
+            `SELECT TR.ID, TR.TOURPACKAGEID, TR.EVENTID,
             COALESCE(TP.NAME, E.NAME) AS name,
-            TK.PRICE, TR.TICKETCAPACITY, COUNT(TK.ID) AS bookedTickets
+            COALESCE(TP.PRICE, E.PRICE) AS price, 
+            TR.TICKETCAPACITY, 
+            COUNT(TK.ID) AS bookedTickets,
+            TR.STARTDATE
             FROM TOUR TR
             LEFT JOIN TICKET TK ON TK.TOURID = TR.ID
             LEFT JOIN TOUR_PACKAGE TP ON TP.ID = TR.TOURPACKAGEID
             LEFT JOIN EVENT E ON E.ID = TR.EVENTID
-            WHERE STARTDATE > CURRENT_DATE
-            GROUP BY TR.ID, TP.NAME, E.NAME, TK.PRICE, TR.TICKETCAPACITY;`
+            WHERE STARTDATE >= CURRENT_DATE
+            GROUP BY TR.ID, TR.TOURPACKAGEID, TR.EVENTID, TR.STARTDATE, TP.NAME, E.NAME, TP.PRICE, E.PRICE, TR.TICKETCAPACITY;`
         );
 
         if(!tours.rowCount) return res.status(404).json({error: "No data found!"});

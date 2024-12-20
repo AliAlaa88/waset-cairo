@@ -50,6 +50,8 @@ function MyEvents() {
                         <Lanch
                             visible={activeModal === event.id}
                             closeModal={closeModal}
+                            type="event"
+                            id={event.id}
                         />
                     </div>))}
                 </div>

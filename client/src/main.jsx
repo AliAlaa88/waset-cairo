@@ -14,6 +14,7 @@ import "./pages/styles/TourOperatorSign.css"
 import "./pages/styles/InsertMonument.css"
 import "./pages/styles/CreatePacke.css"
 import "./pages/styles/CreateEvent.css"
+import "./pages/styles/CheakOut.css" 
 
 import App from './App.jsx'
 

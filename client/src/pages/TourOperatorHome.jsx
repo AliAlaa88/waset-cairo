@@ -11,7 +11,7 @@ import {
   Edit,
   X
 } from 'lucide-react';
-import logo from '../assets/8d01c511-6aae-4f11-9dfb-b4f3b8cd822a.webp'
+import logo from '../assets/exploreEgy.png'
 import MyPackes from './myPackeges';
 import MyEvents from './myEvents';
 import { useDeleteTourMutation, useGetToursThatDidntStartQuery } from '../store/tourSlice';
@@ -150,7 +150,7 @@ const TourOperatorHome = () => {
   ];
 
 
-  const showTourModal = (id) => {
+  const showTourModal = (tour) => {
     return(
       <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
 
@@ -180,10 +180,10 @@ const TourOperatorHome = () => {
                 </div>
               </div>
               <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                <button onClick={() => {handleDeleteTour(id)}} type="button" className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 sm:ml-3 sm:w-auto">
+                <button onClick={() => {handleDeleteTour(tour.id)}} type="button" className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400 sm:ml-3 sm:w-auto">
                   Delete Tour
                 </button>
-                <button onClick={() => {}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-200 sm:mt-0 sm:w-auto">
+                <button onClick={() => {setActiveModal({type: "launch", params: {id: tour.eventid || tour.tourpackageid, type: tour.eventid? "editevent" : "editpackage", tourID: tour.id}})}} type="button" className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-200 sm:mt-0 sm:w-auto">
                   Edit Tour
                 </button>
               </div>
@@ -332,16 +332,18 @@ const TourOperatorHome = () => {
                 >
                   <h3 className="text-2xl font-bold text-amber-900 mb-4">{tour.name}</h3>
                   <div className="space-y-2 text-amber-800">
+                    <p>Start Date: {tour.startdate.split("T")[0]}</p>
                     <p>Price: {tour.price} LE</p>
                     <p>Capacity: {tour.ticketcapacity}</p>
                     <p>Booked: {tour.bookedtickets}</p>
-                    <button onClick={() => {setActiveModal({type: "tour", params: {id: tour.id}})}} className="w-full bg-amber-600 text-white py-2 rounded-md mt-4 hover:bg-amber-700">
+                    <button onClick={() => {setActiveModal({type: "tour", params: {id: tour.id, tourObj: tour}})}} className="w-full bg-amber-600 text-white py-2 rounded-md mt-4 hover:bg-amber-700">
                       Manage Tour
                     </button>
                   </div>
                 </div>
               ))}
-              {activeModal.type === "tour"? showTourModal(activeModal.params.id) : ""}
+              {activeModal.type === "tour"? showTourModal(activeModal.params.tourObj) : ""}
+              <Lanch visible={activeModal.type === "launch"} closeModal={() => setActiveModal({type: "", params: {}})} type={activeModal.params.type} id={activeModal.params.id} tourID={activeModal.params.tourID}/>
             </div>
           </div>
         );
@@ -363,7 +365,7 @@ const TourOperatorHome = () => {
             <div className="space-y-4">
               <div className="border-b pb-4">
                 <h3 className="font-semibold text-amber-800 mb-2">Profile Information</h3>
-                <p className="text-sm text-gray-600">Name: {currUser?.fname}</p>
+                <p className="text-sm text-gray-600">Name: {currUser?.fname} {currUser?.lname}</p>
                 <p className="text-sm text-gray-600">Username: {currUser?.username}</p> 
                 <p className="text-sm text-gray-600">Email: {currUser?.email}</p>
                 <br/>

@@ -3,8 +3,7 @@ import {
   Clipboard, 
   Settings, 
   CalendarCheck, 
-  Users, 
-  Bell,
+  Users,
   History
 } from 'lucide-react';
 
@@ -14,13 +13,14 @@ import ClientManagementContent from './guide home page components/ClientManageme
 import SettingsContent from './guide home page components/Settings';
 import UnauthorizedPage from './UnauthorizedPage';
 import { useSelector } from 'react-redux';
-import { useGetGuideQuery } from '../store/userSlice';
+import { useGetCurrUserDataQuery } from '../store/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 const TourGuideHome = () => {
   const [activeSection, setActiveSection] = useState('assignedTours');
   const {userInfo} = useSelector((state) => state.auth);
-  const {data: guides, isFetching, isError} = useGetGuideQuery(userInfo.id);
+
+  const {data: profileData, isFetching} = useGetCurrUserDataQuery();
   const navigate = useNavigate();
 
   if(!userInfo || userInfo.role !== "guide") return (<UnauthorizedPage/>);
@@ -57,7 +57,7 @@ const TourGuideHome = () => {
       case 'clientManagement':
         return <ClientManagementContent userInfo={userInfo} />;
       case 'settings':
-        return <SettingsContent userInfo={userInfo} />;
+        return <SettingsContent userInfo={userInfo} guide={profileData} />;
       default:
         return <PendingToursContent userInfo={userInfo} />;
     }

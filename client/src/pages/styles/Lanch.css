@@ -10,6 +10,7 @@
     justify-content: center;
     align-items: center;
     z-index: 1000; 
+    color: black;
 }
 
 .modal-content {
@@ -31,7 +32,7 @@
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    color: #555;
+    color: black;
 }
 
 .modal-content::before:hover {

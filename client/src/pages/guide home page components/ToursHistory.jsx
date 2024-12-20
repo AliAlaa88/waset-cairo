@@ -6,39 +6,8 @@ import {
 import { useGetToursByGuideQuery } from '../../store/tourSlice';
 
 const ToursHistoryContent = (props) => {
-    //hard coded guide id
-    const {data: tourHistory, isFetching, isError} = useGetToursByGuideQuery(1);
+    const {data: tourHistory, isFetching, isError} = useGetToursByGuideQuery(props.userInfo.id);
 
-    //dummy data
-    // const tourHistory = [
-    // {
-    //     id: 1,
-    //     tourName: "Pyramids of Giza Expedition",
-    //     date: "May 15, 2024",
-    //     location: "Giza, Cairo",
-    //     duration: "Full Day",
-    //     groupSize: 12,
-    //     averageRating: 2.7
-    // },
-    // {
-    //     id: 2,
-    //     tourName: "Luxor Temple Historical Journey",
-    //     date: "April 22, 2024", 
-    //     location: "Luxor, Upper Egypt",
-    //     duration: "Half Day",
-    //     groupSize: 8,
-    //     averageRating: 4.9
-    // },
-    // {
-    //     id: 3,
-    //     tourName: "Red Sea Beach Escape",
-    //     date: "March 10, 2024",
-    //     location: "Hurghada",
-    //     duration: "Full Day",
-    //     groupSize: 6,
-    //     averageRating: 3.5
-    // }
-    // ];
     if(isFetching) return (<p>Loading...</p>);
     if(isError) return (<p>An error has occured!</p>);
     return (

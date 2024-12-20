@@ -1,21 +1,67 @@
 import React, { useState } from "react";
+import { useGetGuidesQuery } from "../store/userSlice";
+import { useAddTourMutation, useUpdateTourMutation } from "../store/tourSlice";
 
-function Lanch({ visible, closeModal }) {
-    const [numTicket, setnumTicket] = useState();
-    const [startDate, setstartDate] = useState('');
+function Lanch({ visible, closeModal, type, id, tourID }) {
+    const {data: guides, isFetching} = useGetGuidesQuery();
+    const [addTour] = useAddTourMutation();
+    const [updateTour] = useUpdateTourMutation();
+
+    const [numTicket, setnumTicket] = useState('');
+    const [startDate, setstartDate] = useState(new Date().toISOString().split("T")[0]);
+    const [endDate, setEndDate] = useState('');
     const [tourGuide, settourGuide] = useState('');
-    const guideOpthions = [
-        "Option 1",
-        "Option 2",
-        "Option 3",
-        "Option 4",
-        "Option 5",
-    ];
 
-    function submit(event) {
-        event.preventDefault(); // Prevent form from refreshing the page
-        console.log("Form submitted!");
-        closeModal(); // Close the modal after submission
+    async function submit(event) {
+        event.preventDefault();
+        try{
+            if(type === "package"){
+                await addTour({
+                    startDate: startDate,
+                    endDate: endDate,
+                    ticketCap: numTicket,
+                    tourguideID: tourGuide,
+                    tourpackageID: id
+                }).unwrap();
+            }
+            else if(type === "event"){
+                await addTour({
+                    startDate: startDate,
+                    endDate: endDate,
+                    ticketCap: numTicket,
+                    tourguideID: tourGuide,
+                    eventID: id
+                }).unwrap();
+            }
+            else if(type === "editpackage"){
+                await updateTour({
+                    id: tourID,
+                    startDate: startDate,
+                    endDate: endDate,
+                    ticketCap: numTicket,
+                    tourguideID: tourGuide,
+                    tourpackageID: id
+                }).unwrap();
+            }
+            else if(type === "editevent"){
+                await updateTour({
+                    id: tourID,
+                    startDate: startDate,
+                    endDate: endDate,
+                    ticketCap: numTicket,
+                    tourguideID: tourGuide,
+                    eventID: id
+                }).unwrap();
+            }
+            else return;
+
+            alert("Launched Tour Successfully!");
+            closeModal();
+            window.location.reload();
+        }
+        catch(err){
+            console.log(err);
+        }
     }
 
     const handelchange = (event) => {
@@ -23,7 +69,6 @@ function Lanch({ visible, closeModal }) {
     };
 
     if (!visible) return null; // Render nothing if the modal is not visible
-
     return (
         <div className="modal-overlay" onClick={closeModal}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -38,11 +83,11 @@ function Lanch({ visible, closeModal }) {
                                 onChange={handelchange}
                             >
                                 <option value="" disabled>
-                                    Select option
+                                    Select guide
                                 </option>
-                                {guideOpthions.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
+                                {guides?.map((guide) => (
+                                    <option key={guide.id} value={guide.id}>
+                                        {guide.fname} {guide.lname}
                                     </option>
                                 ))}
                             </select>
@@ -58,6 +103,17 @@ function Lanch({ visible, closeModal }) {
                                 onChange={(e) => setstartDate(e.target.value)}
                             />
                             <br />
+                            <label className="La-label">Choose end date</label>
+                            <input
+                                className="La-input"
+                                type="date"
+                                required
+                                value={endDate}
+                                //sets minimum allowable date as startdate (cannot choose previous dates)
+                                min={startDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                            />
+                            <br/>
                             <label className="La-label">Choose number of tickets</label>
                             <input
                                 className="La-numticket"

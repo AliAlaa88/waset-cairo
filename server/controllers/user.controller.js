@@ -225,6 +225,7 @@ const userController = {
 
   getTouristsGoingToGuideTours: catchAsync(async (req, res, next) => {
     const guideID = req.params.id;
+
     if(req.role != "guide"){
         const err = new Error("You are not allowed to do this action!");
         err.statusCode = 400;

@@ -30,6 +30,14 @@ export const tourSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    updateTour: builder.mutation({
+      query: (tour) => ({
+        url: `${toursUrl}/${tour.id}`,
+        method: "PUT",
+        body: tour,
+        credentials: "include"
+      })
+    }),
     deleteTour: builder.mutation({
       query: (id) => ({
         url: `${toursUrl}/${id}`,
@@ -48,5 +56,6 @@ export const {
   useGetToursByGuideQuery,
   useGetTouristTourHistoryQuery,
   useAddTourMutation,
+  useUpdateTourMutation,
   useDeleteTourMutation,
 } = tourSlice;

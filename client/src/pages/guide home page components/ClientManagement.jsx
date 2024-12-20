@@ -1,44 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { User, Mail, Phone, MapPin, Calendar } from 'lucide-react';
 import { useGetTouristsGoingToGuideToursQuery } from '../../store/userSlice';
 
 const ClientManagementContent = (props) => {
-    //hard coded guide id 1 here.. should be replaced with current logged in guide id.
-    const {data: clients, isFetching, isError} = useGetTouristsGoingToGuideToursQuery(1);
-
-    //dummy data for initial testing
-    // const [clientsDummy, setClientsDummy] = useState([
-    //     { 
-    //         id: 1, 
-    //         fname: 'John',
-    //         lname: 'Smith', 
-    //         email: 'john@email.com', 
-    //         phonenumber: '+1 (555) 123-4567',
-    //         tripname: 'Cairo & Luxor Tour',
-    //         startdate: 'January 15, 2025',
-    //     },
-    //     { 
-    //         id: 2, 
-    //         fname: 'Emily',
-    //         lname: 'Davis', 
-    //         email: 'emily@email.com', 
-    //         phonenumber: '+1 (555) 987-6543',
-    //         tripname: 'Nile River Cruise',
-    //         startdate: 'February 5, 2025',
-    //     },
-    //     { 
-    //         id: 3, 
-    //         fname: 'Jason',
-    //         lname: 'Williams', 
-    //         email: 'jason@email.com', 
-    //         phonenumber: '+1 (555) 246-8135',
-    //         tripname: 'Red Sea & Sinai Adventure',
-    //         startdate: 'March 20, 2025',
-    //     }
-    // ]);
+    const {data: clients, isFetching, isError} = useGetTouristsGoingToGuideToursQuery(props.userInfo.id);
     
     if(isFetching) return (<p>Loading...</p>);
-    if(isError) return(<p>An error has occured!</p>);
+    if(isError) return(<p>No clients to show!</p>);
     return (
         <div className="bg-white p-6 rounded-xl shadow-md">
             <div className="flex justify-between items-center mb-6">

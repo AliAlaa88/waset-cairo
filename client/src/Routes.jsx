@@ -27,6 +27,7 @@ import CreatePack from "./pages/CreatePacke";
 import CreateEvent from "./pages/CreateEvent"
 import EditProfileGuide from "./pages/EditProfileGuide";
 import EditProfileOperator from "./pages/EditProfileOperator";
+import CheckOut from "./pages/CheckOut";
 
 function Router() {
 	return (
@@ -76,6 +77,7 @@ function Router() {
 				<Route path="insert-monument" element={<InsertMonument />} />
 				<Route path="create-pack" element={<CreatePack />} />
 				<Route path="create-event" element={<CreateEvent />} />
+				<Route path="checkout" element={<CheckOut />} />
 			</Routes>
 		</BrowserRouter>
 	);

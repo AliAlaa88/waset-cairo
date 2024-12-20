@@ -17,6 +17,7 @@ import {
 	Home,
 	Settings,
 } from "lucide-react";
+import logo from '../assets/exploreEgy.png'
 import { clearCredentials } from "../store/authSlice";
 
 const Profile = () => {
@@ -304,7 +305,7 @@ const Profile = () => {
 						<div className="container mx-auto flex items-center">
 							{/* Avatar */}
 							<img
-								src={profileData.avatar}
+								src={logo}	
 								alt="Profile"
 								className="w-24 h-24 rounded-full border-4 border-white object-cover mr-6"
 							/>

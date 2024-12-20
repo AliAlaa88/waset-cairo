@@ -11,6 +11,7 @@ tourRouter.get("/guide/:guideid", tourController.getToursByGuide);
 tourRouter.get("/tourist/:touristid", tourController.getTouristTourHistory);
 
 tourRouter.post("/", tourController.createTour);
+tourRouter.put("/:id", tourController.updateTour);
 tourRouter.delete("/:id", tourController.deleteTour);
 
 export default tourRouter;

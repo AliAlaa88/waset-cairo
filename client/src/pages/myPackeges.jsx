@@ -54,6 +54,8 @@ function MyPackes() {
                         <Lanch
                             visible={activeModal === pack.id}
                             closeModal={closeModal}
+                            type="package"
+                            id={pack.id}
                         />
                     </div>))}
                 </div>

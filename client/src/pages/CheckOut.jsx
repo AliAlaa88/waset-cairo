@@ -1,4 +1,5 @@
-import React, { useState , useNavigate } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function CheckOut() {
   const [tourname, setTourname] = useState("");
@@ -6,6 +7,7 @@ function CheckOut() {
   const [discount, setDiscount] = useState(0);
   const [gourp, setGourp] = useState("");
   const [cost, setCost] = useState(100);
+  const navigate = useNavigate();
 
   const handleGroupChange = (event) => {
     setGourp(event.target.value);
@@ -13,12 +15,12 @@ function CheckOut() {
   };
 
   const handleCheckout = () => {
-   //navigate('/tourist-home');
+    navigate('/tourist-home');
 
   };
 
   return (
-    <body className = "ckout-body">
+    <div className = "ckout-body">
       <div className="checkout-container">
         <h1 className = "ckout-title">Checkout</h1>
 
@@ -42,7 +44,7 @@ function CheckOut() {
         </div>
         <button className = "ckout-btn" onClick={handleCheckout}>Checkout</button>
       </div>
-    </body>
+    </div>
   );
 }
 
