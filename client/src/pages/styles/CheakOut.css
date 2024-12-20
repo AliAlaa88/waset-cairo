@@ -1,0 +1,101 @@
+.ckout-body {
+    background-color:#f5d07b;
+    height: 100%;
+    min-height: 100vh; 
+    display: flex;
+}
+.checkout-container {
+    width: 50%;
+    margin: 30px auto;
+    padding: 20px;
+    border: 3px solid #a87b39;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #fcebb6, #f5d07b);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    font-family: 'Papyrus', 'Arial', sans-serif;
+    color: #4a3f35;
+    height: 100%;
+}
+
+.ckout-title {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #a87b39;
+    text-shadow: 2px 2px 3px #654321;
+    margin-bottom: 20px;
+}
+
+.dropdown-container {
+    margin: 15px 0;
+}
+
+.tour-selectlabel {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    display: block;
+    color: #4a3f35;
+}
+
+.tour-select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 2px solid #a87b39;
+    border-radius: 4px;
+    background-color: #f8ecc2;
+    color: #4a3f35;
+    font-size: 1rem;
+    font-family: 'Papyrus', 'Arial', sans-serif;
+}
+
+.tour-select:focus {
+    border-color: #654321;
+    outline: none;
+}
+
+.summary {
+    margin-top: 20px;
+    padding: 15px;
+    border: 2px solid #a87b39;
+    border-radius: 8px;
+    background-color: #fff5e1;
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.summary p {
+    font-size: 1.2rem;
+    margin: 8px 0;
+    font-weight: bold;
+    color: #4a3f35;
+}
+
+.ckout-tourName {
+    color: #a87b39;
+}
+
+.ckout-Ntic,
+.ckout-discount,
+.ckout-totalcost {
+    color: #654321;
+}
+
+.ckout-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: #a87b39;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Papyrus', 'Arial', sans-serif;
+}
+
+.ckout-btn:hover {
+    background-color: #654321;
+}
