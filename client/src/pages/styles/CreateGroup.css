@@ -39,9 +39,7 @@
   margin-bottom: 20px;
 }
 
-input[type="text"],
-textarea,
-select {
+.create-group-input{
   width: 95%;
   padding: 10px;
   border: 1px solid #ccc;

@@ -68,13 +68,14 @@ function CreateGroup() {
 										placeholder="Group name"
 										value={name}
 										onChange={(e) => setname(e.target.value)}
+										className="create-group-input"
 									/>
 								</div>
 								<label className="creG-optionlable">
 									Choose Common Language
 								</label>
 								<select
-									className="creG-input"
+									className="create-group-input creG-input"
 									value={selectedLanguage}
 									onChange={(e) => setSelectedLanguage(e.target.value)}
 								>
@@ -93,7 +94,7 @@ function CreateGroup() {
 									Choose Preffered Monument
 								</label>
 								<select
-									className="creG-input"
+									className="create-group-input creG-input"
 									value={selectedMonument}
 									onChange={(e) => setselectedMonument(e.target.value)}
 								>
@@ -117,6 +118,7 @@ function CreateGroup() {
 										placeholder="description"
 										value={description}
 										onChange={(e) => setdescription(e.target.value)}
+										className="create-group-input"
 									/>
 								</div>
 							</div>

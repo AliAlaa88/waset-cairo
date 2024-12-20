@@ -138,7 +138,7 @@ const authController = {
 	}),
 
 	guideEditProfile: catchAsync(async (req, res, next) => {
-		const { FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, Language, Specialization } = req.body;
+		const { firstName, lastName, username, email, gender, phonenumber, birthdate, specialization } = req.body;
 
 		if(req.role != "guide"){
 			const err = new Error("You are not allowed to do this action!");
@@ -147,15 +147,15 @@ const authController = {
 		}
 		
 		const update = await client.query(
-			"UPDATE Tour_Guide SET FName = $1, LName = $2, UserName = $3, Email = $4, Gender = $5, PhoneNumber = $6, BirthDate = $7, Language = $8, Specialization = $9 WHERE ID = $10 RETURNING *;",
-			[FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, Language, Specialization, req.user.id]
+			"UPDATE Tour_Guide SET FName = $1, LName = $2, UserName = $3, Email = $4, Gender = $5, PhoneNumber = $6, BirthDate = $7, Specialization = $8 WHERE ID = $9 RETURNING *;",
+			[firstName, lastName, username, email, gender, phonenumber, birthdate, specialization, req.user.id]
 		);
 
 		res.status(201).json({ message: "User updated", data: update.rows });
 	}),
 
 	operatorEditProfile: catchAsync(async (req, res, next)=>{
-		const { FName, LName, UserName, Email, Gender, PhoneNum, BirthDate } = req.body;
+		const { firstName, lastName, username, email, gender, phonenumber, birthdate } = req.body;
 
 		if(req.role != "operator"){
 			const err = new Error("You are not allowed to do this action!");
@@ -165,7 +165,7 @@ const authController = {
 
 		const update = await client.query(
 			"UPDATE Tour_Operator SET FName = $1, LName = $2, UserName = $3, Email = $4, Gender = $5, PhoneNumber = $6, BirthDate = $7 WHERE ID = $8",
-			[FName, LName, UserName, Email, Gender, PhoneNum, BirthDate, req.user.id]
+			[firstName, lastName, username, email, gender, phonenumber, birthdate, req.user.id]
 		);
 
 		res.status(201).json({ message: "User updated", data: update.rows });

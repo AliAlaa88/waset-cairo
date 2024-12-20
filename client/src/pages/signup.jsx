@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useTouristSignupMutation } from "../store/registrationSlice";
+import { User, Mail, Lock, Phone, Globe, Languages, Calendar, Users } from 'lucide-react';
 
 function Signup() {
 	const navigate = useNavigate();
@@ -61,151 +62,207 @@ function Signup() {
 			}).unwrap();
 			navigate("/");
 		} catch (err) {
-			console.log(err?.data?.message || err.error);
+			console.log(err?.data?.message || err);
 		}
 	}
 
+
 	return (
-		<div className="signup-container">
-			<form className="signup-form" onSubmit={signin}>
-				<h1 className="signup-title">Sign Up</h1>
-				<div className="signup-input-group">
-					<input
-						className="signup-input"
-						type="text"
-						placeholder="First Name"
-						required
-						value={firstName}
-						onChange={(e) => setFirstName(e.target.value)}
-					/>
-					<input
-						className="signup-input"
-						type="text"
-						placeholder="Last Name"
-						required
-						value={lastName}
-						onChange={(e) => setLastName(e.target.value)}
-					/>
-					<input
-						className="signup-input"
-						type="text"
-						placeholder="Username"
-						required
-						value={username}
-						onChange={(e) => setUsername(e.target.value)}
-					/>
-					<input
-						className="signup-input"
-						type="email"
-						placeholder="E-mail"
-						required
-						value={email}
-						onChange={(e) => setEmail(e.target.value)}
-					/>
-					<input
-						className="signup-input"
-						type="password"
-						placeholder="Password"
-						required
-						value={password}
-						onChange={(e) => setPassword(e.target.value)}
-					/>
-					<input
-						className="signup-input"
-						type="number"
-						placeholder="phonenumber"
-						required
-						value={phonenumber}
-						onChange={(e) => setphonenumber(e.target.value)}
-					/>
+		<div className="min-h-screen bg-[url('/src/assets/p6.jpg')] flex items-center justify-center p-4">
+			<div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 my-8 z-10">
+				<div className="text-center mb-8">
+					<h1 className="text-3xl font-bold text-gray-900">Join Our Community!</h1>
+					<p className="text-gray-600 mt-2">Begin your Egyptian adventure today</p>
 				</div>
 
-				{/* Country Dropdown */}
-				<div className="signup-input-group">
-					<label className="signups-label">
-						<span className="selc-count">Select Country:</span>
-					</label>
-					<select
-						className="signup-input"
-						value={selectedCountry}
-						onChange={(e) => setSelectedCountry(e.target.value)}
-						required
-					>
-						<option value="" disabled className="selc-count">
-							Select a country
-						</option>
-						{countries.map((country) => (
-							<option key={country.code} value={country.name}>
-								{country.name}
-							</option>
-						))}
-					</select>
-				</div>
+				<form onSubmit={signin} className="space-y-6">
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-				<div className="signup-input-group">
-					<label className="signups-label">
-						<span className="selc-lang">Select Language:</span>
-					</label>
-					<select
-						className="signup-input"
-						value={selectedLanguage}
-						onChange={(e) => setSelectedLanguage(e.target.value)}
-						required
-					>
-						<option value="" disabled className="slc-lang">
-							Select a language
-						</option>
-						{languages.map((language, index) => (
-							<option key={index} value={language}>
-								{language}
-							</option>
-						))}
-					</select>
-				</div>
+						<div className="relative">
+							<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+								<User className="h-5 w-5 text-gray-400" />
+							</div>
+							<input
+								type="text"
+								placeholder="First Name"
+								required
+								value={firstName}
+								onChange={(e) => setFirstName(e.target.value)}
+								className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+							/>
+						</div>
 
-				<label className="signup-label signup-birth-date">
-					<span>Birth Date:</span>
-					<input
-						className="signup-input"
-						type="date"
-						name="birthdate"
-						required
-						value={birthdate}
-						onChange={(e) => setBirthdate(e.target.value)}
-					/>
-				</label>
 
-				<div className="signup-radio-group">
-					<span>Gender</span>
-					<br />
-					<label>
+						<div className="relative">
+							<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+								<User className="h-5 w-5 text-gray-400" />
+							</div>
+							<input
+								type="text"
+								placeholder="Last Name"
+								required
+								value={lastName}
+								onChange={(e) => setLastName(e.target.value)}
+								className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+							/>
+						</div>
+
+					</div>
+
+
+					<div className="relative">
+						<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+							<User className="h-5 w-5 text-gray-400" />
+						</div>
 						<input
-							type="radio"
-							name="gender"
-							value="M"
+							type="text"
+							placeholder="Username"
 							required
-							checked={gender === "M"}
-							onChange={(e) => setGender(e.target.value)}
+							value={username}
+							onChange={(e) => setUsername(e.target.value)}
+							className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
 						/>
-						Male
-					</label>
-					<label>
-						<input
-							type="radio"
-							name="gender"
-							value="F"
-							checked={gender === "F"}
-							onChange={(e) => setGender(e.target.value)}
-						/>
-						Female
-					</label>
-				</div>
+					</div>
 
-				<button type="submit" className="signup-button">
-					Sign Up
-				</button>
-			</form>
-		</div>
+					<div className="relative">
+						<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+							<Mail className="h-5 w-5 text-gray-400" />
+						</div>
+						<input
+							type="email"
+							placeholder="Email"
+							required
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+							className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+						/>
+					</div>
+
+
+					<div className="relative">
+						<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+							<Lock className="h-5 w-5 text-gray-400" />
+						</div>
+						<input
+							type="password"
+							placeholder="Password"
+							required
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+							className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+						/>
+					</div>
+
+					<div className="relative">
+						<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+							<Phone className="h-5 w-5 text-gray-400" />
+						</div>
+						<input
+							type="tel"
+							placeholder="Phone Number"
+							required
+							value={phonenumber}
+							onChange={(e) => setphonenumber(e.target.value)}
+							className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+						/>
+					</div>
+
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div className="relative">
+							<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+								<Globe className="h-5 w-5 text-gray-400" />
+							</div>
+							<select
+								value={selectedCountry}
+								onChange={(e) => setSelectedCountry(e.target.value)}
+								required
+								className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent appearance-none bg-white"
+							>
+								<option value="" disabled>Select Country</option>
+								{countries.map((country) => (
+								<option key={country.code} value={country.name}>
+									{country.name}
+								</option>
+								))}
+							</select>
+						</div>
+
+						<div className="relative">
+							<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+								<Languages className="h-5 w-5 text-gray-400" />
+							</div>
+							<select
+								value={selectedLanguage}
+								onChange={(e) => setSelectedLanguage(e.target.value)}
+								required
+								className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent appearance-none bg-white"
+							>
+								<option value="" disabled>Select Language</option>
+								{languages.map((language) => (
+								<option key={language} value={language}>
+									{language}
+								</option>
+								))}
+							</select>
+						</div>
+					</div>
+
+					<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+						<div className="relative">
+							<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+								<Calendar className="h-5 w-5 text-gray-400" />
+							</div>
+							<input
+								type="date"
+								required
+								value={birthdate}
+								max={new Date().toISOString().split("T")[0]}
+								onChange={(e) => setBirthdate(e.target.value)}
+								className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+							/>
+							</div>
+
+						<div className="relative">
+							<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+								<Users className="h-5 w-5 text-gray-400" />
+							</div>
+							<div className="flex items-center pl-10 space-x-4 h-full">
+								<label className="flex items-center space-x-2 cursor-pointer">
+									<input
+										type="radio"
+										name="gender"
+										value="M"
+										required
+										checked={gender === "M"}
+										onChange={(e) => setGender(e.target.value)}
+										className="form-radio text-amber-600 focus:ring-amber-500"
+									/>
+									<span>Male</span>
+								</label>
+								<label className="flex items-center space-x-2 cursor-pointer">
+									<input
+										type="radio"
+										name="gender"
+										value="F"
+										checked={gender === "F"}
+										onChange={(e) => setGender(e.target.value)}
+										className="form-radio text-amber-600 focus:ring-amber-500"
+									/>
+									<span>Female</span>
+								</label>
+							</div>
+						</div>
+					</div>
+
+					<button
+						type="submit"
+						className="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
+					>
+						Create Account
+					</button>
+				</form>
+			</div>
+        </div>
 	);
 }
 

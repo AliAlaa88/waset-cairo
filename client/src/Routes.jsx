@@ -21,10 +21,12 @@ import CreateGroup from "./pages/CreateGroup";
 import Tours from "./components/Tours";
 import Report from "./pages/Report";
 import TourGuideSign from "./pages/TourGuideSign";
-import TourOperatorSign from "./pages/TourOperatorsign";
+import TourOperatorSign from "./pages/TourOperatorSign";
 import InsertMonument from "./pages/InsertMonument";
 import CreatePack from "./pages/CreatePacke";
 import CreateEvent from "./pages/CreateEvent"
+import EditProfileGuide from "./pages/EditProfileGuide";
+import EditProfileOperator from "./pages/EditProfileOperator";
 
 function Router() {
 	return (
@@ -65,7 +67,9 @@ function Router() {
 				</Route>
 
 				<Route path="guide-home" element={<TourGuideHomePage />} />
+				<Route path="/guide-home/edit" element={<EditProfileGuide />} />
 				<Route path="operator-home" element={<TourOperatorHomePage />} />
+				<Route path="/operator-home/edit" element={<EditProfileOperator />} />
 				<Route path="mypacks" element={<MyPackes />} />
 				<Route path="report" element={<Report />} />
 				<Route path="*" element={<ErrorPage />} />

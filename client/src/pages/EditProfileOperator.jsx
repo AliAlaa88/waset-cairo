@@ -1,24 +1,24 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useGetCurrUserDataQuery } from "../store/userSlice";
-import { useTouristEditProfileMutation } from "../store/registrationSlice";
+import React, {useState, useEffect} from 'react'
 import { User, Mail, Phone, Calendar, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { useOperatorEditProfileMutation } from '../store/registrationSlice';
+import { useGetCurrUserDataQuery } from '../store/userSlice';
 
-function EditProfile() {
-	const { data: profileData, isFetching } = useGetCurrUserDataQuery();
-	const [touristEditProfile] = useTouristEditProfileMutation();
-	const navigate = useNavigate();
-	
-	const [firstName, setFirstName] = useState("");
+const EditProfileOperator = () => {
+
+    const [operatorEdit] = useOperatorEditProfileMutation();
+    const { data: profileData, isFetching } = useGetCurrUserDataQuery();
+    const navigate = useNavigate();
+
+    const [firstName, setFirstName] = useState("");
 	const [lastName, setLastName] = useState("");
 	const [username, setUsername] = useState("");
 	const [email, setEmail] = useState("");
+	const [phonenumber, setphonenumber] = useState("");
 	const [birthdate, setBirthdate] = useState("");
 	const [gender, setGender] = useState("");
-	const [bio, setBio] = useState("");
-	const [phoneNo, setPhoneNo] = useState(0);
-	
-	useEffect(() => {
+
+    useEffect(() => {
 		if (profileData) {
 			setFirstName(profileData.fname);
 			setLastName(profileData.lname);
@@ -27,34 +27,32 @@ function EditProfile() {
 			const date = new Date(profileData.birthdate).toISOString().split("T")[0];
 			setBirthdate(date);
 			setGender(profileData.gender);
-			setBio(profileData.bio);
-			setPhoneNo(profileData.phonenumber);
+			setphonenumber(profileData.phonenumber);
 		}
 	}, [profileData]);
 
-	async function signin(event) {
+    async function signin(event) {
 		event.preventDefault();
 		try {
-			const res = await touristEditProfile({
+			const res = await operatorEdit({
 				firstName,
 				lastName,
 				username,
+				phonenumber,
 				email,
-				gender,
 				birthdate,
-				bio,
-				phoneNo,
+				gender,
 			}).unwrap();
-			window.location.reload();
+			navigate("/");
 		} catch (err) {
-			console.log(err?.data?.message || err.error);
+			console.log(err?.data?.message || err);
 		}
 	}
 
-	return (
-		<div className="min-h-screen bg-[url('/src/assets/p6.jpg')] flex items-center justify-center p-4">
+    return (
+        <div className="min-h-screen bg-[url('/src/assets/p6.jpg')] flex items-center justify-center p-4">
 			<div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 my-8 z-10">
-			{isFetching ? (
+            {isFetching ? (
 				<p>Loading...</p>
 			) : (
 				<form onSubmit={signin} className="space-y-6">
@@ -128,8 +126,8 @@ function EditProfile() {
 							type="tel"
 							placeholder="Phone Number"
 							required
-							value={phoneNo}
-							onChange={(e) => setPhoneNo(e.target.value)}
+							value={phonenumber}
+							onChange={(e) => setphonenumber(e.target.value)}
 							className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
 						/>
 					</div>
@@ -188,10 +186,10 @@ function EditProfile() {
 						Save Changes
 					</button>
 				</form>
-			)}
-		</div>
-	</div>
-	);
+            )}
+			</div>
+        </div>
+    )
 }
 
-export default EditProfile;
+export default EditProfileOperator;

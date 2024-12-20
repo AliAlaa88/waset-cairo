@@ -1,24 +1,24 @@
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useGetCurrUserDataQuery } from "../store/userSlice";
-import { useTouristEditProfileMutation } from "../store/registrationSlice";
-import { User, Mail, Phone, Calendar, Users } from 'lucide-react';
+import React, {useState, useEffect} from 'react'
+import { useNavigate } from 'react-router-dom';
+import { useGuideEditProfileMutation } from '../store/registrationSlice';
+import { useGetCurrUserDataQuery } from '../store/userSlice';
+import { User, Mail, Phone, Briefcase, Calendar, Users } from 'lucide-react';
 
-function EditProfile() {
-	const { data: profileData, isFetching } = useGetCurrUserDataQuery();
-	const [touristEditProfile] = useTouristEditProfileMutation();
-	const navigate = useNavigate();
-	
-	const [firstName, setFirstName] = useState("");
-	const [lastName, setLastName] = useState("");
-	const [username, setUsername] = useState("");
-	const [email, setEmail] = useState("");
-	const [birthdate, setBirthdate] = useState("");
-	const [gender, setGender] = useState("");
-	const [bio, setBio] = useState("");
-	const [phoneNo, setPhoneNo] = useState(0);
-	
-	useEffect(() => {
+const EditProfileGuide = () => {
+    const navigate = useNavigate();
+    const [guideEdit] = useGuideEditProfileMutation();
+    const { data: profileData, isFetching } = useGetCurrUserDataQuery();
+
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [specialization, setspecialization] = useState('');
+    const [phonenumber, setphonenumber] = useState('');
+    const [birthdate, setBirthdate] = useState('');
+    const [gender, setGender] = useState('');
+
+    useEffect(() => {
 		if (profileData) {
 			setFirstName(profileData.fname);
 			setLastName(profileData.lname);
@@ -27,34 +27,36 @@ function EditProfile() {
 			const date = new Date(profileData.birthdate).toISOString().split("T")[0];
 			setBirthdate(date);
 			setGender(profileData.gender);
-			setBio(profileData.bio);
-			setPhoneNo(profileData.phonenumber);
+			setphonenumber(profileData.phonenumber);
+            setspecialization(profileData.specialization);
 		}
 	}, [profileData]);
+    
 
-	async function signin(event) {
-		event.preventDefault();
+    async function signin(event) {
+        event.preventDefault();
 		try {
-			const res = await touristEditProfile({
+			const res = await guideEdit({
 				firstName,
 				lastName,
 				username,
+				phonenumber,
 				email,
-				gender,
 				birthdate,
-				bio,
-				phoneNo,
+				gender,
+				specialization,
 			}).unwrap();
-			window.location.reload();
+			navigate("/");
 		} catch (err) {
-			console.log(err?.data?.message || err.error);
+			console.log(err?.data?.message || err);
 		}
-	}
+    }
+    
 
-	return (
-		<div className="min-h-screen bg-[url('/src/assets/p6.jpg')] flex items-center justify-center p-4">
+    return (
+        <div className="min-h-screen bg-[url('/src/assets/p6.jpg')] flex items-center justify-center p-4">
 			<div className="w-full max-w-2xl bg-white rounded-2xl shadow-xl p-8 my-8 z-10">
-			{isFetching ? (
+            {isFetching ? (
 				<p>Loading...</p>
 			) : (
 				<form onSubmit={signin} className="space-y-6">
@@ -128,8 +130,8 @@ function EditProfile() {
 							type="tel"
 							placeholder="Phone Number"
 							required
-							value={phoneNo}
-							onChange={(e) => setPhoneNo(e.target.value)}
+							value={phonenumber}
+							onChange={(e) => setphonenumber(e.target.value)}
 							className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
 						/>
 					</div>
@@ -181,6 +183,20 @@ function EditProfile() {
 						</div>
 					</div>
 
+                    <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <Briefcase className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <input
+                            type="text"
+                            placeholder="Specialization"
+                            required
+                            value={specialization}
+                            onChange={(e) => setspecialization(e.target.value)}
+                            className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                        />
+                    </div>
+
 					<button
 						type="submit"
 						className="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2"
@@ -188,10 +204,10 @@ function EditProfile() {
 						Save Changes
 					</button>
 				</form>
-			)}
-		</div>
-	</div>
-	);
+            )}
+			</div>
+        </div>
+    )
 }
 
-export default EditProfile;
+export default EditProfileGuide;

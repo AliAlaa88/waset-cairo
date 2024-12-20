@@ -37,7 +37,7 @@ const SettingsContent = (props) => {
                     <p className="text-sm text-gray-600">Username: {guide.username}</p>
                     <p className="text-sm text-gray-600">Email: {guide.email} </p>
                     <br/>
-                    <Link>
+                    <Link to="edit">
 						<button className="bg-amber-700 text-white px-4 py-2 rounded-full flex items-center mr-4 hover:bg-amber-800">
 							<Edit className="mr-2" size={20} /> Edit Profile
 						</button>
