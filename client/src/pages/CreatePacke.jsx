@@ -1,187 +1,219 @@
-import { useState  } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useGetMonumentsQuery } from "../store/monumentSlice";
+import { useAddPackMutation } from "../store/packSlice";
+function CreatePack() {
+	const { data: monuments, isFetching } = useGetMonumentsQuery();
+	const [createPack] = useAddPackMutation();
+	const [discription, setdiscription] = useState("");
+	const [duration, setduration] = useState(0);
+	const [hourOrday, sethourOrday] = useState("");
+	const [name, setname] = useState("");
+	const [price, setprice] = useState(0);
+	const [mettingLoc, setmettingLoc] = useState("");
+	const [selectedType, setselectedType] = useState("");
+	const [selectedMonuments, setselectedMonuments] = useState([]);
+	const navigate = useNavigate();
 
-function CreatePack(){
-    //const [OperaturId,setOperaturId] = useState();
-    const [discription, setdiscription] = useState('');
-    const [duration, setduration] = useState();
-    const [hourOrday, sethourOrday] = useState('');
-    const [name, setname] = useState('');
-    const [price, setprice] = useState('');
-    const [mettingLoc, setmettingLoc] = useState('');
-    const [selectedType, setselectedType] = useState("");
-    const [selectedMonument, setselectedMonument] = useState([]);
-    const typeOpthions = [
-        "Option 1",
-        "Option 2",
-        "Option 3",
-        "Option 4",
-        "Option 5",
-    ];
+	const packTypes = [
+		"Historical",
+		"Cultural",
+		"Religious",
+		"Medical",
+		"Adventure",
+		"Eco",
+		"Festival",
+	];
+	async function submit(event) {
+		event.preventDefault();
+		if (
+			!name ||
+			!discription ||
+			!hourOrday ||
+			!duration ||
+			!price ||
+			!mettingLoc ||
+			!selectedMonuments
+		) {
+			alert("Please fill in all the required information");
+		} else {
+			try {
+				const res = await createPack({
+					name,
+					description: discription,
+					meetingLocation: mettingLoc,
+					type: selectedType,
+					duration: duration,
+					rating: 0,
+					price,
+					monumentids: selectedMonuments.map(
+						(monument) =>
+							monuments.find((_monument) => _monument.name === monument).id
+					),
+				}).unwrap();
+				navigate("../");
+			} catch (error) {
+				console.error("Failed to create Pack:", error);
+			}
+		}
+	}
+	const handelchange1 = (event) => {
+		setselectedType(event.target.value);
+	};
+	const handleChange2 = (event) => {
+		if (selectedMonuments.includes(event.target.value)) {
+			return;
+		}
+		const monument = monuments.find(
+			(monument) => monument.id == event.target.value
+		);
+		setselectedMonuments((prev) => [...prev, monument.name]);
+	};
+	const handleCancelSelection = (event) => {
+		const monumentName = event.target.textContent;
+		setselectedMonuments((prev) =>
+			prev.filter((name) => name !== monumentName)
+		);
+	};
 
-    const MonumentOption = [
-        "Option 1",
-        "Option 2",
-        "Option 3",
-        "Option 4",
-        "Option 5",
-    ];
-    
-    function submit(){
-        console.log("done");
-       //navigate('/sign-up');
-    }
+	return (
+		<div className="creP-body">
+			<div className="creP-contaner">
+				{isFetching ? (
+					<p>Loading...</p>
+				) : (
+					<>
+						<form className="Pack" onSubmit={submit}>
+							<h2 className="Ev-titel">Create Package</h2>
+							<div className="creP-inputs">
+								<label className="creP-rateLable">Name</label>
+								<input
+									className="creP-input"
+									type="text"
+									placeholder="Enter the packege Name"
+									required
+									value={name}
+									onChange={(e) => setname(e.target.value)}
+								/>
+								<label className="creP-rateLable">Description</label>
+								<textarea
+									className="creP-input"
+									type="text"
+									cols="18"
+									rows="5"
+									placeholder="Description"
+									value={discription}
+									onChange={(e) => setdiscription(e.target.value)}
+								/>
+								<label className="creP-rateLable">Price</label>
+								<input
+									className="creP-input"
+									type="number"
+									placeholder="Put the tour pack price"
+									required
+									value={price}
+									onChange={(e) => setprice(e.target.value)}
+								/>
+								<label className="creP-rateLable">Meeting Location</label>
+								<input
+									className="creP-input"
+									type="text"
+									placeholder="Enter the Meeting Location"
+									required
+									value={mettingLoc}
+									onChange={(e) => setmettingLoc(e.target.value)}
+								/>
 
+								<div className="creP-duration">
+									<label className="numday">Duration</label>
+									<input
+										className="creP-input"
+										type="number"
+										placeholder="enter duration of packege"
+										required
+										value={duration}
+										onChange={(e) => setduration(e.target.value)}
+									/>
 
+									<div className="creP-radio-group">
+										<label className="radioday">
+											<input
+												type="radio"
+												name="type"
+												value="day"
+												required
+												checked={hourOrday === "day"}
+												onChange={(e) => sethourOrday(e.target.value)}
+											/>
+											Day(s)
+										</label>
+										<label className="radiohour">
+											<input
+												type="radio"
+												name="type"
+												value="hour"
+												checked={hourOrday === "hour"}
+												onChange={(e) => sethourOrday(e.target.value)}
+											/>
+											Hour(s)
+										</label>
+									</div>
+								</div>
 
+								<label className="packtype">Package Type</label>
+								<select
+									className="creP-input"
+									value={selectedType}
+									onChange={handelchange1}
+								>
+									<option value="" disabled>
+										Select Type
+									</option>
+									{packTypes.map((option) => (
+										<option key={option} value={option}>
+											{option}
+										</option>
+									))}
+								</select>
 
-    const navigate = useNavigate();
-
-    const handelchange1= (event)=>{
-
-        setselectedType(event.target.value);
-    };
-
-    const handleChange2 = (event) => {
-        const { options } = event.target;
-        const selectedValues = Array.from(options)
-          .filter((option) => option.selected)
-          .map((option) => option.value);
-    
-        setselectedMonument(selectedValues);
-      };
-
-
-
-
-
-    return (
-        <body className="creP-body">
-        <div className="creP-contaner">
-            <h2 className= "creP-titel">Create Packege</h2>
-            <form className= "Pack" onSubmit={submit}>
-                
-                <div className="creP-inputs">
-                    <input className = "creP-input" type= "text" 
-                    placeholder="Enter the packege Name"
-                    required
-                    value = {name}
-                    onChange={(e) => setname(e.target.value)}/>
-
-                    <br></br>
-                    <textarea className = "creP-input"
-                    type="text"
-                    cols="18" rows="5"
-                    placeholder="discription" 
-                    value={discription} 
-                    onChange={(e) => setdiscription(e.target.value)} 
-                    />
-
-                    <br></br>
-                    <label className= "creP-rateLable">Price</label>
-                    <input className = "creP-input" type= "number"
-                    min= "1000" max= "10000" 
-                    placeholder="Put the tour pack price"
-                    required
-                    value = {price}
-                    onChange={(e) => setprice(e.target.value)}
-                    />
-
-                    <br></br>
-                    <input className = "creP-input" type= "text" 
-                    placeholder="Enter the metting location"
-                    required
-                    value = {mettingLoc}
-                    onChange={(e) => setmettingLoc(e.target.value)}/>
-
-                    <div className="creP-duration">
-                        <br />
-                    <label className= "numday">Number of day/hour</label>
-                    <input className = "creP-input" type= "number"
-                    min= "0" max= "10" 
-                    placeholder="enter duration of packege"
-                    required
-                    value = {duration}
-                    onChange={(e) => setduration(e.target.value)}
-                    />
-
-                        <div className="creP-radio-group">
-                        <span className = "pdayhour">day/hour</span>
-                        <br />
-                        <label className= "radioday">
-                            <input
-                                type="radio"
-                                name="type"
-                                value="day"
-                                required
-                                checked={hourOrday === "day"}
-                                onChange={(e) => sethourOrday(e.target.value)}
-                            />
-                            day
-                        </label>
-                        <label className= "radiohour">
-                            <input
-                                type="radio"
-                                name="type"
-                                value="hour"
-                                checked={hourOrday === "hour"}
-                                onChange={(e) => sethourOrday(e.target.value)}
-                                />
-                                hour
-                        </label>
-                        </div>
-                    </div>
-                    <br />
-
-                    <label className="ppacktype">Package Type</label>
-                    <select className="creP-input" 
-                
-                    value={selectedType}
-                    onChange={handelchange1}
-                    >
-                        <option value="" disabled>
-                            select option
-                        </option>
-                        {typeOpthions.map((option)=>(
-                            <option key={option} value={option}>
-                                {option}
-                            </option>
-                        ))}
-                    </select>
-                    <br/>
-                    
-                    <div className= "creP-input">
-                            <label htmlFor="multiSelect">Choose options:</label>
-                            <br />
-                            <select
-                                className="multiSelect"
-                                multiple
-                                value={selectedMonument}
-                                onChange={handleChange2}
-                                    >
-                                {MonumentOption.map((option) => (
-                                <option key={option} value={option}>
-                                    {option}
-                                </option>
-                                ))}
-                            </select>
-                            <br/>
-                            <h3>selected Monuments</h3>
-                            <ul className="creP-ul">
-                                {selectedMonument.map((option)=>(
-                                    <li className="creP-li" key={option}>{option}</li>
-                                ))}
-
-
-                            </ul>
-                    </div>
-                    <button className="creP-submitBtn" type="submit">Create</button>
-                </div>
-            </form>
-        </div>
-        </body>
-    );
-
+								<label className="packtype">Monuments</label>
+								<div className="creP-input">
+									<label className="packtype">
+										Choose Monuments:
+									</label>
+									<select
+										className="multiSelect"
+										multiple
+										onChange={handleChange2}
+									>
+										{monuments.map((monument) => (
+											<option key={monument.id} value={monument.id}>
+												{monument.name}
+											</option>
+										))}
+									</select>
+									<h3>Selected Monuments:</h3>
+									<ul className="creP-ul">
+										{selectedMonuments.map((option) => (
+											<button
+												key={option}
+												onClick={handleCancelSelection}
+											>
+												<li className="creP-li">{option}</li>
+											</button>
+										))}
+									</ul>
+								</div>
+								<button className="creP-submitBtn" type="submit">
+									Create
+								</button>
+							</div>
+						</form>
+					</>
+				)}
+			</div>
+		</div>
+	);
 }
 
-export default CreatePack
+export default CreatePack;

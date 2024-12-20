@@ -43,10 +43,10 @@ const eventController = {
             [name, description, meetingLocation, type, duration, rating, price, opID]
         );
 
-        for(const i = 0; i < monumentids.length; i++){
+        for(let i = 0; i < monumentids.length; i++){
             await client.query(
                 "INSERT INTO EVENT_MONUMENT VALUES($1, $2);", 
-                [create.rows.id, monumentids[i]]
+                [create.rows[0].id, monumentids[i]]
             );
         }
 
