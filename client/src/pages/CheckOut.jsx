@@ -30,6 +30,7 @@ function CheckOut({
 			}
 			closeModal();
 		} catch (err) {
+			alert("your number of tickets is not available decrease it or tour is alerady full");
 			console.log(err);
 		}
 	}
