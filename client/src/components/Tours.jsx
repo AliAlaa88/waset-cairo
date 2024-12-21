@@ -39,7 +39,9 @@ const Tours = ({ itemID }) => {
 	};
 
 	const handleBuy = (tour) => {
-		if (!quantity[tour.id]) alert("select tickets number");
+		if (tour.ticketcapacity - parseInt(tour.ticket_count) < quantity[tour.id])
+			alert("Not enough tickets available");
+		else if (!quantity[tour.id]) alert("select tickets number");
 		else
 			setActiveModal({
 				type: "checkout",
@@ -72,10 +74,13 @@ const Tours = ({ itemID }) => {
 					<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-black">
 						{tours?.map((tour) => {
 							if (tour.status !== "assigned") return null;
+							if (tour.ticketcapacity - parseInt(tour.ticket_count) <= 0)
+								return null;
 							const pack = packs.find((pack) => pack.id === tour.tourpackageid);
 							const event = events.find((event) => event.id === tour.eventid);
 							if (pack)
-								if (itemID && tour.tourpackageid !== parseInt(itemID)) return null;
+								if (itemID && tour.tourpackageid !== parseInt(itemID))
+									return null;
 								else
 									return (
 										<div

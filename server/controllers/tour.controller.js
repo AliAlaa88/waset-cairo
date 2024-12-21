@@ -5,7 +5,10 @@ import client from "../dbConfig.js";
 const tourController = {
     getAllTours: catchAsync(async (req, res, next) => {
         const allTours = await client.query(
-            "SELECT * FROM TOUR;"
+            `SELECT TOUR.*, COUNT(TICKET.ID) AS ticket_count
+            FROM TOUR
+            LEFT JOIN TICKET ON TOUR.ID = TICKET.TOURID
+            GROUP BY TOUR.ID;`
         );
 
         if(allTours.rowCount) return res.status(200).json(allTours.rows);
