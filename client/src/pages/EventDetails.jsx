@@ -1,16 +1,17 @@
 import { useParams } from "react-router-dom";
-// import MonumentButton from "../components/MonumentButton";
+import MonumentButton from "../components/MonumentButton";
 import { useGetEventQuery } from "../store/eventSlice";
-// import { useGetMonumentsQuery } from "../store/monumentSlice";
+import { useGetMonumentQuery } from "../store/monumentSlice";
 
 const EventDetails = () => {
 	const { id } = useParams();
-	// const { data: monuments, isFetching: monFetch } = useGetMonumentsQuery();
 	const { data: event, isFetching } = useGetEventQuery(id);
-
+	const { data: firstMon, isFetching: monumentFetch } = useGetMonumentQuery(
+		event?.monumentids[0]
+	);
 	return (
 		<div className="p-6">
-			{isFetching ? (
+			{isFetching || monumentFetch ? (
 				<p>Loading...</p>
 			) : (
 				<>
@@ -19,7 +20,7 @@ const EventDetails = () => {
 						{/* Event image */}
 						<div className="mb-4">
 							<img
-								src={event.image}
+								src={firstMon.photos[0]}
 								alt={event.name}
 								className="w-full h-64 object-cover rounded-t-lg"
 							/>
@@ -52,32 +53,20 @@ const EventDetails = () => {
 							</p>
 						</div>
 					</div>
-					{/* {monFetch ? (
-						<p>Loading...</p>
-					) : (
-						<>
-							{event.monumentids.length > 0 && (
-								<div className="mt-8">
-									<h3 className="text-2xl font-semibold text-center mb-4">
-										Related Monuments
-									</h3>
-									<div className="flex justify-evenly gap-4">
-										{event.monumentids.map(
-											(monument) =>
-												monument && (
-													<MonumentButton
-														key={monument.id}
-														monument={monuments.find(
-															(m) => m.id === monument.id
-														)}
-													/>
-												)
-										)}
-									</div>
+					<>
+						<div className="mt-8">
+							<h3 className="text-2xl font-semibold text-center mb-4">
+								Related Monuments
+							</h3>
+							{event.monumentids?.length > 0 && (
+								<div className="flex justify-evenly gap-4">
+									{event.monumentids.map((monumentID) => (
+										<MonumentButton key={monumentID} monumentID={monumentID} />
+									))}
 								</div>
 							)}
-						</>
-					)} */}
+						</div>
+					</>
 				</>
 			)}
 		</div>

@@ -1,10 +1,42 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import MonumentButton from "../components/MonumentButton";
-import { useGetGroupMembersQuery, useGetGroupQuery } from "../store/groupsSlice";
+import PackageButton from "../components/PackageButton";
+import {
+	useGetGroupMembersQuery,
+	useGetGroupQuery,
+	useDeleteGroupMutation,
+} from "../store/groupsSlice";
+import { useGetPacksQuery } from "../store/packSlice";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 const TouristGroupDetails = () => {
 	const { id } = useParams();
 	const { data: group, isFetching } = useGetGroupQuery(id);
-	const { data: groupMembers, isFetching: membersFetching } = useGetGroupMembersQuery(id);
+	const { data: packs, isFetching: packsFetching } = useGetPacksQuery();
+	const { data: groupMembers, isFetching: membersFetching } =
+		useGetGroupMembersQuery(id);
+	const [deleteGroup] = useDeleteGroupMutation();
+	const [filteredPacks, setFilteredPacks] = useState([]);
+	const { userInfo } = useSelector((state) => state.auth);
+	console.log(group);
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (!packsFetching && packs) {
+			const filtered = packs.filter((pack) => pack.monumentids.includes(id));
+			setFilteredPacks(filtered);
+		}
+	}, [packs, packsFetching, id]);
+
+	const handleDeleteGroup = async (e) => {
+		e.preventDefault();
+		try {
+			const res = await deleteGroup(id).unwrap();
+			navigate("../");
+		} catch (error) {
+			console.error("Failed to delete group:", error);
+		}
+	};
+
 	return (
 		<div className="p-6">
 			{isFetching || membersFetching ? (
@@ -32,6 +64,28 @@ const TouristGroupDetails = () => {
 							<div className="flex justify-evenly gap-4">
 								<MonumentButton monumentID={group.prefferedmonument} />
 							</div>
+						</div>
+					)}
+					{packs && filteredPacks && filteredPacks.length > 0 && (
+						<div className="mt-8">
+							<h3 className="text-2xl font-semibold text-center mb-4">
+								Available Packages
+							</h3>
+							<div className="flex flex-wrap justify-evenly gap-4">
+								{filteredPacks.map((pack) => (
+									<PackageButton key={pack.id} packageID={pack.id} />
+								))}
+							</div>
+						</div>
+					)}
+					{group.creatorid == userInfo.id && (
+						<div className="mt-8 flex justify-center">
+							<button
+								onClick={handleDeleteGroup}
+								className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700"
+							>
+								Delete Group
+							</button>
 						</div>
 					)}
 				</>

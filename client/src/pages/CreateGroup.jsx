@@ -1,16 +1,21 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useGetMonumentsQuery } from "../store/monumentSlice";
-import { useAddGroupMutation } from "../store/groupsSlice";
+import {
+	useAddGroupMutation,
+	useJoinGroupMutation,
+} from "../store/groupsSlice";
+
 function CreateGroup() {
 	const [name, setname] = useState("");
 	const [description, setdescription] = useState("");
 	const [selectedLanguage, setSelectedLanguage] = useState("");
 	const [languages, setLanguages] = useState([]);
-	const [selectedMonument, setselectedMonument] = useState(-1);
+	const [selectedMonument, setselectedMonument] = useState(0);
 	const navigate = useNavigate();
 	const { data: monuments, isFetching } = useGetMonumentsQuery();
 	const [createGroup] = useAddGroupMutation();
+	const [joinGroup] = useJoinGroupMutation();
 	useEffect(() => {
 		fetch("https://restcountries.com/v3.1/all")
 			.then((response) => response.json())
@@ -39,6 +44,7 @@ function CreateGroup() {
 					commonLanguage: selectedLanguage,
 					prefferedMonument: selectedMonument,
 				}).unwrap();
+				joinGroup(res.data.id)
 				navigate("../");
 			} catch (error) {
 				console.error("Failed to create group:", error);

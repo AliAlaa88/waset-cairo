@@ -41,7 +41,7 @@ const groupController = {
             [prefferedMonument, commonLanguage, name, creatorID]
         );
 
-        return res.status(201).json({msg: "Created Tourist Group Successfully!", data: create.rows});
+        return res.status(201).json({msg: "Created Tourist Group Successfully!", data: create.rows[0]});
 
     }),
 
