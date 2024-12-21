@@ -97,6 +97,21 @@ const packController = {
         }
 
         return res.status(200).json({msg: "Updated Tour Package Successfully!", data: update.rows});
+    }),
+    getMostPopularPack: catchAsync(async (req, res, next) => {
+        const packs = await client.query(
+            `SELECT TP.ID AS id,
+            TP.NAME AS name,
+            COUNT(TK.ID) AS bookings,
+            SUM(TK.PRICE) AS revenue
+            FROM TOUR_PACKAGE TP
+            JOIN TOUR T ON TP.ID = T.TOURPACKAGEID
+            JOIN TICKET TK ON T.ID = TK.TOURID
+            GROUP BY TP.ID, TP.NAME
+            ORDER BY bookings DESC LIMIT 5;`
+        );
+        
+        return res.status(200).json(packs.rows);
     })
 };
 

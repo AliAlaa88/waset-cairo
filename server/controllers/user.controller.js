@@ -272,17 +272,48 @@ const userController = {
     const data = await client.query(
       `SELECT COUNT(DISTINCT TR.ID) AS totalTours,
       COUNT(DISTINCT T.ID) AS totalCustomers,
+      COUNT(DISTINCT TG.ID) AS totalGuides,
       SUM(TK.PRICE) AS totalRevenue
       FROM TOUR TR
       JOIN TICKET TK ON TK.TOURID = TR.ID
-      JOIN TOURIST T ON T.ID = TK.TOURISTID;`
+      JOIN TOURIST T ON T.ID = TK.TOURISTID
+      JOIN TOUR_GUIDE TG ON TG.ID = TR.TOURGUIDEID;`
     );
 
     if(!data.rowCount) return res.status(404).json({error: "No data found!"});
 
+    return res.status(200).json(data.rows[0]);
+  }),
+
+  getTopPerformingGuides: catchAsync(async (req, res, next) => {
+    const data = await client.query(
+      `SELECT G.ID AS id,
+      G.FNAME AS fname,
+      G.LNAME AS lname,
+      COUNT(T.ID) AS totalTours,
+      COALESCE(AVG(F.RATING), 0) AS rating
+      FROM TOUR_GUIDE G
+      LEFT JOIN TOUR T ON G.ID = T.TOURGUIDEID
+      LEFT JOIN TOURIST_FEEDBACK TF ON TF.TOURID = T.ID 
+      LEFT JOIN FEEDBACK F ON F.ID = TF.FEEDBACKID AND F.TYPE = 'Tour Guide'
+      GROUP BY G.ID, G.FNAME, G.LNAME
+      HAVING COUNT(T.ID) > 0
+      ORDER BY rating DESC, totalTours DESC LIMIT 5;`
+    )
+    return res.status(200).json(data.rows);
+  }),
+
+  getTouristsDemographics: catchAsync(async (req, res, next) => {
+    const data = await client.query(
+      `SELECT EXTRACT(YEAR FROM AGE(birthdate)) AS age,
+      COALESCE(AVG(TK.PRICE), 0) as avgSpent,
+      COUNT(DISTINCT T.ID) AS count
+      FROM TOURIST T
+      LEFT JOIN TICKET TK ON TK.TOURISTID = T.ID
+      GROUP BY EXTRACT(YEAR FROM AGE(birthdate));`
+    )
     return res.status(200).json(data.rows);
   })
-
 };
 
 export default userController;

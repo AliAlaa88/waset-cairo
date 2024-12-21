@@ -9,7 +9,7 @@ const ToursHistoryContent = (props) => {
 		isFetching,
 		isError,
 	} = useGetToursByGuideQuery(props.userInfo.id);
-	tourHistory = tourHistory.filter(
+	tourHistory = tourHistory?.filter(
 		(tour) => new Date(tour.enddate) < new Date()
 	); //get only tours that has ended
 

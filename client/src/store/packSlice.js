@@ -33,6 +33,13 @@ export const packSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    getMostPopularPack: builder.query({
+      query: () => ({
+        url: `${packsUrl}/popular`,
+        method: "GET",
+        credentials: "include"
+      })
+    })
   }),
 });
 
@@ -42,4 +49,5 @@ export const {
   useAddPackMutation,
   useUpdatePackMutation,
   useDeletePackMutation,
+  useGetMostPopularPackQuery
 } = packSlice;
