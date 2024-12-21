@@ -21,7 +21,7 @@ const EventDetails = () => {
 						{/* Event image */}
 						<div className="mb-4">
 							<img
-								src={firstMon.photos[0]}
+								src={firstMon?.photos[0]}
 								alt={event.name}
 								className="w-full h-64 object-cover rounded-t-lg"
 							/>

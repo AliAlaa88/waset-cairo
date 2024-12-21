@@ -69,7 +69,7 @@ const ToursHistoryContent = (props) => {
 														/>
 													))}
 													<span className="ml-2 text-gold-600">
-														({tour.averagerating || 0})
+														({tour.averagerating.toFixed(1) || 0})
 													</span>
 												</div>
 											</div>
@@ -82,7 +82,7 @@ const ToursHistoryContent = (props) => {
 										Generate Report
 									</Link>
 								</div>
-						  ))}
+							))}
 				</div>
 			</div>
 		</div>

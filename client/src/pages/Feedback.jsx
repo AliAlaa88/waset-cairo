@@ -20,7 +20,7 @@ function Feedback() {
 					type,
 					tourID,
 				}).unwrap();
-				navigate("../");
+				window.location.href = "/tourist-home/profile";
 			} catch (error) {
 				console.error("Failed to create Feedback:", error);
 			}

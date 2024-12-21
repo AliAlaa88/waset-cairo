@@ -40,7 +40,7 @@ const packController = {
         const create = await client.query(
             `INSERT INTO TOUR_PACKAGE(NAME, DESCRIPTION, MEETINGLOCATION, TYPE, DURATION, RATING, PRICE, OPERATORID)
             VALUES($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *;`,
-            [name, description, meetingLocation, type, duration, rating, price, opID]
+            [name, description, meetingLocation, type, duration, rating.toFixed(1), price, opID]
         );
         for(let i = 0; i < monumentids.length; i++){
             await client.query(
@@ -87,7 +87,7 @@ const packController = {
         const update = await client.query(
             `UPDATE TOUR_PACKAGE SET NAME = $1, DESCRIPTION = $2, MEETINGLOCATION = $3, TYPE = $4, DURATION = $5, RATING = $6, PRICE = $7
             WHERE ID = $8 RETURNING *;`,
-            [name, description, meetingLocation, type, duration, rating, price, packID]
+            [name, description, meetingLocation, type, duration, rating.toFixed(1), price, packID]
         );
 
         if(!update.rowCount){

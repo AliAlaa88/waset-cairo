@@ -77,7 +77,7 @@ const OperatorDashboard = (props) => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
                     <div className="bg-white p-6 rounded-xl shadow-sm">
-                        <h2 className="text-lg font-semibold mb-4">Most Popular Packages</h2>
+                        <h2 className="text-lg font-semibold mb-4 text-amber-800">Most Popular Packages</h2>
                         <div className="h-80">
                         <ResponsiveContainer width="100%" height="100%">
                             <BarChart data={popularPacks}>
@@ -95,7 +95,7 @@ const OperatorDashboard = (props) => {
 
 
                     <div className="bg-white shadow-md rounded-lg p-6 max-w-3xl mx-auto">
-                        <h2 className="text-2xl font-bold text-center mb-4">Top Performing Guides</h2>
+                        <h2 className="text-2xl font-bold text-center mb-4 text-amber-800">Top Performing Guides</h2>
                         <div className="grid grid-cols-3 gap-4 mb-2 font-semibold text-gray-600">
                             <div>Guide Name</div>
                             <div className="text-center">Avg. Rating</div>
@@ -122,7 +122,7 @@ const OperatorDashboard = (props) => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
-                        <h2 className="text-lg font-semibold mb-4">Tourist Demographics & Spending</h2>
+                        <h2 className="text-lg font-semibold mb-4 text-amber-800">Tourist Demographics & Spending</h2>
                         <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={touristDemo}>
