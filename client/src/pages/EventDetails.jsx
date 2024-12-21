@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import MonumentButton from "../components/MonumentButton";
 import { useGetEventQuery } from "../store/eventSlice";
 import { useGetMonumentQuery } from "../store/monumentSlice";
+import Tours from "../components/Tours";
 
 const EventDetails = () => {
 	const { id } = useParams();
@@ -53,20 +54,19 @@ const EventDetails = () => {
 							</p>
 						</div>
 					</div>
-					<>
-						<div className="mt-8">
-							<h3 className="text-2xl font-semibold text-center mb-4">
-								Related Monuments
-							</h3>
-							{event.monumentids?.length > 0 && (
-								<div className="flex justify-evenly gap-4">
-									{event.monumentids.map((monumentID) => (
-										<MonumentButton key={monumentID} monumentID={monumentID} />
-									))}
-								</div>
-							)}
-						</div>
-					</>
+					<div className="mt-8">
+						<h3 className="text-2xl font-semibold text-center mb-4">
+							Related Monuments
+						</h3>
+						{event.monumentids?.length > 0 && (
+							<div className="flex justify-evenly gap-4">
+								{event.monumentids.map((monumentID) => (
+									<MonumentButton key={monumentID} monumentID={monumentID} />
+								))}
+							</div>
+						)}
+					</div>
+					<Tours itemID={id} />
 				</>
 			)}
 		</div>
