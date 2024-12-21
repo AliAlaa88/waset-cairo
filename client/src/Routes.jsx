@@ -20,6 +20,8 @@ import TouristGroupDetails from "./pages/TouristGroupDetails";
 import CreateGroup from "./pages/CreateGroup";
 import Tours from "./components/Tours";
 import Report from "./pages/Report";
+import Feedback from "./pages/Feedback";
+
 import TourGuideSign from "./pages/TourGuideSign";
 import TourOperatorSign from "./pages/TourOperatorSign";
 import InsertMonument from "./pages/InsertMonument";
@@ -41,6 +43,7 @@ function Router() {
 				<Route path="/tourist-home/profile">
 					<Route index element={<Profile />} />
 					<Route path="edit" element={<EditProfile />} />
+					<Route path="feedback/:tourID" element={<Feedback />} />
 				</Route>
 
 				<Route path="tourist-home" element={<RootLayout />}>

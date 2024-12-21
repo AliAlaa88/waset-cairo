@@ -23,10 +23,9 @@ const feedbackController = {
   }),
 
   insertFeedback: catchAsync(async (req, res, next) => {
-    const { description, rating, type } = req.body;
+    const { description, rating, type, tourID } = req.body;
     const touristID = req.user.id;
-    const tourID = req.params.id;
-
+    
     if(req.role != "tourist"){
       const err = new Error("You are not allowed to do this action!");
       err.statusCode = 400;
@@ -35,7 +34,7 @@ const feedbackController = {
 
     const newFeedback = await client.query(
       "INSERT INTO Feedback (Description, Type, Rating) VALUES ($1, $2, $3) RETURNING *",
-      [description, type, rating]
+      [description, type, parseInt(rating)]
     );
 
     const insert = await client.query(

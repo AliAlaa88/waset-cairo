@@ -17,7 +17,7 @@ const MonumentButton = ({ monumentID }) => {
 							? monument.photos[0]
 							: "https://th.bing.com/th/id/R.2351827d896995f1f6e12e89176f3d9b?rik=t258KJio4%2bo0PA&pid=ImgRaw&r=0"
 					}
-					alt={monument.title}
+					alt={monument.name}
 					className="w-24 h-24 rounded-full"
 				/>
 				<h4 className="mt-2 text-lg font-medium text-gray-800">

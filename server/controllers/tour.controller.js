@@ -156,7 +156,7 @@ const tourController = {
         const touristID = req.params.touristid;
 
         const tours = await client.query(
-            `SELECT T.*
+            `SELECT DISTINCT T.*
             FROM TICKET TK JOIN TOUR T ON TK.TOURID = T.ID
             WHERE TK.TOURISTID = $1;`, [touristID]
         );

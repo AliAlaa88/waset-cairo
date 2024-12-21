@@ -1,6 +1,6 @@
 import apiSlice from "./apiSlice";
 
-const feedbacksUrl = "/feedbacks";
+const feedbacksUrl = "/feedback";
 
 export const feedbackSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -17,12 +17,12 @@ export const feedbackSlice = apiSlice.injectEndpoints({
       query: (id) => ({ url: `${feedbacksUrl}/tour/${id}`, method: "GET", credentials: 'include' }),
     }),
     addFeedback: builder.mutation({
-      query: (feedback) => ({
-        url: feedbacksUrl,
-        method: "POST",
-        body: feedback,
-        credentials: 'include',
-      }),
+      query: (feedback) =>({
+          url: feedbacksUrl,
+          method: "POST",
+          body: feedback,
+          credentials: 'include',
+        }),
     }),
     deleteFeedback: builder.mutation({
       query: (id) => ({

@@ -6,7 +6,7 @@ feedbackRouter.get('/', feedbackController.getAllFeedbacks)
 feedbackRouter.get('/:feedbackID', feedbackController.getFeedback)
 feedbackRouter.get('/tourist/:id', feedbackController.getTouristFeedback);
 feedbackRouter.get('/tour/:id', feedbackController.getTourFeedback);
-feedbackRouter.post('/:id', feedbackController.insertFeedback);
+feedbackRouter.post('/', feedbackController.insertFeedback);
 feedbackRouter.delete('/:id', feedbackController.deleteFeedback);
 
 export default feedbackRouter
