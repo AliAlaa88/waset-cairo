@@ -3,13 +3,13 @@ import { Link } from 'react-router-dom';
 import { 
   Users, 
   Pyramid,
-  Settings, 
-  BarChart,
+  Settings,
   Wand,
   Package,
   CalendarDays,
   Edit,
-  X
+  X,
+  ChartSpline
 } from 'lucide-react';
 import logo from '../assets/exploreEgy.png'
 import MyPackes from './myPackeges';
@@ -136,7 +136,7 @@ const TourOperatorHome = () => {
     { 
       id: 'dashboard', 
       name: 'Dashboard', 
-      icon: <BarChart className="h-5 w-5" />
+      icon: <ChartSpline className="h-5 w-5" />
     },
     { 
       id: 'user-management', 
@@ -263,26 +263,7 @@ const TourOperatorHome = () => {
     switch(activeSection) {
       case 'dashboard':
         return (
-          <OperatorDashboard />
-          // <div className="bg-gradient-to-br from-amber-100 to-amber-200 p-8 rounded-xl shadow-lg">
-          //   <h2 className="text-3xl font-bold text-amber-900 mb-6 text-center">Hi {currUser?.fname}!</h2>
-          //   <h2 className="text-2xl font-bold text-amber-900 mb-6">Dashboard Overview</h2>
-          //   <div className="grid md:grid-cols-3 gap-6">
-          //     {[
-          //       { title: 'Total Tours', value: dashboard? dashboard[0].totaltours : 0, color: 'text-amber-700' },
-          //       { title: 'Total Customers', value: dashboard? dashboard[0].totalcustomers : 0, color: 'text-amber-700' },
-          //       { title: 'Total Revenue', value: (dashboard? dashboard[0].totalrevenue || 0 : 0) + " LE", color: 'text-amber-700' }
-          //     ].map((card, index) => (
-          //       <div 
-          //         key={index} 
-          //         className="bg-white p-6 rounded-xl shadow-md border-2 border-amber-200 hover:scale-105 transition-transform"
-          //       >
-          //         <h3 className="text-xl font-semibold text-amber-900 mb-2">{card.title}</h3>
-          //         <p className={`text-4xl font-bold ${card.color}`}>{card.value}</p>
-          //       </div>
-          //     ))}
-          //   </div>
-          // </div>
+          <OperatorDashboard currUser={currUser}/>
         );
       
       case 'user-management':

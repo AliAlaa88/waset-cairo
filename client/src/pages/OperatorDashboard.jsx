@@ -6,11 +6,11 @@ import {
 import { 
     Users, Ticket, Binoculars, DollarSign
 } from 'lucide-react';
-import { useGetOperatorDashboardQuery, useGetTopPerformingGuidesQuery, useGetTouristsDemographicsQuery } from '../store/userSlice';
+import { useGetOperatorDashboardQuery, useGetTopPerformingGuidesQuery, useGetTouristsDemographicsQuery} from '../store/userSlice';
 import { useGetMostPopularPackQuery } from '../store/packSlice';
 
 
-const OperatorDashboard = () => {
+const OperatorDashboard = (props) => {
 
     const {data: dashboard, isFetching: dashboardFetching} = useGetOperatorDashboardQuery();
     const {data: popularPacks, isFetching: packsFetching} = useGetMostPopularPackQuery();
@@ -37,9 +37,10 @@ const OperatorDashboard = () => {
         <div className="min-h-screen bg-gray-50 p-6">
             <div className="max-w-7xl mx-auto space-y-6">
                 {/* Header with Time Range Selector */}
-                <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold text-gray-900">Hi User</h1>
+                <div className="flex justify-center items-center">
+                <h1 className="text-3xl font-bold text-amber-700">Hi {props.currUser?.fname}!</h1>
                 </div>
+                <p className='flex justify-center font-semibold text-gray-500 items-center'>Here's what's new!</p>
 
                 {/* Key Metrics */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -82,8 +83,8 @@ const OperatorDashboard = () => {
                             <BarChart data={popularPacks}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="name" angle={-45} textAnchor="end" height={100} />
-                                <YAxis yAxisId="left" orientation="left" stroke="#F59E0B"/>
-                                <YAxis yAxisId="right" orientation="right" stroke="#10B981"/>
+                                <YAxis yAxisId="left" orientation="left" stroke="#F59E0B" domain={[0, Math.max(popularPacks.bookings)]}/>
+                                <YAxis yAxisId="right" orientation="right" stroke="#10B981" domain={[0, Math.max(popularPacks.revenue)]}/>
                                 <Tooltip />
                                 <Bar yAxisId="left" dataKey="bookings" fill="#F59E0B" />
                                 <Bar yAxisId="right" dataKey="revenue" fill="#10B981" />    
@@ -119,19 +120,18 @@ const OperatorDashboard = () => {
 
 
 
-                {/* Demographics and Quick Insights */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="bg-white p-6 rounded-xl shadow-sm lg:col-span-2">
-                        <h2 className="text-lg font-semibold mb-4">Visitor Demographics & Spending</h2>
+                        <h2 className="text-lg font-semibold mb-4">Tourist Demographics & Spending</h2>
                         <div className="h-64">
                         <ResponsiveContainer width="100%" height="100%">
                             <LineChart data={touristDemo}>
                             <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="age" />
-                            <YAxis yAxisId="left" orientation="left" stroke="#F59E0B" />
+                            <XAxis dataKey="age" label="Age"/>
+                            <YAxis yAxisId="left" orientation="left" stroke="#F59E0B"/>
                             <YAxis yAxisId="right" orientation="right" stroke="#10B981" />
                             <Tooltip />
-                            <Line yAxisId="left" type="monotone" dataKey="count" stroke="#F59E0B" name="Number of Visitors" />
+                            <Line yAxisId="left" type="monotone" dataKey="count" stroke="#F59E0B" name="Number of Tourists" />
                             <Line yAxisId="right" type="monotone" dataKey="avgspent" stroke="#10B981" name="Avg. Spending (LE)" />
                             </LineChart>
                         </ResponsiveContainer>
