@@ -1,19 +1,28 @@
 import { useGetTourQuery } from "../store/tourSlice";
 import { useAddTicketMutation } from "../store/ticketSlice";
-function CheckOut({ visible, closeModal, tourID, ticketsNum }) {
+function CheckOut({
+	visible,
+	closeModal,
+	tourID,
+	ticketsNum,
+	packPrice,
+	eventPrice,
+}) {
 	const { data: tour, isFetching } = useGetTourQuery(tourID);
 	const [insertTicket] = useAddTicketMutation();
 
 	const discount = ticketsNum > 3 ? ticketsNum : 0;
 	const price = tour
-		? (ticketsNum * 100 - (discount / 100) * ticketsNum * 100).toFixed(2)
+		? (
+				ticketsNum * (packPrice || eventPrice) -
+				(discount / 100) * ticketsNum * (packPrice || eventPrice)
+		  ).toFixed(2)
 		: 0;
 
 	async function submit(event) {
 		event.preventDefault();
 		try {
 			for (let i = 0; i < ticketsNum; ++i) {
-				console.log(price / ticketsNum, tourID);
 				const res = await insertTicket({
 					price: price / ticketsNum,
 					tourID: tourID,
