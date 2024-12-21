@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import { useAddFeedbackMutation } from "../store/feedbackSlice";
 function Feedback() {
 	const [addFeedback] = useAddFeedbackMutation();
@@ -84,11 +84,13 @@ function Feedback() {
 					</div>
 				</div>
 				<div className="fd-buttons">
-					<button className="fd-cancleBtn" type="button">
-						Cancle
-					</button>
+					<Link to="/tourist-home/profile">
+						<button className="fd-cancleBtn" type="button">
+							Cancel
+						</button>
+					</Link>
 					<button className="fd-submitBtn" type="submit">
-						submit
+						Submit
 					</button>
 				</div>
 			</form>

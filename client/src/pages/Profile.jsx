@@ -15,6 +15,7 @@ import {
 
 import logo from "../assets/exploreEgy.png";
 import PackageButton from "../components/PackageButton";
+import EventButton from "../components/EventButton";
 import ChangePasswordModal from "./ChangePasswordModal";
 
 import { clearCredentials } from "../store/authSlice";
@@ -44,7 +45,6 @@ const Profile = () => {
 		useGetTouristTourHistoryQuery(id);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
-	console.log(profileData)
 	
 	const handlePasswordChange = async ({ currentPassword, newPassword }) => {
 		try {
@@ -206,19 +206,25 @@ const Profile = () => {
 										</Link>
 										<span
 											className={`px-3 py-1 rounded-full text-sm ${
-												tour.status === "Completed"
+												tour.status === "assigned"
 													? "bg-green-100 text-green-800"
-													: tour.status === "Upcoming"
-													? "bg-blue-100 text-blue-800"
-													: "bg-yellow-100 text-yellow-800"
+													: tour.status === "pending"
+													? "bg-yellow-100 text-yellow-800"
+													: "bg-yellow-100 text-yellow-800 w-"
 											}`}
 										>
 											{tour.status}
 										</span>
+										{tour.tourpackageid?
 										<PackageButton
 											packID={tour.tourpackageid}
-											classN="flex items-center gap-4 bg-yellow-400 border rounded-lg shadow hover:bg-orange-400 transition duration-200 p-4"
-										></PackageButton>
+											classN="flex items-center justify-center w-48 gap-4 bg-yellow-400 border rounded-lg shadow hover:bg-orange-400 transition duration-200 p-4"
+										></PackageButton> :
+										<EventButton
+											eventid={tour.eventid}
+											classN="flex items-center justify-center w-48 gap-4 bg-yellow-400 border rounded-lg shadow hover:bg-orange-400 transition duration-200 p-4"
+										/>
+										}
 									</div>
 								</div>
 							))}

@@ -37,7 +37,7 @@ const ticketController = {
       [tourID]
     );
 
-    if(capacity.rows[0].ticketcapacity <= capacity.rows[0].tickets) return res.status(404).json({error: "Tour is currently on full capacity!"});
+    if(capacity.rowCount && capacity.rows[0].ticketcapacity <= capacity.rows[0].tickets) return res.status(404).json({error: "Tour is currently on full capacity!"});
 
     const ticket = await client.query(
       "INSERT INTO Ticket(TouristID, TourID, Price) VALUES ($1, $2, $3)",

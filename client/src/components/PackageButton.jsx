@@ -8,7 +8,7 @@ const PackageButton = ({ packID, classN }) => {
 		<p>Looding...</p>
 	) : (
 		<>
-			<Link to={`/tourist-home/tour-packs/${pack.id}`} className={classN}>
+			<Link to={`/tourist-home/tour-packs/${pack?.id}`} className={classN}>
 				{/* <img
 					src={
 						pack.photos
@@ -19,7 +19,7 @@ const PackageButton = ({ packID, classN }) => {
 					className="w-24 h-24 rounded-full"
 				/> */}
 				<h4 className="mt-2 text-lg font-medium text-yellow-800">
-					{pack.name}
+					{pack?.name}
 				</h4>
 			</Link>
 		</>
