@@ -33,8 +33,8 @@ export const userSlice = apiSlice.injectEndpoints({
 			query: () => ({ url: `${userUrl}/tourists/fav`, method: "GET", credentials: 'include' }),
 		}),
 		getTouristInsights: builder.query({
-			query: (touristid) => ({
-				url: `${userUrl}/tourists/insights/${touristid}`,
+			query: () => ({
+				url: `${userUrl}/tourists/insights`,
 				method: "GET",
 				credentials: 'include',
 			}),

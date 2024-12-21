@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useGetCurrUserDataQuery } from "../store/userSlice";
+import { useGetCurrUserDataQuery, useGetTouristInsightsQuery, useGetTouristFavExperienceQuery } from "../store/userSlice";
 import {
 	useTouristLogoutMutation,
 	useUpdatePasswordMutation,
@@ -27,6 +27,9 @@ const Profile = () => {
 	const [touristLogout] = useTouristLogoutMutation();
 	const [activeTab, setActiveTab] = useState("overview");
 	const { data: profileData, isFetching } = useGetCurrUserDataQuery();
+	const {data: userInsights} = useGetTouristInsightsQuery();
+	const {data: favExp} = useGetTouristFavExperienceQuery();  //still in progress..
+	console.log(userInsights);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
 
@@ -84,7 +87,7 @@ const Profile = () => {
 				</div>
 
 				{/* Account Insights */}
-				{/* <div className="bg-yellow-50 p-6 rounded-xl shadow-md">
+				<div className="bg-yellow-50 p-6 rounded-xl shadow-md">
 					<h3 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
 						<Archive className="mr-2 text-yellow-600" />
 						Account Insights
@@ -93,29 +96,29 @@ const Profile = () => {
 						<div className="flex justify-between">
 							<span className="font-bold text-yellow-800">Total Trips</span>
 							<span className="text-yellow-700">
-								{profileData.accountInsights.totalTrips}
+								{userInsights?.totaltrips}
 							</span>
 						</div>
 						<div className="flex justify-between">
 							<span className="font-bold text-yellow-800">Total Spent</span>
 							<span className="text-yellow-700">
-								{profileData.accountInsights.totalSpent}
+								{userInsights?.totalspent} LE
 							</span>
 						</div>
 						<div className="flex justify-between">
 							<span className="font-bold text-yellow-800">Member Since</span>
 							<span className="text-yellow-700">
-								{profileData.accountInsights.memberSince}
+								{userInsights?.membersince.split("T")[0]}
 							</span>
 						</div>
 						<button className="bg-yellow-600 px-4 py-2 mx-auto rounded-full flex items-center text-white hover:bg-yellow-400">
 							Show All Trips
 						</button>
 					</div>
-				</div> */}
+				</div>
 
-				{/* Favorite Experience */}
-				{/* <div className="bg-yellow-50 p-6 rounded-xl shadow-md">
+				{/* Favorite Experience
+				<div className="bg-yellow-50 p-6 rounded-xl shadow-md">
 					<h3 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
 						<Pyramid className="mr-2 text-yellow-600" />
 						Favorite Experience
@@ -124,7 +127,7 @@ const Profile = () => {
 						<div>
 							<span className="font-bold text-yellow-800">Experience:</span>
 							<p className="text-yellow-700">
-								{profileData.favoriteExperience.name}
+								{favExp.name}
 							</p>
 						</div>
 						<div>

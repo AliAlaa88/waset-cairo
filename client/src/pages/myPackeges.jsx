@@ -2,15 +2,27 @@ import React, { useState } from "react";
 import Lanch from "./Lanch";
 import {Link} from 'react-router-dom';
 import { useGetOperatorPackagesQuery } from "../store/userSlice";
+import { useDeletePackMutation } from "../store/packSlice";
 
 function MyPackes() {
     const [activeModal, setActiveModal] = useState(null);
 
     const {data: packages, isFetching: packagesFetching, isError: packagesError} = useGetOperatorPackagesQuery();
+    const [deletePack] = useDeletePackMutation();
 
     const openModal = (packageId) => setActiveModal(packageId);
     const closeModal = () => setActiveModal(null);
-    const handelDelete = {};
+
+    const handleDelete = async(id) => {
+        try{
+            const res = await deletePack(id).unwrap();
+            alert(res?.msg);
+            window.location.reload();
+        }
+        catch(err){
+            alert(err.error);
+        }
+    };
 
     if(packagesFetching) return (<p>Loading...</p>);
     return (
@@ -57,6 +69,11 @@ function MyPackes() {
                             type="package"
                             id={pack.id}
                         />
+                        <button onClick={() => handleDelete(pack.id)}
+                        className="ml-6 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 hover:text-white transition-colors duration-300"
+                        >
+                            Delete Package
+                        </button>
                     </div>))}
                 </div>
             </div>

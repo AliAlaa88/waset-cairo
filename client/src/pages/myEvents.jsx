@@ -3,15 +3,27 @@ import React, { useState } from "react";
 import Lanch from "./Lanch";
 import { Link } from "react-router-dom";
 import { useGetOperatorEventsQuery } from "../store/userSlice";
+import { useDeleteEventMutation } from "../store/eventSlice";
 
 function MyEvents() {
     const [activeModal, setActiveModal] = useState(null);
 
     const {data: events, isFetching: eventsFetching, isError: eventsError} = useGetOperatorEventsQuery();
+    const [deleteEvent] = useDeleteEventMutation();
 
     const openModal = (packageId) => setActiveModal(packageId);
     const closeModal = () => setActiveModal(null);
-    const handelDelete = {};
+
+    const handleDelete = async (id) => {
+        try{
+            const res = await deleteEvent(id).unwrap();
+            alert(res?.msg);
+            window.location.reload();
+        }
+        catch(err){
+            alert(err.error);
+        }
+    };
 
     if(eventsFetching) return (<p>Loading...</p>);
     return (
@@ -53,6 +65,11 @@ function MyEvents() {
                             type="event"
                             id={event.id}
                         />
+                        <button onClick={() => handleDelete(event.id)}
+                        className="ml-6 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 hover:text-white transition-colors duration-300"
+                        >
+                            Delete Event
+                        </button>
                     </div>))}
                 </div>
             </div>

@@ -3,12 +3,12 @@ import userController from '../controllers/user.controller.js'
 const userRouter = Router()
 
 userRouter.get('/tourists', userController.getAllTourists)
+userRouter.get('/tourists/insights', userController.getTouristInsights);
+userRouter.get('/tourists/fav', userController.getTouristFavExperience);
 userRouter.get('/tourists/:touristID', userController.getTourist)
 userRouter.put('/tourists/promote/:id', userController.promoteTourist);
 userRouter.put('/tourists/ban/:id', userController.banTourist);
 userRouter.put('/tourists/unban/:id', userController.unbanTourist);
-userRouter.get('/tourists/fav', userController.getTouristFavExperience);
-userRouter.get('/tourists/insights/:touristid', userController.getTouristInsights);
 userRouter.get('/guides/touristsInTours/:id', userController.getTouristsGoingToGuideTours);
 userRouter.get('/guides', userController.getAllGuides)
 userRouter.get('/guides/:guideID', userController.getGuide)

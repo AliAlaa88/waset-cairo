@@ -2,7 +2,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useGetCurrUserDataQuery } from "../store/userSlice";
 import { useTouristEditProfileMutation } from "../store/registrationSlice";
-import { User, Mail, Phone, Calendar, Users } from 'lucide-react';
+import { User, Mail, Phone, Calendar, Users, NotepadText } from 'lucide-react';
 
 function EditProfile() {
 	const { data: profileData, isFetching } = useGetCurrUserDataQuery();
@@ -118,6 +118,20 @@ function EditProfile() {
 							required
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
+							className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+						/>
+					</div>
+
+					<div className="relative">
+						<div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+							<NotepadText className="h-5 w-5 text-gray-400" />
+						</div>
+						<input
+							type="text"
+							placeholder="Bio"
+							required
+							value={bio}
+							onChange={(e) => setBio(e.target.value)}
 							className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent"
 						/>
 					</div>
