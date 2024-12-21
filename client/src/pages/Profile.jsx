@@ -184,7 +184,7 @@ const Profile = () => {
 							My Tours
 						</h3>
 						<div className="space-y-4">
-							{myTours.map((tour) => (
+							{myTours?.map((tour) => (
 								<div
 									key={tour.id}
 									className="bg-white p-4 rounded-lg border-l-4 border-yellow-500"
