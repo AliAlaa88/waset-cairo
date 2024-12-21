@@ -80,6 +80,20 @@ export const userSlice = apiSlice.injectEndpoints({
 				method: "GET",
 				credentials: "include"
 			})
+		}),
+		getTopPerformingGuides: builder.query({
+			query: () => ({
+				url: `${userUrl}/guides/top-performing`,
+				method: "GET",
+				credentials: "include"
+			})	
+		}),
+		getTouristsDemographics: builder.query({
+			query: () => ({
+				url: `${userUrl}/tourists/demographics`, 
+				method: "GET",
+				credentials: "include"
+			})
 		})
 	}),
 });
@@ -99,5 +113,7 @@ export const {
 	useGetOperatorPackagesQuery,
 	useGetOperatorEventsQuery,
 	useGetOperatorDashboardQuery,
-	useGetCurrUserDataQuery
+	useGetCurrUserDataQuery,
+	useGetTopPerformingGuidesQuery,
+	useGetTouristsDemographicsQuery
 } = userSlice;
