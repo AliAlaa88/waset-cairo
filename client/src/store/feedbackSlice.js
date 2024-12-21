@@ -31,6 +31,13 @@ export const feedbackSlice = apiSlice.injectEndpoints({
         credentials: 'include',
       }),
     }),
+    getAvgRatingsOfTourist: builder.query({
+      query: () => ({
+        url: `${feedbacksUrl}/tourist/avg-rating`,
+        method: "GET",
+        credentials: "include"
+      })
+    })
   }),
 });
 
@@ -41,4 +48,5 @@ export const {
   useGetTourFeedbackQuery,
   useAddFeedbackMutation,
   useDeleteFeedbackMutation,
+  useGetAvgRatingsOfTouristQuery
 } = feedbackSlice;

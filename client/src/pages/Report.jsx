@@ -41,8 +41,8 @@ function Report() {
 
                 </div>
                 <div className="rp-buttons">
-                <button className="rp-cancleBtn" type="button" >Cancle</button>
-                <button className="rp-submitBtn" type="submit">submit</button>
+                <button className="rp-cancleBtn" type="button" >Cancel</button>
+                <button className="rp-submitBtn" type="submit">Submit</button>
                 </div>
             </form>
         </div>

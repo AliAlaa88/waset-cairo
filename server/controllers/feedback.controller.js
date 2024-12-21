@@ -34,7 +34,7 @@ const feedbackController = {
 
     const newFeedback = await client.query(
       "INSERT INTO Feedback (Description, Type, Rating) VALUES ($1, $2, $3) RETURNING *",
-      [description, type, parseInt(rating)]
+      [description, type, parseFloat(rating)]
     );
 
     const insert = await client.query(
@@ -102,6 +102,24 @@ const feedbackController = {
     }
 
     return res.status(200).json({msg: "Deleted feedback successfully!"});
+  }),
+
+  getRatingsOfTourists: catchAsync(async(req, res, next) => {
+    const touristID = req.user.id;
+
+    const data = await client.query(
+      `SELECT
+      F.TYPE,
+      COUNT(F.RATING) AS ratingcount,
+      AVG(F.RATING) AS avgRating
+      FROM FEEDBACK F
+      JOIN TOURIST_FEEDBACK TF ON TF.FEEDBACKID = F.ID
+      WHERE TF.TOURISTID = $1
+      GROUP BY F.TYPE
+      ORDER BY F.TYPE`, [touristID]
+    );
+
+    return res.status(200).json(data.rows);
   })
 };
 

@@ -160,7 +160,7 @@ const userController = {
     return res.status(201).json({msg: "User has been unbanned successfully!"});
   }),
   getTouristFavExperience: catchAsync(async (req, res, next) => {
-    const touristID = req.params.id;
+    const touristID = req.user.id;
 
     const fav = await client.query(
       `SELECT COALESCE(TP.NAME, E.NAME) AS experienceName,
@@ -171,10 +171,11 @@ const userController = {
       LEFT JOIN FEEDBACK F ON F.ID = TF.FEEDBACKID
       LEFT JOIN TOUR_PACKAGE TP ON TP.ID = TR.TOURPACKAGEID
       LEFT JOIN EVENT E ON E.ID = TR.EVENTID
-      WHERE TF.TOURISTID = $1 AND F.RATING = (
-        SELECT MAX(RATING)
-        FROM FEEDBACK
-        WHERE TF.TOURISTID = $1
+      WHERE TF.TOURISTID = $1 AND F.TYPE = 'Tour' AND F.RATING = (
+        SELECT MAX(FF.RATING)
+        FROM FEEDBACK FF
+        LEFT JOIN TOURIST_FEEDBACK TFF ON FF.ID = TFF.FEEDBACKID
+        WHERE TFF.TOURISTID = $1
       );`, [touristID]
     );
 

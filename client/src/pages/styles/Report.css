@@ -13,7 +13,7 @@
   
   .rpForm {
     background-color: rgba(255, 255, 255, 0.9);
-    background: transparent;
+    background: white;
     border: 2px solid rgb(182, 110, 10);
     backdrop-filter: blur(2px);
     padding: 20px;
@@ -29,7 +29,7 @@
     text-align: center;
     margin-bottom: 20px;
     text-transform: uppercase;
-    color: wheat;
+    color: rgb(244, 165, 20);
   }
   
   .rp-input {
@@ -45,9 +45,6 @@
   textarea.rp-input {
     resize: none;
   }
-
-
-
 
   
   .rp-buttons button {
@@ -65,7 +62,7 @@
   }
   
   .rp-submitBtn {
-    background-color: #d4a373;
+    background-color: #fb850f;
     color: #fff;
   }
   

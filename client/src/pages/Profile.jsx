@@ -11,6 +11,7 @@ import {
 	Medal,
 	Home,
 	Settings,
+	Briefcase,
 } from "lucide-react";
 
 import logo from "../assets/exploreEgy.png";
@@ -20,6 +21,7 @@ import ChangePasswordModal from "./ChangePasswordModal";
 
 import { clearCredentials } from "../store/authSlice";
 import { useGetTouristTourHistoryQuery } from "../store/tourSlice";
+import { useGetTicketsQuery } from "../store/ticketSlice";
 import {
 	useGetCurrUserDataQuery,
 	useGetTouristInsightsQuery,
@@ -29,6 +31,7 @@ import {
 	useTouristLogoutMutation,
 	useUpdatePasswordMutation,
 } from "../store/registrationSlice";
+import { useGetAvgRatingsOfTouristQuery } from "../store/feedbackSlice";
 
 const Profile = () => {
 	const id = useSelector((state) => state.auth.userInfo.id);
@@ -38,9 +41,11 @@ const Profile = () => {
 	const [activeTab, setActiveTab] = useState("overview");
 
 	const { data: profileData, isFetching } = useGetCurrUserDataQuery();
+	const { data: myTickets, isFetching: ticketFetching} = useGetTicketsQuery();
 	const { data: userInsights, isFetching: insightsFetching } =
 		useGetTouristInsightsQuery();
-	const { data: favExp } = useGetTouristFavExperienceQuery(); //still in progress..
+	const { data: avgRatings, isFetching: avgRatingFetching} = useGetAvgRatingsOfTouristQuery();
+	const { data: favExp, isFetching: favExpFetching } = useGetTouristFavExperienceQuery(); //still in progress..
 	const { data: myTours, isFetching: myToursFetching } =
 		useGetTouristTourHistoryQuery(id);
 	const navigate = useNavigate();
@@ -137,33 +142,35 @@ const Profile = () => {
 						)}
 					</div>
 
-					{/* Favorite Experience
+					{/* Favorite Experience */}
 				<div className="bg-yellow-50 p-6 rounded-xl shadow-md">
 					<h3 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
 						<Pyramid className="mr-2 text-yellow-600" />
 						Favorite Experience
 					</h3>
+					{favExpFetching? <p>Loading...</p> :
 					<div className="space-y-3">
 						<div>
 							<span className="font-bold text-yellow-800">Experience:</span>
 							<p className="text-yellow-700">
-								{favExp.name}
+								{favExp?.experiencename}
 							</p>
 						</div>
 						<div>
 							<span className="font-bold text-yellow-800">Date:</span>
 							<p className="text-yellow-700">
-								{profileData.favoriteExperience.date}
+								{favExp?.date.split("T")[0]}
 							</p>
 						</div>
 						<div className="flex items-center">
-							<span className="font-bold text-yellow-800 mr-2">Rating:</span>
+							<span className="font-bold text-yellow-800 mr-2">Rating: {favExp?.highestrating}</span>
 							<div className="flex">
 								{[...Array(5)].map((_, i) => (
 									<Star
 										key={i}
+										fill={`${i < Math.floor(favExp?.highestrating) ? "orange" : "gray"}`}
 										className={`${
-											i < profileData.favoriteExperience.rating
+											i < Math.floor(favExp?.highestrating)
 												? "text-yellow-500"
 												: "text-gray-300"
 										}`}
@@ -172,8 +179,10 @@ const Profile = () => {
 								))}
 							</div>
 						</div>
-					</div>
-				</div> */}
+					</div>}
+				</div>
+
+
 				</div>
 				{myToursFetching ? (
 					<p>Loading...</p>
@@ -201,7 +210,7 @@ const Profile = () => {
 												To: {tour.enddate.split("T")[0]}
 											</p>
 										</div>
-										<Link to={`feedback/${tour.id}`} className="bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition">
+										<Link to={`feedback/${tour.id}`} className={`bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-yellow-400 transition ${new Date(tour.startdate) < new Date()? "" : "invisible"}`}>
 											Give a Feedback
 										</Link>
 										<span
@@ -233,81 +242,108 @@ const Profile = () => {
 				)}
 			</>
 		);
-
 		renderTickets = () => (
 			<div className="bg-yellow-50 p-6 rounded-xl shadow-md">
 				<h3 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
 					<Ticket className="mr-2 text-yellow-600" />
 					My Tickets
 				</h3>
-				{/* <div className="space-y-4">
-					{profileData.tickets.map((ticket) => (
+				{ticketFetching? <p>Loading...</p>:
+				<div className="space-y-4">
+					{myTickets?.map((ticket, idx) => (
 						<div
-							key={ticket.id}
+							key={idx}
 							className="bg-white p-4 rounded-lg border-l-4 border-yellow-500"
 						>
 							<div className="flex justify-between items-center">
 								<div>
 									<h4 className="font-bold text-yellow-900">
-										{ticket.destination}
+										{ticket.name}
 									</h4>
-									<p className="text-yellow-700">{ticket.date}</p>
+									<p className="text-yellow-700">{ticket.startdate.split("T")[0]}</p>
+									<p className="text-yellow-700">Price: {ticket.price} LE</p>
 								</div>
 								<span
 									className={`px-3 py-1 rounded-full text-sm ${
-										ticket.status === "Completed"
+										new Date(ticket.startdate) < new Date()
 											? "bg-green-100 text-green-800"
-											: ticket.status === "Upcoming"
-											? "bg-blue-100 text-blue-800"
 											: "bg-yellow-100 text-yellow-800"
 									}`}
 								>
-									{ticket.status}
+									{new Date(ticket.startdate) < new Date()? "Completed" : "Upcoming"}
 								</span>
 							</div>
 						</div>
 					))}
-				</div> */}
+				</div>}
 			</div>
 		);
 
-		renderRatings = () => (
-			<div className="bg-yellow-50 p-6 rounded-xl shadow-md">
-				<h3 className="text-xl font-semibold text-yellow-900 mb-4 flex items-center">
-					<Medal className="mr-2 text-yellow-600" />
-					Ratings
-				</h3>
-				{/* <div className="space-y-4">
-					<div className="flex justify-between items-center">
-						<span className="font-bold text-yellow-800">Overall Rating</span>
-						<div className="flex items-center">
-							<Star className="text-yellow-500 mr-1" />
-							<span className="text-yellow-700">
-								{profileData.ratings.overall}
-							</span>
+		renderRatings = () => {
+			if(avgRatingFetching) return (<p>Loading...</p>);
+			const overallRating = (parseFloat(avgRatings[0].avgrating) + parseFloat(avgRatings[1].avgrating)) / 2.0;
+			return(
+			<div className="min-h-screen p-6">
+				<div className="max-w-2xl mx-auto space-y-6">
+					<div className="bg-white rounded-xl shadow-lg overflow-hidden">
+						<div className="text-center p-6 border-b border-gray-100">
+							<h2 className="text-2xl font-bold text-gray-800">
+								Your Ratings
+							</h2>
+							<div className="mt-4 flex items-center justify-center gap-3">
+								<span className="text-4xl font-bold text-amber-600">
+									{overallRating.toFixed(1)}
+								</span>
+								<Star className="w-8 h-8 fill-amber-400 text-amber-400" />
+							</div>
+							<p className="text-gray-500 text-sm mt-2">
+								Based on {parseFloat(avgRatings[0].ratingcount) + parseFloat(avgRatings[1].ratingcount)} reviews
+							</p>
+						</div>
+
+						<div className="p-6">
+							<div className="flex items-center justify-between p-4 border-b border-gray-100 last:border-0">
+								<div className="flex items-center gap-3">
+								<div className="p-2 bg-amber-50 rounded-lg">
+									<Pyramid className="w-6 h-6 text-amber-600" />
+								</div>
+								<span className="font-medium text-2xl text-gray-700">Tours</span>
+								</div>
+								<div className="flex flex-col items-end">
+								<div className="flex items-center gap-2">
+									<span className="text-2xl font-bold text-amber-600">{avgRatings[0].avgrating.toFixed(1)}</span>
+									<Star className="w-5 h-5 fill-amber-400 text-amber-400" />
+								</div>
+								<span className="text-sm text-gray-500">{avgRatings[0].ratingcount} reviews</span>
+								</div>
+							</div>
+
+							<div className="flex items-center justify-between p-4 border-b border-gray-100 last:border-0">
+								<div className="flex items-center gap-3">
+								<div className="p-2 bg-amber-50 rounded-lg">
+									<Briefcase className="w-6 h-6 text-amber-600" />
+								</div>
+								<span className="font-medium text-2xl text-gray-700">Guides</span>
+								</div>
+								<div className="flex flex-col items-end">
+								<div className="flex items-center gap-2">
+									<span className="text-2xl font-bold text-amber-600">{avgRatings[1].avgrating.toFixed(1)}</span>
+									<Star className="w-5 h-5 fill-amber-400 text-amber-400" />
+								</div>
+								<span className="text-sm text-gray-500">{avgRatings[1].ratingcount} reviews</span>
+								</div>
+							</div>
+						</div>
+
+						<div className="bg-gray-50 px-6 py-4 border-t border-gray-100">
+							<p className="text-sm text-gray-600 text-center">
+								Ratings updated daily
+							</p>
 						</div>
 					</div>
-					<div className="flex justify-between items-center">
-						<span className="font-bold text-yellow-800">Tour Guides</span>
-						<div className="flex items-center">
-							<Star className="text-yellow-500 mr-1" />
-							<span className="text-yellow-700">
-								{profileData.ratings.tourGuides}
-							</span>
-						</div>
-					</div>
-					<div className="flex justify-between items-center">
-						<span className="font-bold text-yellow-800">Experiences</span>
-						<div className="flex items-center">
-							<Star className="text-yellow-500 mr-1" />
-							<span className="text-yellow-700">
-								{profileData.ratings.experiences}
-							</span>
-						</div>
-					</div>
-				</div> */}
-			</div>
-		);
+				</div>
+            </div>
+		)};
 
 		renderSettings = () => {
 			return (
@@ -385,7 +421,7 @@ const Profile = () => {
 
 							{/* Name and Actions */}
 							<div className="flex-grow">
-								<h1 className="text-3xl font-bold">{profileData.fname}</h1>
+								<h1 className="text-3xl font-bold">{profileData?.fname} {profileData?.lname}</h1>
 							</div>
 
 							<div className="flex items-end">

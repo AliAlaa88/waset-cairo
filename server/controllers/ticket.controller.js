@@ -3,9 +3,25 @@ import client from "../dbConfig.js";
 
 const ticketController = {
   getUserTickets: catchAsync(async (req, res) => {
-    const { touristID } = req.body;
+    const touristID = req.user.id;
+
+    if(req.role != "tourist"){
+      const err = new Error("You are not allowed to do this action!");
+      err.statusCode = 400;
+      return next(err);
+    }
+
     const tickets = await client.query(
-      "SELECT * FROM Ticket WHERE TouristID = $1",
+      `SELECT DISTINCT
+      TK.PRICE,
+      TR.STARTDATE,
+      COALESCE(TP.NAME, E.NAME) AS name
+      FROM Ticket TK
+      JOIN TOUR TR ON TK.TOURID = TR.ID
+      LEFT JOIN TOUR_PACKAGE TP ON TR.TOURPACKAGEID = TP.ID 
+      LEFT JOIN EVENT E ON TR.EVENTID = E.ID 
+      WHERE TK.TOURISTID = $1
+      ORDER BY TR.STARTDATE DESC`,
       [touristID]
     );
 
@@ -15,7 +31,7 @@ const ticketController = {
       return next(err);
     }
 
-    res.status(200).json({ tickets: tickets.rows });
+    res.status(200).json(tickets.rows);
   }),
 
   insertTicket: catchAsync(async (req, res, next) => {

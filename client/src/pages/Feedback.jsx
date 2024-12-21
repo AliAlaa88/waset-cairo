@@ -16,7 +16,7 @@ function Feedback() {
 			try {
 				const res = await addFeedback({
 					description: discription,
-					rating: parseInt(rating),
+					rating: parseFloat(rating),
 					type,
 					tourID,
 				}).unwrap();
@@ -50,11 +50,11 @@ function Feedback() {
 						type="number"
 						min="0"
 						max="5"
-						step="0.5"
+						step="0.1"
 						placeholder="rate from 1 to 5"
 						required
 						value={rating}
-						onChange={(e) => setrating(parseInt(e.target.value))}
+						onChange={(e) => setrating(parseFloat(e.target.value))}
 					/>
 
 					<div className="fd-radio-group">
