@@ -141,13 +141,15 @@ const tourController = {
             COALESCE(TP.PRICE, E.PRICE) AS price, 
             TR.TICKETCAPACITY, 
             COUNT(TK.ID) AS bookedTickets,
-            TR.STARTDATE
+            TR.STARTDATE,
+            TR.ENDDATE,
+            TR.STATUS
             FROM TOUR TR
             LEFT JOIN TICKET TK ON TK.TOURID = TR.ID
             LEFT JOIN TOUR_PACKAGE TP ON TP.ID = TR.TOURPACKAGEID
             LEFT JOIN EVENT E ON E.ID = TR.EVENTID
-            WHERE STARTDATE >= CURRENT_DATE
-            GROUP BY TR.ID, TR.TOURPACKAGEID, TR.EVENTID, TR.STARTDATE, TP.NAME, E.NAME, TP.PRICE, E.PRICE, TR.TICKETCAPACITY;`
+            WHERE STARTDATE > CURRENT_DATE
+            GROUP BY TR.ID, TR.TOURPACKAGEID, TR.EVENTID, TR.STARTDATE, TR.ENDDATE, TR.STATUS, TP.NAME, E.NAME, TP.PRICE, E.PRICE, TR.TICKETCAPACITY;`
         );
 
         if(!tours.rowCount) return res.status(404).json({error: "No data found!"});
