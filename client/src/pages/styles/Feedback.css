@@ -1,5 +1,5 @@
 .feedback-contaner {
-    background-image: url('client\src\assets\p6.jpg');
+    background-image: url('../../assets/p6.jpg');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -12,7 +12,7 @@
   
   .fdForm {
     background-color: rgba(255, 255, 255, 0.9);
-    background: transparent;
+    background: white;
     border: 2px solid rgb(182, 110, 10);
     backdrop-filter: blur(2px);
     padding: 20px;
@@ -28,7 +28,7 @@
     text-align: center;
     margin-bottom: 20px;
     text-transform: uppercase;
-    color: wheat;
+    color: goldenrod;
   }
   
   .fd-input {
@@ -75,7 +75,7 @@
   }
   
   .fd-submitBtn {
-    background-color: #d4a373;
+    background-color: #fa8107;
     color: #fff;
   }
   

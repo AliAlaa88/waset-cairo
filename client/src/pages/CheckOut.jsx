@@ -16,7 +16,7 @@ function CheckOut({ visible, closeModal, tourID, ticketsNum }) {
 				console.log(price / ticketsNum, tourID);
 				const res = await insertTicket({
 					price: price / ticketsNum,
-					tourID,
+					tourID: tourID,
 				}).unwrap();
 			}
 			closeModal();
