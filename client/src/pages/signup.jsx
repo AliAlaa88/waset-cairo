@@ -62,7 +62,13 @@ function Signup() {
 			}).unwrap();
 			navigate("/");
 		} catch (err) {
-			console.log(err?.data?.message || err);
+			const e = err?.data?.msg;
+			if (e == "duplicate key value violates unique constraint \"tourist_username_key\""
+				|| e == "duplicate key value violates unique constraint \"tourist_email_key\"") {
+			console.log(err);
+			alert("Username or Email already exists!");
+			}
+			
 		}
 	}
 

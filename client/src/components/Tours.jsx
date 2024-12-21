@@ -49,6 +49,11 @@ const Tours = () => {
 			});
 	};
 
+
+	const closeModal = () => {
+		setActiveModal(null);
+	};
+
 	const { data: tours, isFetching: tourFetching } = useGetToursQuery();
 	const { data: packs, isFetching: packsFetch } = useGetPacksQuery();
 	const { data: events, isFetching: eventsFetch } = useGetEventsQuery();
