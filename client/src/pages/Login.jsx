@@ -59,6 +59,9 @@ function Login() {
 				if (err?.data?.msg == "Invalid Credentials!") {
 					alert("Incorrect username or password or role \n Please try again");
 				}
+				else if(err?.data?.msg == "You are permanently banned!"){
+					alert("You are permanently banned!");
+				}
 			}
 		}
 	};
