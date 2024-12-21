@@ -40,6 +40,7 @@ function Router() {
 				<Route path="/sign-up" element={<Signup />} />
 				<Route path="/guide-sign" element={<TourGuideSign />} />
 				<Route path="/operator-sign" element={<TourOperatorSign />} />
+
 				<Route path="/tourist-home/profile">
 					<Route index element={<Profile />} />
 					<Route path="edit" element={<EditProfile />} />
@@ -72,10 +73,10 @@ function Router() {
 
 				<Route path="guide-home" element={<TourGuideHomePage />} />
 				<Route path="/guide-home/edit" element={<EditProfileGuide />} />
+				<Route path="/guide-home/report/:tourID" element={<Report />} />
 				<Route path="operator-home" element={<TourOperatorHomePage />} />
 				<Route path="/operator-home/edit" element={<EditProfileOperator />} />
 				<Route path="mypacks" element={<MyPackes />} />
-				<Route path="report" element={<Report />} />
 				<Route path="*" element={<ErrorPage />} />
 				<Route path="insert-monument" element={<InsertMonument />} />
 				<Route path="create-pack" element={<CreatePack />} />

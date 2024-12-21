@@ -6,7 +6,7 @@ reportRouter.get('/', reportController.getAllReports)
 reportRouter.get('/:reportID', reportController.getReport)
 reportRouter.get('/guide/:id', reportController.getGuideReports);
 reportRouter.get('/tour/:id', reportController.getTourReports);
-reportRouter.post('/:id', reportController.insertReport);
+reportRouter.post('/', reportController.insertReport);
 reportRouter.delete('/:id', reportController.deleteReport);
 
 export default reportRouter

@@ -31,9 +31,8 @@ const reportController = {
   }),
 
   insertReport: catchAsync(async (req, res) => {
-    const { description } = req.body;
+    const { description, tourID } = req.body;
     const guideID = req.user.id;
-    const tourID = req.params.id;
 
     if(req.role != "guide"){
       const err = new Error("You are not allowed to do this action!");
