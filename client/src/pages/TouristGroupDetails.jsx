@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import MonumentButton from "../components/MonumentButton";
 import PackageButton from "../components/PackageButton";
@@ -7,8 +8,7 @@ import {
 	useDeleteGroupMutation,
 } from "../store/groupsSlice";
 import { useGetPacksQuery } from "../store/packSlice";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+
 const TouristGroupDetails = () => {
 	const { id } = useParams();
 	const { data: group, isFetching } = useGetGroupQuery(id);
@@ -16,16 +16,9 @@ const TouristGroupDetails = () => {
 	const { data: groupMembers, isFetching: membersFetching } =
 		useGetGroupMembersQuery(id);
 	const [deleteGroup] = useDeleteGroupMutation();
-	const [filteredPacks, setFilteredPacks] = useState([]);
 	const { userInfo } = useSelector((state) => state.auth);
-	console.log(group);
+	console.log(packs);
 	const navigate = useNavigate();
-	useEffect(() => {
-		if (!packsFetching && packs) {
-			const filtered = packs.filter((pack) => pack.monumentids.includes(id));
-			setFilteredPacks(filtered);
-		}
-	}, [packs, packsFetching, id]);
 
 	const handleDeleteGroup = async (e) => {
 		e.preventDefault();
@@ -39,7 +32,7 @@ const TouristGroupDetails = () => {
 
 	return (
 		<div className="p-6">
-			{isFetching || membersFetching ? (
+			{isFetching || membersFetching || packsFetching ? (
 				<div>Loading...</div>
 			) : (
 				<>
@@ -66,15 +59,22 @@ const TouristGroupDetails = () => {
 							</div>
 						</div>
 					)}
-					{packs && filteredPacks && filteredPacks.length > 0 && (
+					{packs && packs.length > 0 && (
 						<div className="mt-8">
 							<h3 className="text-2xl font-semibold text-center mb-4">
 								Available Packages
 							</h3>
 							<div className="flex flex-wrap justify-evenly gap-4">
-								{filteredPacks.map((pack) => (
-									<PackageButton key={pack.id} packageID={pack.id} />
-								))}
+								{packs.map(
+									(pack) =>
+										pack.monumentids.includes(group.prefferedmonument) && (
+											<PackageButton
+												key={pack.id}
+												packID={pack.id}
+												classN="flex items-center gap-4 bg-yellow-500 border rounded-lg shadow hover:bg-orange-400 transition duration-200 p-4"
+											/>
+										)
+								)}
 							</div>
 						</div>
 					)}

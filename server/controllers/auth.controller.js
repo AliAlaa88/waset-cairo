@@ -8,19 +8,6 @@ const authController = {
 	touristSignup: catchAsync(async (req, res, next) => {
 
 		const { firstName, lastName, username, email, password, gender, phonenumber, birthdate, selectedCountry, selectedLanguage } = req.body;
-		
-		
-		// const existingUser = await client.query(
-		// 	"SELECT * FROM Tourist WHERE UserName = $1 OR Email = $2",
-		// 	[username, email]
-		// );
-
-		// if (existingUser.rowCount) {
-		// 	const err = new Error("Username or Email already exists!");
-		// 	err.statusCode = 400;
-		// 	return next(err);
-		// }
-
 
 		const hashedPassword = await bcrypt.hash(password, 12);
 		const newUser = await client.query(

@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import MonumentButton from "../components/MonumentButton";
 import { useGetPackQuery } from "../store/packSlice";
 import { useGetMonumentQuery } from "../store/monumentSlice";
+import Tours from "../components/Tours";
 
 const TourPackDetails = () => {
 	const { id } = useParams();
@@ -52,20 +53,19 @@ const TourPackDetails = () => {
 							</p>
 						</div>
 					</div>
-					<>
-						<div className="mt-8">
-							<h3 className="text-2xl font-semibold text-center mb-4">
-								Related Monuments
-							</h3>
-							{pack.monumentids?.length > 0 && (
-								<div className="flex justify-evenly gap-4">
-									{pack.monumentids.map((monumentID) => (
-										<MonumentButton key={monumentID} monumentID={monumentID} />
-									))}
-								</div>
-							)}
-						</div>
-					</>
+					<div className="mt-8">
+						<h3 className="text-2xl font-semibold text-center mb-4">
+							Related Monuments
+						</h3>
+						{pack.monumentids?.length > 0 && (
+							<div className="flex justify-evenly gap-4">
+								{pack.monumentids.map((monumentID) => (
+									<MonumentButton key={monumentID} monumentID={monumentID} />
+								))}
+							</div>
+						)}
+					</div>
+					<Tours itemID={id} />
 				</>
 			)}
 		</div>
