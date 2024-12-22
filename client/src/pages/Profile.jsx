@@ -45,8 +45,8 @@ const Profile = () => {
 	const { data: userInsights, isFetching: insightsFetching } =
 		useGetTouristInsightsQuery();
 	const { data: avgRatings, isFetching: avgRatingFetching} = useGetAvgRatingsOfTouristQuery();
-	const { data: favExp, isFetching: favExpFetching } = useGetTouristFavExperienceQuery(); //still in progress..
-	const { data: myTours, isFetching: myToursFetching } =
+	const { data: favExp, isFetching: favExpFetching, isError: favError } = useGetTouristFavExperienceQuery();
+	const { data: myTours, isFetching: myToursFetching, isError: toursError } =
 		useGetTouristTourHistoryQuery(id);
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
@@ -127,7 +127,7 @@ const Profile = () => {
 								<div className="flex justify-between">
 									<span className="font-bold text-yellow-800">Total Spent</span>
 									<span className="text-yellow-700">
-										{userInsights?.totalspent} LE
+										{userInsights?.totalspent || 0} LE
 									</span>
 								</div>
 								<div className="flex justify-between">
@@ -148,7 +148,7 @@ const Profile = () => {
 						<Pyramid className="mr-2 text-yellow-600" />
 						Favorite Experience
 					</h3>
-					{favExpFetching? <p>Loading...</p> :
+					{favExpFetching? <p>Loading...</p> : favError? <p className="text-center text-yellow-800">Start by booking tours to update your insights!</p> :
 					<div className="space-y-3">
 						<div>
 							<span className="font-bold text-yellow-800">Experience:</span>
@@ -193,7 +193,7 @@ const Profile = () => {
 							My Tours
 						</h3>
 						<div className="space-y-4">
-							{myTours?.map((tour) => (
+							{toursError? <p className="text-center">No tours to show! Start booking first!</p> : myTours?.map((tour) => (
 								<div
 									key={tour.id}
 									className="bg-white p-4 rounded-lg border-l-4 border-yellow-500"
@@ -248,7 +248,7 @@ const Profile = () => {
 					<Ticket className="mr-2 text-yellow-600" />
 					My Tickets
 				</h3>
-				{ticketFetching? <p>Loading...</p>:
+				{ticketFetching? <p>Loading...</p>: myTickets?.length === 0? <p className="text-center">No tickets to show! Start buying some first!</p> :
 				<div className="space-y-4">
 					{myTickets?.map((ticket, idx) => (
 						<div
@@ -281,7 +281,7 @@ const Profile = () => {
 
 		renderRatings = () => {
 			if(avgRatingFetching) return (<p>Loading...</p>);
-			const overallRating = (parseFloat(avgRatings[0].avgrating) + parseFloat(avgRatings[1].avgrating)) / 2.0;
+			const overallRating = (parseFloat(avgRatings[0]?.avgrating || 0) + parseFloat(avgRatings[1]?.avgrating || 0)) / 2.0;
 			return(
 			<div className="min-h-screen p-6">
 				<div className="max-w-2xl mx-auto space-y-6">
@@ -297,7 +297,7 @@ const Profile = () => {
 								<Star className="w-8 h-8 fill-amber-400 text-amber-400" />
 							</div>
 							<p className="text-gray-500 text-sm mt-2">
-								Based on {parseFloat(avgRatings[0].ratingcount) + parseFloat(avgRatings[1].ratingcount)} reviews
+								Based on {parseFloat(avgRatings[0]?.ratingcount || 0) + parseFloat(avgRatings[1]?.ratingcount || 0)} reviews
 							</p>
 						</div>
 
@@ -311,10 +311,10 @@ const Profile = () => {
 								</div>
 								<div className="flex flex-col items-end">
 								<div className="flex items-center gap-2">
-									<span className="text-2xl font-bold text-amber-600">{avgRatings[0].avgrating.toFixed(1)}</span>
+									<span className="text-2xl font-bold text-amber-600">{avgRatings[0]?.avgrating.toFixed(1) || 0}</span>
 									<Star className="w-5 h-5 fill-amber-400 text-amber-400" />
 								</div>
-								<span className="text-sm text-gray-500">{avgRatings[0].ratingcount} reviews</span>
+								<span className="text-sm text-gray-500">{avgRatings[0]?.ratingcount || 0} reviews</span>
 								</div>
 							</div>
 
@@ -327,10 +327,10 @@ const Profile = () => {
 								</div>
 								<div className="flex flex-col items-end">
 								<div className="flex items-center gap-2">
-									<span className="text-2xl font-bold text-amber-600">{avgRatings[1].avgrating.toFixed(1)}</span>
+									<span className="text-2xl font-bold text-amber-600">{avgRatings[1]?.avgrating.toFixed(1) || 0}</span>
 									<Star className="w-5 h-5 fill-amber-400 text-amber-400" />
 								</div>
-								<span className="text-sm text-gray-500">{avgRatings[1].ratingcount} reviews</span>
+								<span className="text-sm text-gray-500">{avgRatings[1]?.ratingcount || 0} reviews</span>
 								</div>
 							</div>
 						</div>

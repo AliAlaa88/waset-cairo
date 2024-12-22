@@ -11,7 +11,7 @@ function CreateGroup() {
 	const [description, setdescription] = useState("");
 	const [selectedLanguage, setSelectedLanguage] = useState("");
 	const [languages, setLanguages] = useState([]);
-	const [selectedMonument, setselectedMonument] = useState(0);
+	const [selectedMonument, setselectedMonument] = useState("");
 	const navigate = useNavigate();
 	const { data: monuments, isFetching } = useGetMonumentsQuery();
 	const [createGroup] = useAddGroupMutation();
@@ -45,7 +45,7 @@ function CreateGroup() {
 					prefferedMonument: selectedMonument,
 				}).unwrap();
 				joinGroup(res.data.id)
-				navigate("../");
+				window.location.href = "/tourist-home/groups";
 			} catch (error) {
 				console.error("Failed to create group:", error);
 			}

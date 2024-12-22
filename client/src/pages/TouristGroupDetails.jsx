@@ -24,7 +24,7 @@ const TouristGroupDetails = () => {
 		e.preventDefault();
 		try {
 			const res = await deleteGroup(id).unwrap();
-			navigate("../");
+			window.location.href = "/tourist-home/groups";
 		} catch (error) {
 			console.error("Failed to delete group:", error);
 		}
